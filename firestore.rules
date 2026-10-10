@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidReview(data) {
+      return data.customerName is string && data.customerName.size() > 0
+        && data.comment is string && data.comment.size() > 0
+        && data.rating is int && data.rating >= 1 && data.rating <= 5;
+    }
+
+    function isValidBooking(data) {
+      return data.customerName is string && data.customerName.size() > 0
+        && data.phoneNumber is string && data.phoneNumber.size() > 0
+        && data.serviceTitle is string;
+    }
+
+    // Admin Login Sessions (Records each login with 01844-487468 to Firestore)
+    match /admin_sessions/{sessionId} {
+      allow read, create, update, delete: if true;
+    }
+
+    // Blog Posts
+    match /posts/{postId} {
+      allow read, write: if true;
+    }
+
+    // Workshop Services
+    match /services/{serviceId} {
+      allow read, write: if true;
+    }
+
+    // Promotional Banners & Ads
+    match /banners/{bannerId} {
+      allow read, write: if true;
+    }
+
+    // Work Showcases & Gallery
+    match /work_showcases/{showcaseId} {
+      allow read, write: if true;
+    }
+
+    match /gallery/{galleryId} {
+      allow read, write: if true;
+    }
+
+    // Before & After Gallery Transformations
+    match /before_after/{baId} {
+      allow read, write: if true;
+    }
+
+    // Mechanics Profiles & Specialist Portfolios
+    match /mechanics/{mechanicId} {
+      allow read, write: if true;
+    }
+
+    // Customer Reviews & Public Ratings
+    match /reviews/{reviewId} {
+      allow read, write: if true;
+    }
+
+    // Booking Requests
+    match /bookings/{bookingId} {
+      allow read, write: if true;
+    }
+
+    // Site & Header Settings
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+  }
+}

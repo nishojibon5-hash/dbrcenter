@@ -1,0 +1,196 @@
+{
+  "entities": {
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "Article or blog post published on the workshop website",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "summary": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "author": { "type": "string" },
+        "authorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "content", "category", "author", "createdAt"]
+    },
+    "ServiceItem": {
+      "title": "ServiceItem",
+      "description": "Automotive service offered by the workshop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "iconKey": { "type": "string" },
+        "category": { "type": "string" },
+        "estimatedPrice": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "sortOrder": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "description", "iconKey", "category"]
+    },
+    "BannerAd": {
+      "title": "BannerAd",
+      "description": "Promotional banner or advertisement on the website",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "ctaText": { "type": "string" },
+        "actionUrl": { "type": "string" },
+        "placement": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "bgHex": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "subtitle", "badgeText", "ctaText"]
+    },
+    "CustomerReview": {
+      "title": "CustomerReview",
+      "description": "Customer rating and review of the auto centre",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string" },
+        "carModelOrRole": { "type": "string" },
+        "rating": { "type": "integer" },
+        "comment": { "type": "string" },
+        "avatarColorHex": { "type": "string" },
+        "serviceTaken": { "type": "string" },
+        "isVerified": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerName", "rating", "comment", "createdAt"]
+    },
+    "BookingRequest": {
+      "title": "BookingRequest",
+      "description": "Customer vehicle service booking appointment request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "carModel": { "type": "string" },
+        "serviceTitle": { "type": "string" },
+        "preferredDate": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerName", "phoneNumber", "carModel", "serviceTitle", "createdAt"]
+    },
+    "AdminSession": {
+      "title": "AdminSession",
+      "description": "Authorized administrator login record with phone number",
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "role": { "type": "string" },
+        "loginAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string" }
+      },
+      "required": ["phone", "loginAt", "status"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Website header, logo, slogan and contact information configuration",
+      "type": "object",
+      "properties": {
+        "siteName": { "type": "string" },
+        "logoSubtitle": { "type": "string" },
+        "heroBadge": { "type": "string" },
+        "heroTitleLine1": { "type": "string" },
+        "heroTitleLine2": { "type": "string" },
+        "heroTitleHighlight": { "type": "string" },
+        "heroDescription": { "type": "string" },
+        "heroSlogan": { "type": "string" },
+        "addressRoad": { "type": "string" },
+        "addressArea": { "type": "string" },
+        "phoneManager": { "type": "string" },
+        "phoneChiefTech": { "type": "string" },
+        "phoneAccounts": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "copyrightText": { "type": "string" },
+        "footerSlogan": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["siteName", "heroBadge", "heroTitleLine1", "heroTitleHighlight"]
+    },
+    "MechanicProfile": {
+      "title": "MechanicProfile",
+      "description": "Technician or engineer profile at the workshop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "experience": { "type": "string" },
+        "phone": { "type": "string" },
+        "photo": { "type": "string" },
+        "specialties": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "name", "role"]
+    },
+    "BeforeAfterItem": {
+      "title": "BeforeAfterItem",
+      "description": "Before and after vehicle transformation gallery showcase",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "beforeImage": { "type": "string" },
+        "afterImage": { "type": "string" },
+        "category": { "type": "string" },
+        "carModel": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "beforeImage", "afterImage"]
+    }
+  },
+  "firestore": {
+    "/posts/{postId}": {
+      "schema": "BlogPost",
+      "description": "Published articles and news for the blog section"
+    },
+    "/services/{serviceId}": {
+      "schema": "ServiceItem",
+      "description": "Workshop service catalog items"
+    },
+    "/banners/{bannerId}": {
+      "schema": "BannerAd",
+      "description": "Promotional banner advertisements shown on the site"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "CustomerReview",
+      "description": "Customer feedback, public ratings, and testimonials"
+    },
+    "/bookings/{bookingId}": {
+      "schema": "BookingRequest",
+      "description": "Service appointments submitted by customers"
+    },
+    "/admin_sessions/{sessionId}": {
+      "schema": "AdminSession",
+      "description": "Authorized admin phone login tracking"
+    },
+    "/settings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Global website layout, header branding, and contact settings"
+    },
+    "/mechanics/{mechanicId}": {
+      "schema": "MechanicProfile",
+      "description": "Specialist technicians and engineers team profiles"
+    },
+    "/before_after/{baId}": {
+      "schema": "BeforeAfterItem",
+      "description": "Before and After repair transformations showcase"
+    }
+  }
+}
