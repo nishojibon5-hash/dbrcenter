@@ -4617,9 +4617,10 @@
           </div>
 
           <div class="footer-col">
-            <h4 data-i18n="footer_title_social">সোশ্যাল মিডিয়া</h4>
-            <p><a href="javascript:void(0)" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp-green);"></i> <span data-i18n="footer_wa_chat">WhatsApp চ্যাট</span></a></p>
-            <p><a href="https://maps.google.com/?cid=dbr_bogra" target="_blank"><i class="fa-solid fa-location-dot" style="color:var(--accent-orange);"></i> <span data-i18n="footer_map_location">গুগল ম্যাপসে অবস্থান</span></a></p>
+            <h4 data-i18n="footer_title_social">সোশ্যাল মিডিয়া ও লোকেশান</h4>
+            <p id="footer-fb-wrap"><a href="https://facebook.com/dbrcarworkshop" target="_blank" id="footer-fb-link"><i class="fa-brands fa-facebook" style="color:#1877F2; font-size:16px;"></i> <span id="footer-fb-text">ফেসবুক পেজ</span></a></p>
+            <p id="footer-map-wrap"><a href="https://maps.google.com/?cid=dbr_bogra" target="_blank" id="footer-map-link"><i class="fa-solid fa-location-dot" style="color:var(--accent-orange); font-size:16px;"></i> <span data-i18n="footer_map_location">গুগল ম্যাপস লোকেশান</span></a></p>
+            <p><a href="javascript:void(0)" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp-green); font-size:16px;"></i> <span data-i18n="footer_wa_chat">WhatsApp চ্যাট</span></a></p>
           </div>
         </div>
 
@@ -4983,6 +4984,20 @@
           <div class="form-group">
             <label>WhatsApp নাম্বার</label>
             <input type="text" id="cfg-phone-wa" class="form-input">
+          </div>
+          <div class="form-group">
+            <label style="display:flex; align-items:center; gap:6px;">
+              <i class="fa-brands fa-facebook" style="color:#1877F2;"></i> ফুটারে ফেসবুক পেজ লিংক (Facebook Page URL)
+            </label>
+            <input type="url" id="cfg-social-fb" class="form-input" placeholder="যেমন: https://facebook.com/dbrcarworkshop">
+            <small style="color:#64748B; font-size:11px; margin-top:2px; display:block;">ফুটারে ফেসবুক আইকন সহ এই লিংক প্রদর্শিত হবে।</small>
+          </div>
+          <div class="form-group">
+            <label style="display:flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-location-dot" style="color:var(--accent-orange);"></i> ফুটারে গুগল ম্যাপস লোকেশান লিংক (Google Maps URL)
+            </label>
+            <input type="url" id="cfg-social-map" class="form-input" placeholder="যেমন: https://maps.google.com/?cid=dbr_bogra">
+            <small style="color:#64748B; font-size:11px; margin-top:2px; display:block;">ফুটারে ম্যাপ আইকন সহ আপনার ওয়ার্কশপের গুগল লোকেশন খুলবে।</small>
           </div>
 
           <!-- Cloud Storage & ImgBB API Configuration Card -->
@@ -6168,6 +6183,8 @@
         phoneTech: "01776-596315",
         phoneAccounts: "01844-487468",
         whatsapp: "01711287258",
+        facebookUrl: "https://facebook.com/dbrcarworkshop",
+        googleMapUrl: "https://maps.google.com/?cid=dbr_bogra",
         sectionServices: "আমাদের সেবা সমূহ",
         sectionGallery: "আমাদের কাজের ধরন",
         sectionMechanics: "দক্ষ মেকানিক ও ইঞ্জিনিয়ারবৃন্দ",
@@ -8864,6 +8881,33 @@
       document.getElementById("footer-phone-mgr").innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phoneManager} (${lang === 'en' ? 'Manager' : 'ম্যানেজার'})`;
       document.getElementById("footer-phone-tech").innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phoneTech} (${lang === 'en' ? 'Head Technician' : 'হেড টেকনিশিয়ান'})`;
       document.getElementById("footer-phone-acc").innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phoneAccounts} (${lang === 'en' ? 'Accountant' : 'অ্যাকাউন্ট্যান্ট'})`;
+
+      // Update Footer Social & Google Map links dynamically
+      const fbLinkEl = document.getElementById("footer-fb-link");
+      const fbWrapEl = document.getElementById("footer-fb-wrap");
+      const currentFb = (s.facebookUrl || "").trim();
+      if (fbLinkEl && fbWrapEl) {
+        if (currentFb) {
+          fbLinkEl.href = currentFb.startsWith("http") ? currentFb : `https://${currentFb}`;
+          fbWrapEl.style.display = "block";
+        } else {
+          fbLinkEl.href = "https://facebook.com/dbrcarworkshop";
+          fbWrapEl.style.display = "block";
+        }
+      }
+
+      const mapLinkEl = document.getElementById("footer-map-link");
+      const mapWrapEl = document.getElementById("footer-map-wrap");
+      const currentMap = (s.googleMapUrl || "").trim();
+      if (mapLinkEl && mapWrapEl) {
+        if (currentMap) {
+          mapLinkEl.href = currentMap.startsWith("http") ? currentMap : `https://${currentMap}`;
+          mapWrapEl.style.display = "block";
+        } else {
+          mapLinkEl.href = "https://maps.google.com/?cid=dbr_bogra";
+          mapWrapEl.style.display = "block";
+        }
+      }
       
       // Apply Hero Desktop Background (Workshop building photo)
       const heroSec = document.getElementById("hero-main-section");
@@ -8947,6 +8991,12 @@
       if (document.getElementById("cfg-phone-tech")) document.getElementById("cfg-phone-tech").value = s.phoneTech;
       if (document.getElementById("cfg-phone-acc")) document.getElementById("cfg-phone-acc").value = s.phoneAccounts;
       if (document.getElementById("cfg-phone-wa")) document.getElementById("cfg-phone-wa").value = s.whatsapp;
+      if (document.getElementById("cfg-social-fb") && document.activeElement !== document.getElementById("cfg-social-fb")) {
+        document.getElementById("cfg-social-fb").value = s.facebookUrl || "";
+      }
+      if (document.getElementById("cfg-social-map") && document.activeElement !== document.getElementById("cfg-social-map")) {
+        document.getElementById("cfg-social-map").value = s.googleMapUrl || "";
+      }
     }
 
     // Modal Actions
@@ -9901,6 +9951,12 @@
       s.phoneTech = document.getElementById("cfg-phone-tech").value;
       s.phoneAccounts = document.getElementById("cfg-phone-acc").value;
       s.whatsapp = document.getElementById("cfg-phone-wa").value;
+      if (document.getElementById("cfg-social-fb")) {
+        s.facebookUrl = document.getElementById("cfg-social-fb").value.trim();
+      }
+      if (document.getElementById("cfg-social-map")) {
+        s.googleMapUrl = document.getElementById("cfg-social-map").value.trim();
+      }
       if (document.getElementById("cfg-imgbb-key")) {
         s.imgbbApiKey = document.getElementById("cfg-imgbb-key").value.trim();
       }

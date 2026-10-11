@@ -671,10 +671,31 @@ fun HomeScreen(
                             settings = siteSettings,
                             onCallNumber = { number -> dialPhoneNumber(context, number) },
                             onSocialClick = { platform ->
-                                if (platform == "WhatsApp") {
-                                    openWhatsApp(context, siteSettings.whatsappNumber, "আসসালামু আলাইকুম DBR Complete Auto Centre")
-                                } else {
-                                    Toast.makeText(context, "$platform পেজ শিঘ্রই যুক্ত করা হবে", Toast.LENGTH_SHORT).show()
+                                when (platform) {
+                                    "WhatsApp" -> {
+                                        openWhatsApp(context, siteSettings.whatsappNumber, "আসসালামু আলাইকুম DBR Complete Auto Centre")
+                                    }
+                                    "Facebook" -> {
+                                        val fbUrl = siteSettings.facebookUrl.ifBlank { "https://facebook.com/dbrcarworkshop" }
+                                        try {
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(fbUrl))
+                                            context.startActivity(intent)
+                                        } catch (e: Exception) {
+                                            Toast.makeText(context, "ফেসবুক লিঙ্ক খোলা যাচ্ছে না", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                    "GoogleMap" -> {
+                                        val mapUrl = siteSettings.googleMapUrl.ifBlank { "https://maps.google.com/?cid=dbr_bogra" }
+                                        try {
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(mapUrl))
+                                            context.startActivity(intent)
+                                        } catch (e: Exception) {
+                                            Toast.makeText(context, "ম্যাপ লিঙ্ক খোলা যাচ্ছে না", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                    else -> {
+                                        Toast.makeText(context, "$platform পেজ শিঘ্রই যুক্ত করা হবে", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             },
                             isDesktop = isDesktop

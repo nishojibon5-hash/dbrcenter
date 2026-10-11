@@ -1498,6 +1498,8 @@ fun SettingsAdminTab(
     var phoneTech by remember { mutableStateOf(settings.phoneChiefTech) }
     var phoneAccounts by remember { mutableStateOf(settings.phoneAccounts) }
     var whatsappNumber by remember { mutableStateOf(settings.whatsappNumber) }
+    var facebookUrl by remember { mutableStateOf(settings.facebookUrl) }
+    var googleMapUrl by remember { mutableStateOf(settings.googleMapUrl) }
     var savedSuccess by remember { mutableStateOf(false) }
 
     LazyColumn(
@@ -1593,6 +1595,24 @@ fun SettingsAdminTab(
             )
         }
         item {
+            OutlinedTextField(
+                value = facebookUrl,
+                onValueChange = { facebookUrl = it },
+                label = { Text("ফুটারে ফেসবুক পেজ লিংক (URL)") },
+                placeholder = { Text("https://facebook.com/dbrcarworkshop") },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        item {
+            OutlinedTextField(
+                value = googleMapUrl,
+                onValueChange = { googleMapUrl = it },
+                label = { Text("ফুটারে গুগল ম্যাপস লোকেশান লিংক (URL)") },
+                placeholder = { Text("https://maps.google.com/?cid=dbr_bogra") },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        item {
             if (savedSuccess) {
                 Text("✓ সেটিংস সফলভাবে সেভ করা হয়েছে!", color = DbrSuccessGreen, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                 Spacer(modifier = Modifier.height(4.dp))
@@ -1610,7 +1630,9 @@ fun SettingsAdminTab(
                             phoneManager = phoneManager,
                             phoneChiefTech = phoneTech,
                             phoneAccounts = phoneAccounts,
-                            whatsappNumber = whatsappNumber
+                            whatsappNumber = whatsappNumber,
+                            facebookUrl = facebookUrl,
+                            googleMapUrl = googleMapUrl
                         )
                     )
                     savedSuccess = true

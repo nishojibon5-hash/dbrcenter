@@ -137,7 +137,7 @@ fun DbrFooter(
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                // Col 4: Social
+                // Col 4: Social & Links
                 Column(
                     horizontalAlignment = Alignment.End
                 ) {
@@ -151,8 +151,8 @@ fun DbrFooter(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        SocialIconButton(Icons.Default.Share, "Social", DbrOrange) { onSocialClick("Social") }
-                        SocialIconButton(Icons.Default.Videocam, "YouTube", Color(0xFFFF0000)) { onSocialClick("YouTube") }
+                        SocialIconButton(Icons.Default.ThumbUp, "Facebook", Color(0xFF1877F2)) { onSocialClick("Facebook") }
+                        SocialIconButton(Icons.Default.LocationOn, "Google Maps", DbrOrange) { onSocialClick("GoogleMap") }
                         SocialIconButton(Icons.Default.Chat, "WhatsApp", DbrWhatsAppGreen) { onSocialClick("WhatsApp") }
                     }
                 }
@@ -237,6 +237,56 @@ fun DbrFooter(
                         fontSize = 9.sp,
                         modifier = Modifier.clickable { onCallNumber(settings.phoneAccounts) }
                     )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Mobile Social Action Row (Facebook, Google Maps, WhatsApp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedButton(
+                        onClick = { onSocialClick("Facebook") },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1877F2)),
+                        shape = RoundedCornerShape(16.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                    ) {
+                        Icon(Icons.Default.ThumbUp, contentDescription = "Facebook", tint = Color(0xFF1877F2), modifier = Modifier.size(13.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("ফেসবুক পেজ", fontSize = 10.5.sp, color = Color.White)
+                    }
+
+                    OutlinedButton(
+                        onClick = { onSocialClick("GoogleMap") },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, DbrOrange),
+                        shape = RoundedCornerShape(16.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                    ) {
+                        Icon(Icons.Default.LocationOn, contentDescription = "Google Maps", tint = DbrOrange, modifier = Modifier.size(13.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("গুগল লোকেশন", fontSize = 10.5.sp, color = Color.White)
+                    }
+
+                    OutlinedButton(
+                        onClick = { onSocialClick("WhatsApp") },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, DbrWhatsAppGreen),
+                        shape = RoundedCornerShape(16.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                    ) {
+                        Icon(Icons.Default.Chat, contentDescription = "WhatsApp", tint = DbrWhatsAppGreen, modifier = Modifier.size(13.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("WhatsApp", fontSize = 10.5.sp, color = Color.White)
+                    }
                 }
             }
         }

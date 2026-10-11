@@ -106,6 +106,8 @@ data class SiteSettingsEntity(
     val phoneChiefTech: String = "01776-596315",
     val phoneAccounts: String = "01844-487468",
     val whatsappNumber: String = "01711287258",
+    val facebookUrl: String = "https://facebook.com/dbrcarworkshop",
+    val googleMapUrl: String = "https://maps.google.com/?cid=dbr_bogra",
     val copyrightText: String = "© 2025 DBR Complete Auto Centre. All rights reserved.",
     val footerSlogan: String = "Drive Safe • Stay Happy",
     val sectionServicesTitle: String = "আমাদের সেবা সমূহ",

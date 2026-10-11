@@ -247,9 +247,52 @@ fun ContactUsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            val fbUrl = settings.facebookUrl.ifBlank { "https://facebook.com/dbrcarworkshop" }
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(fbUrl))
+                                context.startActivity(intent)
+                            } catch (e: Exception) {}
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1877F2)),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.weight(1f).height(46.dp)
+                    ) {
+                        Icon(imageVector = Icons.Default.ThumbUp, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("ফেসবুক পেজ", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    }
+
+                    Button(
+                        onClick = {
+                            val mapUrl = settings.googleMapUrl.ifBlank { "https://maps.google.com/?cid=dbr_bogra" }
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUrl))
+                                context.startActivity(intent)
+                            } catch (e: Exception) {}
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = DbrOrange),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.weight(1f).height(46.dp)
+                    ) {
+                        Icon(imageVector = Icons.Default.LocationOn, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("গুগল ম্যাপস", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Button(
                     onClick = {
-                        val waUrl = "https://wa.me/8801711287258?text=" + Uri.encode("আসসালামু আলাইকুম, আমি DBR Auto Centre সম্পর্কে জানতে চাই।")
+                        val num = settings.whatsappNumber.ifBlank { "01711287258" }
+                        val clean = if (num.startsWith("0")) "88$num" else num
+                        val waUrl = "https://wa.me/$clean?text=" + Uri.encode("আসসালামু আলাইকুম, আমি DBR Auto Centre সম্পর্কে জানতে চাই।")
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(waUrl))
                         context.startActivity(intent)
                     },
