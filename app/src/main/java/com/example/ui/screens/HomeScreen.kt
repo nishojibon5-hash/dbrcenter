@@ -654,10 +654,11 @@ fun HomeScreen(
                         TestimonialsSection(
                             reviews = customerReviews,
                             currentIndex = uiState.activeReviewIndex,
-                            onPrevClick = { viewModel.prevReview(customerReviews.size) },
-                            onNextClick = { viewModel.nextReview(customerReviews.size) },
+                            onPrevClick = { viewModel.prevReview(minOf(5, customerReviews.size)) },
+                            onNextClick = { viewModel.nextReview(minOf(5, customerReviews.size)) },
                             onSelectIndex = { index -> viewModel.setReviewIndex(index) },
-                            onWriteReviewClick = { viewModel.setTab("reviews") },
+                            onWriteReviewClick = { viewModel.openPublicReviewDialog() },
+                            onSeeAllReviewsClick = { viewModel.setTab("reviews") },
                             isDesktop = isDesktop,
                             sectionTitle = siteSettings.sectionReviewsTitle
                         )

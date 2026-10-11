@@ -38,6 +38,7 @@ fun TestimonialsSection(
     onNextClick: () -> Unit,
     onSelectIndex: (Int) -> Unit,
     onWriteReviewClick: () -> Unit,
+    onSeeAllReviewsClick: () -> Unit = onWriteReviewClick,
     isDesktop: Boolean = false,
     sectionTitle: String = "গ্রাহকদের মতামত ও গুগল রেটিং"
 ) {
@@ -316,14 +317,15 @@ fun TestimonialsSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // INDIVIDUAL REVIEWS DISPLAY
+        // INDIVIDUAL REVIEWS DISPLAY (4-5 latest reviews on home)
+        val homeReviews = reviews.take(5)
         if (isDesktop) {
             // Desktop: Multiple Review Cards in a Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                reviews.take(4).forEach { review ->
+                homeReviews.forEach { review ->
                     ReviewCard(
                         review = review,
                         modifier = Modifier.weight(1f)
@@ -332,8 +334,8 @@ fun TestimonialsSection(
             }
         } else {
             // Mobile: Carousel with Navigation Arrows
-            val safeIndex = currentIndex.coerceIn(0, reviews.size - 1)
-            val currentReview = reviews[safeIndex]
+            val safeIndex = currentIndex.coerceIn(0, homeReviews.size - 1)
+            val currentReview = homeReviews[safeIndex]
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -389,7 +391,7 @@ fun TestimonialsSection(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                reviews.indices.forEach { index ->
+                reviews.take(5).indices.forEach { index ->
                     val isSelected = index == safeIndex
                     Box(
                         modifier = Modifier
@@ -400,6 +402,37 @@ fun TestimonialsSection(
                             .clickable { onSelectIndex(index) }
                     )
                 }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Bottom 'All Reviews' (সব রিভিউ) Button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(
+                onClick = onSeeAllReviewsClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DbrTeal,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
+                modifier = Modifier.testTag("all_reviews_button_bottom")
+            ) {
+                Icon(
+                    imageVector = Icons.Default.RateReview,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "সকল রিভিউ দেখুন (অল রিভিউ) →",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

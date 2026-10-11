@@ -4065,9 +4065,16 @@
             </div>
           </div>
 
-          <!-- Review Cards Grid -->
+          <!-- Review Cards Grid (Shows latest 4-5 reviews on Home) -->
           <div class="reviews-grid" id="reviews-grid">
             <!-- Injected via Firebase / JS -->
+          </div>
+
+          <!-- Bottom 'All Reviews' Action Bar -->
+          <div id="home-more-reviews-bar" style="margin-top:20px; text-align:center;">
+            <button class="btn-primary" onclick="navigateToPage('reviews')" style="padding:10px 24px; font-size:13.5px; border-radius:12px; background:var(--primary-teal); box-shadow:0 4px 12px rgba(10,92,74,0.18);">
+              <i class="fa-solid fa-comments"></i> <span>সকল রিভিউ দেখুন (অল রিভিউ) &rarr;</span>
+            </button>
           </div>
         </div>
       </section>
@@ -6499,6 +6506,11 @@
             Object.assign(state.settings, s);
           }
         }
+        // Restore dedicated hero desktop background so it never disappears
+        const dedicatedHeroBg = localStorage.getItem("dbr_hero_desktop_bg");
+        if (dedicatedHeroBg && dedicatedHeroBg.trim()) {
+          state.settings.heroDesktopBg = dedicatedHeroBg.trim();
+        }
         const cachedServices = localStorage.getItem("dbr_cached_services");
         if (cachedServices) {
           const s = JSON.parse(cachedServices);
@@ -6541,7 +6553,12 @@
     }
 
     function persistCachedSettings() {
-      try { localStorage.setItem("dbr_cached_settings", JSON.stringify(state.settings)); } catch(e){}
+      try {
+        localStorage.setItem("dbr_cached_settings", JSON.stringify(state.settings));
+        if (state.settings && state.settings.heroDesktopBg) {
+          localStorage.setItem("dbr_hero_desktop_bg", state.settings.heroDesktopBg);
+        }
+      } catch(e){}
     }
     function persistCachedServices() {
       try { localStorage.setItem("dbr_cached_services", JSON.stringify(state.services)); } catch(e){}
@@ -6804,7 +6821,13 @@
         // Sync Settings
         db.collection("settings").doc("site_config").onSnapshot(doc => {
           if (doc.exists) {
-            Object.assign(state.settings, doc.data());
+            const remoteData = doc.data() || {};
+            // Protect heroDesktopBg: never overwrite a set desktop bg with blank or empty
+            const savedBg = state.settings.heroDesktopBg || localStorage.getItem("dbr_hero_desktop_bg") || "";
+            Object.assign(state.settings, remoteData);
+            if (!remoteData.heroDesktopBg && savedBg) {
+              state.settings.heroDesktopBg = savedBg;
+            }
             persistCachedSettings();
             applySettings();
           } else {
@@ -8220,8 +8243,8 @@
       const pageCountDisplay = document.getElementById("page-reviews-count-display");
       if (pageCountDisplay) pageCountDisplay.innerText = `${totalCount} জন সম্মানিত গ্রাহক রেটিং দিয়েছেন`;
 
-      // Cards HTML with Comments Discussion
-      const cardsHtml = state.reviews.map((r, idx) => {
+      // Helper function to build single Review Card HTML
+      function buildReviewCardHtml(r, idx) {
         const comments = Array.isArray(r.comments) ? r.comments : [];
         const isLiked = localStorage.getItem(`dbr_liked_review_${r.id || idx}`) === "1";
         const dateStr = formatTimeAgo(r.createdAt);
@@ -8326,11 +8349,27 @@
           </div>
         </div>
         `;
-      }).join("");
+      }
 
-      container.innerHTML = cardsHtml;
+      // Sort reviews newest first (latest on top)
+      const sortedReviews = [...state.reviews].sort((a,b) => (Number(b.createdAt)||0) - (Number(a.createdAt)||0));
+
+      // Home shows only the top 4-5 latest reviews so users don't have to scroll forever
+      const homeLatestReviews = sortedReviews.slice(0, 5);
+      const homeHtml = homeLatestReviews.map((r, idx) => buildReviewCardHtml(r, idx)).join("");
+      container.innerHTML = homeHtml;
+
+      // Full dedicated review page shows ALL reviews
       const allReviewsPageGrid = document.getElementById("all-reviews-page-grid");
-      if (allReviewsPageGrid) allReviewsPageGrid.innerHTML = cardsHtml;
+      if (allReviewsPageGrid) {
+        allReviewsPageGrid.innerHTML = sortedReviews.map((r, idx) => buildReviewCardHtml(r, idx)).join("");
+      }
+
+      // Toggle visibility of bottom 'All Reviews' action bar on Home
+      const homeMoreBar = document.getElementById("home-more-reviews-bar");
+      if (homeMoreBar) {
+        homeMoreBar.style.display = totalCount > 4 ? "block" : "none";
+      }
     }
 
     // Google Identity / Profile Auto-Detection Integration (One-Tap & GSI)
@@ -9744,7 +9783,14 @@
       if (document.getElementById("cfg-hero-slogan")) s.heroSlogan = document.getElementById("cfg-hero-slogan").value.trim();
 
       const bgVal = document.getElementById("cfg-hero-desktop-bg") ? document.getElementById("cfg-hero-desktop-bg").value.trim() : "";
-      s.heroDesktopBg = bgVal;
+      if (bgVal) {
+        s.heroDesktopBg = bgVal;
+        try { localStorage.setItem("dbr_hero_desktop_bg", bgVal); } catch(e){}
+      } else if (!s.heroDesktopBg) {
+        // Fall back to dedicated cached background if available
+        const cachedBg = localStorage.getItem("dbr_hero_desktop_bg");
+        if (cachedBg) s.heroDesktopBg = cachedBg;
+      }
       if (document.getElementById("cfg-sec-services")) s.sectionServices = document.getElementById("cfg-sec-services").value.trim();
       if (document.getElementById("cfg-sec-gallery")) s.sectionGallery = document.getElementById("cfg-sec-gallery").value.trim();
       if (document.getElementById("cfg-sec-why")) s.sectionWhy = document.getElementById("cfg-sec-why").value.trim();
@@ -9839,6 +9885,7 @@
         preview.style.display = "none";
       }
       state.settings.heroDesktopBg = "";
+      try { localStorage.removeItem("dbr_hero_desktop_bg"); } catch(e){}
       persistCachedSettings();
       applySettings();
       if (db) {
