@@ -93,6 +93,7 @@ data class SiteSettingsEntity(
     val siteName: String = "DBR COMPLETE AUTO CENTRE",
     val logoSubtitle: String = "COMPLETE AUTO CENTRE",
     val headerLogoUrl: String = "",
+    val footerLogoUrl: String = "",
     val heroBadge: String = "DBR কমপ্লিট অটো সেন্টার",
     val heroTitleLine1: String = "আপনার গাড়ির",
     val heroTitleLine2: String = "সর্বসময়ের",

@@ -49,7 +49,11 @@ fun DbrFooter(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    DbrLogo(isCompact = false)
+                    val footerLogo = settings.footerLogoUrl.ifBlank { settings.headerLogoUrl }
+                    DbrLogo(
+                        logoUrl = footerLogo,
+                        isCompact = false
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = "বগুড়ার সর্বাধুনিক ও বিশ্বাসযোগ্য মাল্টিব্র্যান্ড অটোমোবাইল সার্ভিস সেন্টার।",
@@ -165,7 +169,12 @@ fun DbrFooter(
                 verticalAlignment = Alignment.Top
             ) {
                 // Logo
-                DbrLogo(isCompact = true, modifier = Modifier.padding(top = 4.dp))
+                val footerLogo = settings.footerLogoUrl.ifBlank { settings.headerLogoUrl }
+                DbrLogo(
+                    logoUrl = footerLogo,
+                    isCompact = true,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
 
                 // Address
                 Column(

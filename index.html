@@ -4598,8 +4598,13 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-col">
-            <div class="logo-main" style="color:var(--accent-orange); font-size:24px;">DBR</div>
-            <div style="font-size:10px; font-weight:bold; color:#fff; letter-spacing:1px; margin-bottom:8px;">COMPLETE AUTO CENTRE</div>
+            <div id="footer-logo-wrap" style="margin-bottom:8px;">
+              <img id="footer-logo-img" src="" alt="DBR Complete Auto Centre" style="display:none; max-height:56px; max-width:240px; width:auto; height:auto; object-fit:contain; margin-bottom:8px;">
+              <div id="footer-logo-text-wrap">
+                <div class="logo-main" style="color:var(--accent-orange); font-size:24px;">DBR</div>
+                <div style="font-size:10px; font-weight:bold; color:#fff; letter-spacing:1px; margin-bottom:8px;" id="footer-logo-sub-text">COMPLETE AUTO CENTRE</div>
+              </div>
+            </div>
             <p data-i18n="footer_desc">বগুড়ার সর্বাধুনিক ও বিশ্বাসযোগ্য অটোমোবাইল সার্ভিসিং ও রিপেয়ারিং সেন্টার। যেকোনো প্রয়োজনে সরাসরি আমাদের সাথে যোগাযোগ করুন।</p>
           </div>
 
@@ -4843,6 +4848,49 @@
                 </button>
                 <button type="button" class="btn-primary" style="padding:6px 10px; font-size:12px; background:#EF4444;" onclick="clearHeaderLogo()">
                   <i class="fa-solid fa-trash"></i> লোগো রিমুভ
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Logo Image Upload with CMS Controls -->
+          <div class="form-group" style="background:#F8FAFC; border:1.5px dashed #94A3B8; padding:14px; border-radius:12px; margin-top:10px; margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+              <label style="font-weight:700; color:var(--text-dark); display:flex; align-items:center; gap:6px; margin-bottom:0;">
+                <i class="fa-solid fa-shoe-prints"></i> 🏷️ ফুটারে লোগো ইমেজ (Footer Logo)
+              </label>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <span style="font-size:11px; background:#E2E8F0; color:#334155; border:1px solid #CBD5E1; padding:3px 10px; border-radius:12px; font-weight:700;">
+                  <i class="fa-solid fa-expand"></i> সাইজ: <b>240×60 px</b>
+                </span>
+              </div>
+            </div>
+            <p style="font-size:11.5px; color:#64748B; margin-bottom:10px;">
+              💡 <strong>ফুটারে লোগো:</strong> আপনি চাইলে হেডারের লোগো স্বয়ংক্রিয়ভাবে ফুটারে ব্যবহার করতে পারেন, অথবা ফুটারে ভিন্ন কোনো ব্র্যান্ডিং বা ডার্ক ব্যাকগ্রাউন্ডের মানানসই সাদা লোগো আপলোড করতে পারেন।
+            </p>
+            <div style="display:flex; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
+              <button type="button" class="btn-secondary" style="padding:4px 10px; font-size:11.5px;" onclick="copyHeaderLogoToFooter()">
+                <i class="fa-solid fa-copy"></i> হেডারের লোগো ফুটারেও ব্যবহার করুন
+              </button>
+            </div>
+            <input type="file" id="footer-logo-file" accept="image/png,image/webp,image/jpeg,image/svg+xml" class="form-input" onchange="handleImageUpload(event, 'cfg-footer-logo', 'preview-footer-logo')">
+            <input type="text" id="cfg-footer-logo" class="form-input" placeholder="ফুটার লোগো ইমেজ লিঙ্ক (ImgBB / CDN URL) অথবা ফাইল আপলোড করুন" style="margin-top:6px; font-size:11.5px;" oninput="previewFooterLogoFromInput()">
+            <div id="preview-footer-logo" style="display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:10px; background:#04241F; border:1px solid #064E3B; border-radius:10px; padding:10px;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:6px; display:flex; align-items:center; justify-content:center; min-width:140px;">
+                  <img src="" class="upload-preview-img" style="max-height:50px; max-width:220px; width:auto; height:auto; object-fit:contain;" alt="Footer Logo Preview">
+                </div>
+                <div>
+                  <div style="font-size:12px; font-weight:700; color:#34D399;"><i class="fa-solid fa-circle-check"></i> ফুটার লোগো প্রস্তুত!</div>
+                  <div style="font-size:10.5px; color:#94A3B8;">ডার্ক ফুটার ব্যাকগ্রাউন্ডের উপর প্রদর্শিত হবে</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button type="button" class="btn-primary" style="padding:6px 14px; font-size:12px; background:var(--primary-teal);" onclick="saveLayoutSettings()">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> সেভ করুন
+                </button>
+                <button type="button" class="btn-primary" style="padding:6px 10px; font-size:12px; background:#EF4444;" onclick="clearFooterLogo()">
+                  <i class="fa-solid fa-trash"></i> ফুটার লোগো রিমুভ
                 </button>
               </div>
             </div>
@@ -5736,14 +5784,14 @@
 
   <!-- ==================== JAVASCRIPT & FIREBASE LOGIC ==================== -->
   <script>
-    // 1. Firebase Configuration (Permanent Persistence & Dynamic Admin Override)
+    // 1. Firebase Configuration (Permanent Cloud Persistence across all worldwide devices)
     const DEFAULT_FIREBASE_CONFIG = {
-      apiKey: "AIzaSyDBkBsODkVi4bnQaj7xRVjlNQuKPTCxJYA",
-      projectId: "gen-lang-client-0551304226",
-      authDomain: "gen-lang-client-0551304226.firebaseapp.com",
-      storageBucket: "gen-lang-client-0551304226.firebasestorage.app",
-      messagingSenderId: "1087064947085",
-      appId: "1:1087064947085:android:df422002f0205eb097e5c4",
+      apiKey: "AIzaSyDgmujOPd1UlOncc7j-oN6ZUCCov42qou4",
+      projectId: "project-ba5796d0-18fc-4e1f-a6d",
+      authDomain: "project-ba5796d0-18fc-4e1f-a6d.firebaseapp.com",
+      storageBucket: "project-ba5796d0-18fc-4e1f-a6d.firebasestorage.app",
+      messagingSenderId: "121552033397",
+      appId: "1:121552033397:android:c6640d0210c25d785c4a3c",
       databaseId: "ai-studio-android-dbrcarwo-31264902-e646-4f29-89db-e4eebc6b5845"
     };
 
@@ -5752,7 +5800,8 @@
         const saved = localStorage.getItem("dbr_custom_firebase_config");
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (parsed && parsed.projectId && parsed.apiKey) {
+          // If custom config points to dead placeholder/unprovisioned project, fallback to real provisioned config
+          if (parsed && parsed.projectId && parsed.apiKey && parsed.projectId !== "gen-lang-client-0551304226" && parsed.projectId !== "remixed-project-id") {
             return { ...DEFAULT_FIREBASE_CONFIG, ...parsed };
           }
         }
@@ -5926,6 +5975,19 @@
       } catch (err) {
         console.warn(`[REST] Fetch collection error for ${collectionName}:`, err);
         return [];
+      }
+    }
+
+    async function fetchDocFromFirestoreRest(collectionName, docId) {
+      try {
+        const url = `${FIRESTORE_REST_BASE}/${collectionName}/${encodeURIComponent(docId)}?key=${FIRESTORE_API_KEY}`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const json = await res.json();
+        return fromFirestoreDoc(json);
+      } catch (err) {
+        console.warn(`[REST] Fetch doc error for ${collectionName}/${docId}:`, err);
+        return null;
       }
     }
 
@@ -6801,6 +6863,18 @@
           state.mechanics = restMechanics;
           persistCachedMechanics();
           renderMechanics();
+        }
+
+        // Global Cross-Device Settings & Logo Synchronization
+        const restSettings = await fetchDocFromFirestoreRest("settings", "site_config");
+        if (restSettings && typeof restSettings === "object") {
+          const savedHeroBg = state.settings.heroDesktopBg || localStorage.getItem("dbr_hero_desktop_bg") || "";
+          Object.assign(state.settings, restSettings);
+          if (!restSettings.heroDesktopBg && savedHeroBg) {
+            state.settings.heroDesktopBg = savedHeroBg;
+          }
+          persistCachedSettings();
+          applySettings();
         }
       } catch (e) {
         console.warn("syncAllFromFirestoreRest error:", e);
@@ -8848,6 +8922,39 @@
         }
       }
 
+      // Apply Footer Image Logo (PNG/WebP) or Fallback
+      const footerLogoImg = document.getElementById("footer-logo-img");
+      const footerLogoTextWrap = document.getElementById("footer-logo-text-wrap");
+      const footerLogoInput = document.getElementById("cfg-footer-logo");
+      const footerLogoPreview = document.getElementById("preview-footer-logo");
+      const currentFooterLogo = s.footerLogoUrl || s.headerLogoUrl || "";
+
+      if (footerLogoImg) {
+        if (currentFooterLogo) {
+          footerLogoImg.src = currentFooterLogo;
+          footerLogoImg.style.display = "block";
+          if (footerLogoTextWrap) footerLogoTextWrap.style.display = "none";
+        } else {
+          footerLogoImg.src = "";
+          footerLogoImg.style.display = "none";
+          if (footerLogoTextWrap) footerLogoTextWrap.style.display = "block";
+        }
+      }
+
+      if (footerLogoInput && document.activeElement !== footerLogoInput) {
+        footerLogoInput.value = s.footerLogoUrl || "";
+      }
+      if (footerLogoPreview) {
+        const previewImg = footerLogoPreview.querySelector(".upload-preview-img");
+        const previewTarget = s.footerLogoUrl || "";
+        if (previewImg && previewTarget) {
+          previewImg.src = previewTarget;
+          footerLogoPreview.style.display = "flex";
+        } else if (!previewTarget) {
+          footerLogoPreview.style.display = "none";
+        }
+      }
+
       const heroBadgeText = lang === 'en' ? dict.hero_badge : s.heroBadge;
       const heroSloganText = lang === 'en' ? dict.hero_slogan : s.heroSlogan;
       const heroTitleEl = document.getElementById("hero-title-text");
@@ -9827,6 +9934,9 @@
       const headerLogoVal = document.getElementById("cfg-header-logo") ? document.getElementById("cfg-header-logo").value.trim() : "";
       s.headerLogoUrl = headerLogoVal;
 
+      const footerLogoVal = document.getElementById("cfg-footer-logo") ? document.getElementById("cfg-footer-logo").value.trim() : "";
+      s.footerLogoUrl = footerLogoVal;
+
       if (document.getElementById("cfg-hero-badge")) s.heroBadge = document.getElementById("cfg-hero-badge").value.trim();
       if (document.getElementById("cfg-hero-title")) s.heroTitle = document.getElementById("cfg-hero-title").value.trim();
       if (document.getElementById("cfg-hero-desc")) s.heroDesc = document.getElementById("cfg-hero-desc").value.trim();
@@ -9919,9 +10029,60 @@
       state.settings.headerLogoUrl = "";
       persistCachedSettings();
       applySettings();
+      saveDocToFirestoreRest("settings", "site_config", state.settings);
       if (db) {
         db.collection("settings").doc("site_config").update({ headerLogoUrl: "" });
       }
+    }
+
+    function previewFooterLogoFromInput() {
+      const url = document.getElementById("cfg-footer-logo").value.trim();
+      const preview = document.getElementById("preview-footer-logo");
+      if (preview) {
+        const img = preview.querySelector(".upload-preview-img");
+        if (url) {
+          if (img) img.src = url;
+          preview.style.display = "flex";
+        } else {
+          preview.style.display = "none";
+        }
+      }
+    }
+
+    function clearFooterLogo() {
+      const input = document.getElementById("cfg-footer-logo");
+      if (input) input.value = "";
+      const fileInp = document.getElementById("footer-logo-file");
+      if (fileInp) fileInp.value = "";
+      const preview = document.getElementById("preview-footer-logo");
+      if (preview) {
+        const img = preview.querySelector(".upload-preview-img");
+        if (img) img.src = "";
+        preview.style.display = "none";
+      }
+      state.settings.footerLogoUrl = "";
+      persistCachedSettings();
+      applySettings();
+      saveDocToFirestoreRest("settings", "site_config", state.settings);
+      if (db) {
+        db.collection("settings").doc("site_config").update({ footerLogoUrl: "" });
+      }
+    }
+
+    function copyHeaderLogoToFooter() {
+      const headerLogo = state.settings.headerLogoUrl || (document.getElementById("cfg-header-logo") ? document.getElementById("cfg-header-logo").value.trim() : "");
+      if (!headerLogo) {
+        showCustomToast("হেডার লোগো নেই", "প্রথমে হেডারের জন্য একটি লোগো আপলোড বা লিঙ্ক দিন।", "warning");
+        return;
+      }
+      const footerInput = document.getElementById("cfg-footer-logo");
+      if (footerInput) footerInput.value = headerLogo;
+      state.settings.footerLogoUrl = headerLogo;
+      previewFooterLogoFromInput();
+      persistCachedSettings();
+      applySettings();
+      saveDocToFirestoreRest("settings", "site_config", state.settings);
+      showCustomToast("ফুটার লোগো কপি সম্পন্ন", "হেডারের লোগো ফুটারেও সেট করা হয়েছে এবং সেভ করা হয়েছে!", "success");
     }
 
     function clearHeroDesktopBg() {

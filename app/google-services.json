@@ -1,27 +1,47 @@
 {
   "project_info": {
-    "project_id": "remixed-project-id",
-    "project_number": "1234567890"
+    "project_number": "121552033397",
+    "project_id": "project-ba5796d0-18fc-4e1f-a6d",
+    "storage_bucket": "project-ba5796d0-18fc-4e1f-a6d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1234567890:android:remixedappid",
+        "mobilesdk_app_id": "1:121552033397:android:c6640d0210c25d785c4a3c",
         "android_client_info": {
           "package_name": "com.aistudio.dbrcarworkshop.lnomtr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1234567890-examplewebclientid.apps.googleusercontent.com",
+          "client_id": "121552033397-umaa1phjo88uakoq3h0qvk6os10m3cji.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aistudio.dbrcarworkshop.lnomtr",
+            "certificate_hash": "76d50c684554d3c42d209cf7a3e980d2a537070b"
+          }
+        },
+        {
+          "client_id": "121552033397-ivm644emhdn0kt4i14iiadkf4t6gic37.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "remixed-api-key"
+          "current_key": "AIzaSyDgmujOPd1UlOncc7j-oN6ZUCCov42qou4"
         }
-      ]
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121552033397-ivm644emhdn0kt4i14iiadkf4t6gic37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
-  ]
+  ],
+  "configuration_version": "1"
 }
