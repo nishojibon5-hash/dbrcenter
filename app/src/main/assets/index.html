@@ -340,15 +340,147 @@ button{font:inherit;cursor:pointer}
 .hero-image .inner { background: #fff; padding: 8px; }
 .hero-image img { width: 100%; display: block; }
 
-/* ডেস্কটপ: বাঁ দিক তীরের মতো কাটা */
+/* ========================================================
+   DESKTOP HERO SECTION (@media min-width: 1024px)
+   100% Match to Buyer PC View Screenshot
+   ======================================================== */
 @media (min-width: 1024px) {
-  .hero-image {
-    background: none;
-    padding: 0;
-    clip-path: polygon(12% 0, 0 50%, 12% 100%, 100% 100%, 100% 0);
+  /* 1. Hero সেকশন: উচ্চতা প্রায় ৫০০px, গাঢ় নীল ব্যাকগ্রাউন্ড (#0a1128) */
+  .hero {
+    position: relative !important;
+    overflow: hidden !important;
+    min-height: 500px !important;
+    height: 500px !important;
+    background: #0a1128 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
   }
-  .hero-image .inner { padding: 0; background: none; }
+
+  .hero-wrap {
+    position: static !important;
+    width: min(1240px, 92%) !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 500px !important;
+    height: 100% !important;
+  }
+
+  /* 2, 3, 4, 5, 6. ছবি ডান দিকে (প্রায় ৫৫%), absolute position, ডান প্রান্ত ও উপর-নিচ ছড়ানো, তির্যক কাটা */
+  .hero-image {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 55% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%) !important;
+    margin: 0 !important;
+  }
+
+  .hero-image::before,
+  .hero-image::after,
+  .hero-image .inner::before,
+  .hero-image .inner::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .hero-image .inner {
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .hero-image img,
+  #hero-cover-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* 2, 8. টেক্সট বাঁ দিকে (প্রায় ৪৫% জায়গা) */
+  .hero-details {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 44% !important;
+    max-width: 520px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 8. ব্যাজ ("আপনার বিশ্বস্ত কার ওয়ার্কশপ"), DBR, COMPLETE AUTO CENTRE, DESIGN. BUILD. REPAIR. ক্রম */
+  .hero-badge {
+    margin-bottom: 14px !important;
+    display: inline-flex !important;
+  }
+
+  .hero-brand-title {
+    margin: 0 0 8px !important;
+    line-height: 1.08 !important;
+    font-size: clamp(34px, 3.8vw, 50px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .hero-brand-title::after {
+    content: "DESIGN. BUILD. REPAIR.";
+    display: block;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2.2px;
+    color: #ff4855;
+    margin-top: 8px;
+    font-family: Arial, sans-serif;
+  }
+
+  .hero-desc {
+    font-size: 15.5px !important;
+    line-height: 1.75 !important;
+    color: #d5d7dd !important;
+    margin-bottom: 22px !important;
+    max-width: 480px !important;
+  }
+
+  /* 7. বাটন তিনটা (সার্ভিস, কাজ, বুকিং) পাশাপাশি এক লাইনে */
+  .hero-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .hero-actions a,
+  .hero-actions .btn,
+  .hero-actions .btn-outline {
+    width: auto !important;
+    white-space: nowrap !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+  }
+
+  /* 9. মোবাইলের চেক-পিল ও বিশেষ অফার কার্ড ডেস্কটপে লুকানো থাকবে */
+  .hero-points,
+  .offer-strip,
+  #hero-offer-card {
+    display: none !important;
+  }
 }
+
 
 /* Hero Details */
 .hero-details{padding:6px 2px 0;margin-top:24px;}
