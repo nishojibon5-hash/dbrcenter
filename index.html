@@ -329,38 +329,29 @@ button{font:inherit;cursor:pointer}
 }
 .offer-book:hover{transform:translateY(-3px);background:var(--red)}
 
-/* Cover Photo Frame - 100% Match to Buyer UI Screenshot */
-.hero-photo.social-cover.full-cover{
-  display:block;
-  width:100%;
-  aspect-ratio:16/9;
-  border-radius:20px!important;
-  overflow:hidden!important;
-  position:relative;
-  background:#141720;
-  border:2.5px solid #ff7a00!important;
-  box-shadow:0 14px 40px rgba(0,0,0,0.65), 0 0 24px rgba(255,122,0,0.3)!important;
-  margin-bottom:24px;
-  cursor:zoom-in;
-  transition:transform .3s ease, box-shadow .3s ease;
+/* Hero Image Frame */
+.hero-image {
+  background: #f26522;       /* কমলা বর্ডার */
+  padding: 3px;
+  /* মোবাইল: দুই কোনা কাটা */
+  clip-path: polygon(40px 0, 100% 0, 100% calc(100% - 40px),
+                     calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
-.hero-photo.social-cover.full-cover:hover{
-  transform:scale(1.01);
-  box-shadow:0 18px 48px rgba(0,0,0,0.7), 0 0 32px rgba(255,122,0,0.45)!important;
-}
-.hero-photo.social-cover.full-cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:17px!important;
-  display:block;
-}
-.cover-expand{
-  display:none!important;
+.hero-image .inner { background: #fff; padding: 8px; }
+.hero-image img { width: 100%; display: block; }
+
+/* ডেস্কটপ: বাঁ দিক তীরের মতো কাটা */
+@media (min-width: 1024px) {
+  .hero-image {
+    background: none;
+    padding: 0;
+    clip-path: polygon(12% 0, 0 50%, 12% 100%, 100% 100%, 100% 0);
+  }
+  .hero-image .inner { padding: 0; background: none; }
 }
 
 /* Hero Details */
-.hero-details{padding:6px 2px 0}
+.hero-details{padding:6px 2px 0;margin-top:24px;}
 .hero .eyebrow, .hero-badge{
   display:inline-flex;
   align-items:center;
@@ -984,10 +975,12 @@ section{padding:80px 0}
   <!-- HERO SECTION (100% MATCH TO BUYER SCREENSHOT) -->
   <section class="hero" id="home">
     <div class="wrap hero-wrap">
-      <!-- Workshop Cover Photo Frame (Vibrant Orange Border Directly Under Header) -->
-      <a aria-label="DBR Complete Auto Centre ওয়ার্কশপ কভার ছবি" class="hero-photo social-cover full-cover" href="#coverLightbox" id="coverOpen">
-        <img alt="DBR Complete Auto Centre কভার ছবি" id="hero-cover-img" src="workshop_building.jpg" onerror="this.src='https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=1200'"/>
-      </a>
+      <!-- Workshop Cover Photo Frame -->
+      <div class="hero-image" id="coverOpen" style="cursor:zoom-in;">
+        <div class="inner">
+          <img alt="DBR Complete Auto Centre কভার ছবি" id="hero-cover-img" src="workshop_building.jpg" onerror="this.src='https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=1200'"/>
+        </div>
+      </div>
 
       <!-- Hero Details Below Cover Photo -->
       <div class="hero-details">
