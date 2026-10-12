@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.ui.screens.DbrWebEngineScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.theme.DbrBackground
 import com.example.ui.theme.DbrCarWorkshopTheme
@@ -35,7 +36,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = androidx.compose.material3.MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(viewModel = viewModel)
+                    DbrWebEngineScreen(
+                        initialRoute = uiState.currentTab,
+                        onRouteHandled = {
+                            if (uiState.currentTab == "admin") {
+                                viewModel.setTab("home")
+                            }
+                        }
+                    )
                 }
             }
         }
