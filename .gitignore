@@ -20,3 +20,4 @@ debug.keystore.base64
 *-debug.log
 .build-outputs/
 .aistudio/
+/tmp/

@@ -23,6 +23,9 @@ service cloud.firestore {
     match /posts/{postId} {
       allow read, write: if true;
     }
+    match /blog/{blogId} {
+      allow read, write: if true;
+    }
 
     // Workshop Services
     match /services/{serviceId} {
@@ -38,6 +41,9 @@ service cloud.firestore {
     match /work_showcases/{showcaseId} {
       allow read, write: if true;
     }
+    match /works/{workId} {
+      allow read, write: if true;
+    }
 
     match /gallery/{galleryId} {
       allow read, write: if true;
@@ -50,6 +56,9 @@ service cloud.firestore {
 
     // Mechanics Profiles & Specialist Portfolios
     match /mechanics/{mechanicId} {
+      allow read, write: if true;
+    }
+    match /team/{teamId} {
       allow read, write: if true;
     }
 
