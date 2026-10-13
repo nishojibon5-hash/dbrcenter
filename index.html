@@ -367,7 +367,7 @@ button{font:inherit;cursor:pointer}
     height: 100% !important;
   }
 
-  /* 2. হিরো ইমেজ: ডান পাশে absolute, ৫৫% প্রস্থ, বাম দিক তীরের মতো কাটা (arrowhead chevron clip-path) */
+  /* 2. হিরো ইমেজ: ডান পাশে absolute, ৫৫% প্রস্থ, বাম দিক তির্যক কাটা (straight diagonal slant clip-path) */
   .hero-image {
     position: absolute !important;
     right: 0 !important;
@@ -380,8 +380,8 @@ button{font:inherit;cursor:pointer}
     padding: 0 !important;
     border: none !important;
     border-radius: 0 !important;
-    clip-path: polygon(12% 0, 0 50%, 12% 100%, 100% 100%, 100% 0) !important;
-    -webkit-clip-path: polygon(12% 0, 0 50%, 12% 100%, 100% 100%, 100% 0) !important;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%) !important;
+    -webkit-clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%) !important;
     margin: 0 !important;
     box-shadow: none !important;
   }
@@ -427,11 +427,11 @@ button{font:inherit;cursor:pointer}
   .hero-badge {
     background: transparent !important;
     border: none !important;
-    color: #f26522 !important;
+    color: #d1d5db !important;
     padding: 0 !important;
     margin-bottom: 12px !important;
     font-size: 14.5px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     display: inline-flex !important;
     align-items: center !important;
   }
@@ -1171,7 +1171,7 @@ section{padding:80px 0}
         <div class="hero-actions">
           <a class="btn" href="#services"><span data-i18n-bn="আমাদের সার্ভিস দেখুন ↗" data-i18n-en="Explore Services ↗">আমাদের সার্ভিস দেখুন ↗</span></a>
           <a class="btn-outline" href="#gallery"><span data-i18n-bn="আমাদের কাজ দেখুন" data-i18n-en="See Our Work">আমাদের কাজ দেখুন</span></a>
-          <a class="btn" href="#contact" onclick="openBookingForm('');return false;"><span data-i18n-bn="📅 বুকিং করুন" data-i18n-en="📅 Book Now">📅 বুকিং করুন</span></a>
+          <a class="btn" href="#contact" onclick="openBookingForm('');return false;"><span data-i18n-bn="☎ বুকিং করুন" data-i18n-en="☎ Book Now">☎ বুকিং করুন</span></a>
         </div>
         <div class="hero-points">
           <span><span data-i18n-bn="দক্ষ টেকনিশিয়ান" data-i18n-en="Skilled Technicians">দক্ষ টেকনিশিয়ান</span></span>
