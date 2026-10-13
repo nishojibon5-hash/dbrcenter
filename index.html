@@ -1504,6 +1504,29 @@ section{padding:80px 0}
 </footer>
 </div><!-- /#site-root -->
 
+<!-- DEDICATED SPA MULTI-PAGE VIEWS CONTAINER (DYNAMIC VIEW ROUTER) -->
+<div id="dbr-page-view-container" style="display:none;position:fixed;inset:0;z-index:950;background:#090B0E;color:#F8FAFC;overflow-y:auto;">
+  <header style="position:sticky;top:0;z-index:960;background:#12161F;border-bottom:1px solid #1E293B;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <button class="btn-outline" onclick="closePageView()" style="padding:8px 16px;font-size:13px;border-color:#334155;color:#E2E8F0;">
+        <i class="fa-solid fa-arrow-left"></i> হোমে ফিরে যান
+      </button>
+      <div style="font-weight:800;font-size:16px;color:#F8FAFC;display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--orange);">DBR</span> COMPLETE AUTO CENTRE
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="tel:01711287258" id="spa-top-call-btn" class="btn" style="padding:8px 16px;font-size:13px;">
+        <i class="fa-solid fa-phone"></i> 01711-287258
+      </a>
+      <button class="btn" style="padding:8px 16px;font-size:13px;background:var(--red)!important;" onclick="openBookingForm('')">
+        <i class="fa-regular fa-calendar-check"></i> বুকিং
+      </button>
+    </div>
+  </header>
+  <main id="spa-page-content" class="wrap" style="padding:40px 20px 80px;max-width:1100px;margin:0 auto;"></main>
+</div>
+
 <!-- LIGHTBOX -->
 <div aria-label="কভার ছবির বড় ভিউ" id="coverLightbox">
   <button aria-label="বন্ধ করুন" class="lightbox-close" id="coverClose">×</button>
@@ -2027,6 +2050,19 @@ section{padding:80px 0}
         </div>
 
         <div style="display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap;">
+          <div style="background:#0F141C;border:1px solid #10B981;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <i class="fa-solid fa-circle-check" style="color:#10B981;font-size:22px;"></i>
+              <div>
+                <strong style="color:#F8FAFC;font-size:14.5px;">এইচটিএমএল টেমপ্লেট ইনস্টলার (Universal Auto-Configuration)</strong>
+                <p style="margin:2px 0 0;color:#94A3B8;font-size:12.5px;">নিচের বক্সে কোড পেস্ট করে 'থিম সেভ ও লাইভ করুন' চাপলে পুরো সাইট মুহূর্তেই কনফিগার হবে এবং সমস্ত বাটন/লিংক সক্রিয় থাকবে।</p>
+              </div>
+            </div>
+            <button type="button" class="btn-outline" style="border-color:#38BDF8;color:#38BDF8;font-size:13px;padding:8px 16px;" onclick="closeAdminScreens();window.scrollTo({top:0,behavior:'smooth'});">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> সাইটে লাইভ দেখুন
+            </button>
+          </div>
+
           <button type="button" class="btn" style="padding:12px 28px;" onclick="saveCustomThemeFromEditor()">
             <i class="fa-solid fa-floppy-disk"></i> থিম সেভ ও লাইভ করুন
           </button>
@@ -2469,7 +2505,7 @@ document.getElementById('reviewForm').addEventListener('submit', function(e){
   if(window.db){
     try{ window.db.collection('reviews').add(item); }catch(err){}
   }
-  renderReviews(); // Updates latest 4-5
+  syncFrontViews(); // Updates latest 4-5
   this.reset();
   showToast('ধন্যবাদ! আপনার রিভিউ সফলভাবে যুক্ত হয়েছে।');
 });
@@ -2589,7 +2625,7 @@ async function loadFirestoreData(){
       if(items.length > 0){
         state.services = items;
         writeStorage('dbr_services_v6', state.services);
-        renderServices();
+        syncFrontViews();
       }
     }
 
@@ -2601,7 +2637,7 @@ async function loadFirestoreData(){
       if(items.length > 0){
         state.works = items;
         writeStorage('dbr_works_v6', state.works);
-        renderWorks();
+        syncFrontViews();
       }
     }
 
@@ -2613,7 +2649,7 @@ async function loadFirestoreData(){
       if(items.length > 0){
         state.gallery = items;
         writeStorage('dbr_gallery_v6', state.gallery);
-        renderGallery();
+        syncFrontViews();
       }
     }
 
@@ -2625,7 +2661,7 @@ async function loadFirestoreData(){
       if(items.length > 0){
         state.blog = items;
         writeStorage('dbr_blog_v6', state.blog);
-        renderBlog();
+        syncFrontViews();
       }
     }
 
@@ -2637,7 +2673,7 @@ async function loadFirestoreData(){
       if(items.length > 0){
         state.team = items;
         writeStorage('dbr_team_v6', state.team);
-        renderTeam();
+        syncFrontViews();
       }
     }
 
@@ -2654,7 +2690,7 @@ async function loadFirestoreData(){
       });
       state.reviews = items;
       writeStorage('dbr_reviews_v5', state.reviews);
-      renderReviews();
+      syncFrontViews();
     }
 
     // 8. Sync Bookings
@@ -2834,12 +2870,7 @@ function importDatabaseBackup(input){
         applyThemeToSite(state.customTheme, false);
       } else {
         applySettingsToDOM();
-        renderServices();
-        renderWorks();
-        renderGallery();
-        renderBlog();
-        renderTeam();
-        renderReviews();
+        syncFrontViews();
       }
       populateSettingsForm();
       renderAdminTables();
@@ -3017,6 +3048,7 @@ function handleSaveSettings(e){
   } else {
     applySettingsToDOM();
   }
+  syncFrontViews();
 
   if(window.db){
     try{
@@ -3159,7 +3191,7 @@ function openAddServiceModal(){
     if(window.db){
       try{ window.db.collection('services').doc('srv_' + item.id).set(item, {merge:true}); }catch(err){}
     }
-    renderServices();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("নতুন সেবা সফলভাবে যুক্ত হয়েছে!");
@@ -3197,7 +3229,7 @@ function openEditServiceModal(idx){
     if(window.db){
       try{ window.db.collection('services').doc('srv_' + s.id).set(state.services[idx], {merge:true}); }catch(err){}
     }
-    renderServices();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("সেবা আপডেট হয়েছে!");
@@ -3211,7 +3243,7 @@ function deleteService(idx){
   if(window.db && removed && removed.id){
     try{ window.db.collection('services').doc('srv_' + removed.id).delete(); }catch(err){}
   }
-  renderServices();
+  syncFrontViews();
   renderAdminTables();
   showToast("সেবা মুছে ফেলা হয়েছে।");
 }
@@ -3269,7 +3301,7 @@ function openAddWorkModal(){
     if(window.db){
       try{ window.db.collection('works').doc('wrk_' + item.id).set(item, {merge:true}); }catch(err){}
     }
-    renderWorks();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("কাজের অ্যালবাম আপডেট হয়েছে!");
@@ -3327,7 +3359,7 @@ function openEditWorkModal(idx){
     if(window.db){
       try{ window.db.collection('works').doc('wrk_' + w.id).set(state.works[idx], {merge:true}); }catch(err){}
     }
-    renderWorks();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("কাজ সফলভাবে আপডেট হয়েছে!");
@@ -3341,7 +3373,7 @@ function deleteWork(idx){
   if(window.db && removed && removed.id){
     try{ window.db.collection('works').doc('wrk_' + removed.id).delete(); }catch(err){}
   }
-  renderWorks();
+  syncFrontViews();
   renderAdminTables();
   showToast("কাজের আইটেম মুছে ফেলা হয়েছে।");
 }
@@ -3387,7 +3419,7 @@ function openAddGalleryModal(){
     if(window.db){
       try{ window.db.collection('gallery').doc('gal_' + item.id).set(item, {merge:true}); }catch(err){}
     }
-    renderGallery();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("নতুন ছবি গ্যালারিতে যুক্ত হয়েছে!");
@@ -3433,7 +3465,7 @@ function openEditGalleryModal(idx){
     if(window.db){
       try{ window.db.collection('gallery').doc('gal_' + g.id).set(state.gallery[idx], {merge:true}); }catch(err){}
     }
-    renderGallery();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("ছবি আপডেট হয়েছে!");
@@ -3447,7 +3479,7 @@ function deleteGallery(idx){
   if(window.db && removed && removed.id){
     try{ window.db.collection('gallery').doc('gal_' + removed.id).delete(); }catch(err){}
   }
-  renderGallery();
+  syncFrontViews();
   renderAdminTables();
   showToast("ছবি মুছে ফেলা হয়েছে।");
 }
@@ -3497,7 +3529,7 @@ function openAddBlogModal(){
     if(window.db){
       try{ window.db.collection('blog').doc('blg_' + item.id).set(item, {merge:true}); }catch(err){}
     }
-    renderBlog();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("নতুন ব্লগ পোস্ট প্রকাশ করা হয়েছে!");
@@ -3547,7 +3579,7 @@ function openEditBlogModal(idx){
     if(window.db){
       try{ window.db.collection('blog').doc('blg_' + b.id).set(state.blog[idx], {merge:true}); }catch(err){}
     }
-    renderBlog();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("ব্লগ পোস্ট আপডেট হয়েছে!");
@@ -3561,7 +3593,7 @@ function deleteBlog(idx){
   if(window.db && removed && removed.id){
     try{ window.db.collection('blog').doc('blg_' + removed.id).delete(); }catch(err){}
   }
-  renderBlog();
+  syncFrontViews();
   renderAdminTables();
   showToast("ব্লগ পোস্ট মুছে ফেলা হয়েছে।");
 }
@@ -3602,7 +3634,7 @@ function openAddTeamModal(){
     if(window.db){
       try{ window.db.collection('team').doc('tm_' + item.id).set(item, {merge:true}); }catch(err){}
     }
-    renderTeam();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("নতুন টিম মেম্বার যুক্ত হয়েছে!");
@@ -3643,7 +3675,7 @@ function openEditTeamModal(idx){
     if(window.db){
       try{ window.db.collection('team').doc('tm_' + t.id).set(state.team[idx], {merge:true}); }catch(err){}
     }
-    renderTeam();
+    syncFrontViews();
     renderAdminTables();
     closeModal();
     showToast("টিম মেম্বার আপডেট হয়েছে!");
@@ -3657,7 +3689,7 @@ function deleteTeam(idx){
   if(window.db && removed && removed.id){
     try{ window.db.collection('team').doc('tm_' + removed.id).delete(); }catch(err){}
   }
-  renderTeam();
+  syncFrontViews();
   renderAdminTables();
   showToast("টিম মেম্বার মুছে ফেলা হয়েছে।");
 }
@@ -3704,7 +3736,7 @@ function openAddReviewModal(){
     if(window.db){
       try{ window.db.collection('reviews').doc('rev_' + item.id).set(item); }catch(err){}
     }
-    renderReviews(); // Updates latest 4-5 on frontend
+    syncFrontViews(); // Updates latest 4-5 on frontend
     renderAdminTables(); // Updates admin list
     closeModal();
     showToast("রিভিউ যুক্ত হয়েছে!");
@@ -3721,7 +3753,7 @@ function deleteReview(idx){
       window.db.collection('reviews').doc(docKey).delete();
     }catch(err){ console.warn("Firestore delete review:", err); }
   }
-  renderReviews(); // Updates latest 4-5 on frontend
+  syncFrontViews(); // Updates latest 4-5 on frontend
   renderAdminTables(); // Updates full list in admin
   showToast("রিভিউ মুছে ফেলা হয়েছে।");
 }
@@ -4482,6 +4514,690 @@ function insertWidgetTag(tag){
   editor.focus();
   editor.selectionStart = editor.selectionEnd = start + tagStr.length;
 }
+
+// ========================================================
+// SINGLE PAGE MULTI-VIEW ROUTER & PAGE GENERATORS
+// ========================================================
+function openPageView(pageType, pageId = null){
+  const container = document.getElementById('dbr-page-view-container');
+  const content = document.getElementById('spa-page-content');
+  if(!container || !content) return;
+
+  const s = state.settings || DEFAULT_SETTINGS;
+  const p1 = s.phone1 || "01711-287258";
+  const callBtn = document.getElementById('spa-top-call-btn');
+  if(callBtn){
+    callBtn.href = `tel:${p1.replace(/\s+/g, '')}`;
+    callBtn.innerHTML = `<i class="fa-solid fa-phone"></i> ${p1}`;
+  }
+
+  let html = '';
+
+  switch(pageType){
+    case 'service': {
+      let srv = state.services.find(item => item.id == pageId || item.title_bn === pageId || item.title_en === pageId);
+      if(!srv && state.services.length > 0) srv = state.services[0];
+      if(!srv) srv = { title_bn: "গাড়ি সার্ভিসিং", title_en: "Car Servicing", icon: "🔧", desc: "পূর্ণাঙ্গ অটো কেয়ার সার্ভিস" };
+
+      html = `
+        <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:34px;box-shadow:0 20px 50px rgba(0,0,0,0.4);">
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;flex-wrap:wrap;">
+            <div style="font-size:48px;background:#1E293B;width:80px;height:80px;display:flex;align-items:center;justify-content:center;border-radius:18px;border:1px solid #334155;">
+              ${srv.icon || '🔧'}
+            </div>
+            <div>
+              <span style="background:rgba(217,30,43,0.15);color:var(--red);border:1px solid rgba(217,30,43,0.3);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">
+                প্রফেশনাল অটো সার্ভিস
+              </span>
+              <h1 style="font-size:32px;margin:8px 0 4px;font-weight:900;color:#F8FAFC;">${srv.title_bn}</h1>
+              <p style="margin:0;color:#94A3B8;font-size:16px;">${srv.title_en || srv.title_bn}</p>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #1E293B;border-bottom:1px solid #1E293B;padding:24px 0;margin:24px 0;">
+            <h3 style="font-size:20px;margin-bottom:12px;color:#F8FAFC;">সার্ভিসের বিস্তারিত বিবরণ</h3>
+            <p style="color:#CBD5E1;font-size:16px;line-height:1.8;margin-bottom:16px;">
+              ${srv.desc || srv.title_bn} — DBR Complete Auto Centre-এ আধুনিক কম্পিউটার ডায়াগনস্টিক স্ক্যানার ও দক্ষ মেকানিক দিয়ে এই সেবা প্রদান করা হয়। ইঞ্জিনের সুরক্ষা, দীর্ঘস্থায়িত্ব এবং সর্বোচ্চ পারফরম্যান্স নিশ্চিত করাই আমাদের লক্ষ্য।
+            </p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px;">
+              <div style="background:#0B0E14;border:1px solid #1E293B;padding:16px;border-radius:12px;">
+                <strong style="color:var(--orange);display:block;margin-bottom:6px;"><i class="fa-solid fa-circle-check"></i> ১০০% অরিজিনাল যন্ত্রাংশ</strong>
+                <span style="color:#94A3B8;font-size:13px;">জেনুইন গ্রেড পার্টস ও লুব্রিকেন্ট ব্যবহার।</span>
+              </div>
+              <div style="background:#0B0E14;border:1px solid #1E293B;padding:16px;border-radius:12px;">
+                <strong style="color:#38BDF8;display:block;margin-bottom:6px;"><i class="fa-solid fa-gauge-high"></i> আধুনিক ডায়াগনস্টিক</strong>
+                <span style="color:#94A3B8;font-size:13px;">লেটেস্ট ইসিইউ স্ক্যানার ও সেন্সর টেস্টিং।</span>
+              </div>
+              <div style="background:#0B0E14;border:1px solid #1E293B;padding:16px;border-radius:12px;">
+                <strong style="color:#34D399;display:block;margin-bottom:6px;"><i class="fa-solid fa-award"></i> অভিজ্ঞ টেকনিশিয়ান</strong>
+                <span style="color:#94A3B8;font-size:13px;">দীর্ঘদিনের বিশ্বস্ত সার্ভিস ও যত্ন।</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+            <button class="btn" style="padding:14px 32px;font-size:16px;" onclick="openBookingForm('${srv.title_bn}')">
+              <i class="fa-regular fa-calendar-check"></i> এই সার্ভিসের জন্য এখনই বুকিং করুন
+            </button>
+            <a href="tel:${p1}" class="btn-outline" style="padding:14px 28px;font-size:16px;border-color:var(--orange);color:var(--orange);">
+              <i class="fa-solid fa-phone"></i> সরাসরি কথা বলুন: ${p1}
+            </a>
+            <a href="https://wa.me/${(s.whatsappPhone||'8801711287258').replace(/[^0-9]/g,'')}" target="_blank" class="btn-outline" style="padding:14px 24px;font-size:16px;border-color:#10B981;color:#34D399;">
+              <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ
+            </a>
+          </div>
+        </div>
+      `;
+      break;
+    }
+
+    case 'services_list': {
+      html = `
+        <div style="margin-bottom:30px;">
+          <h1 style="font-size:32px;margin:0 0 10px;font-weight:900;">আমাদের সকল সার্ভিস ও সেবাসমূহ</h1>
+          <p style="color:#94A3B8;font-size:16px;margin:0;">DBR Complete Auto Centre-এ আধুনিক কার কেয়ার ও রিপেয়ারিংয়ের সকল সমাধান এক ঠিকানায়।</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;">
+          ${state.services.map(srv => `
+            <div class="service-card" style="background:#12161F;border:1.5px solid #1E293B;padding:24px;border-radius:16px;cursor:pointer;" onclick="openPageView('service', '${srv.id}')">
+              <div style="font-size:36px;margin-bottom:12px;">${srv.icon || '🔧'}</div>
+              <h3 style="font-size:18px;margin:0 0 8px;color:#F8FAFC;">${srv.title_bn}</h3>
+              <p style="color:#94A3B8;font-size:14px;margin-bottom:16px;line-height:1.5;">${srv.desc || srv.title_en || 'সার্ভিস'}</p>
+              <span style="color:var(--orange);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:6px;">
+                বিস্তারিত দেখুন ও বুকিং করুন →
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      break;
+    }
+
+    case 'blog': {
+      let b = state.blog.find(item => item.id == pageId || item.title_bn === pageId);
+      if(!b && state.blog.length > 0) b = state.blog[0];
+      if(!b) b = { title_bn: "গাড়ির যত্ন", desc: "নিয়মিত সার্ভিসিং ও যত্ন নিন", img: "workshop_building.jpg", tag: "টিপস" };
+
+      html = `
+        <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.4);">
+          <img src="${b.img}" style="width:100%;max-height:420px;object-fit:cover;" alt="${b.title_bn}"/>
+          <div style="padding:34px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+              <span style="background:rgba(56,189,248,0.15);color:#38BDF8;border:1px solid rgba(56,189,248,0.3);padding:4px 14px;border-radius:20px;font-size:12.5px;font-weight:700;">
+                ${b.tag || 'গাড়ির যত্ন'}
+              </span>
+              <span style="color:#94A3B8;font-size:13px;"><i class="fa-regular fa-clock"></i> ${b.date || '২০২৬'}</span>
+            </div>
+            <h1 style="font-size:32px;margin:0 0 20px;font-weight:900;color:#F8FAFC;">${b.title_bn}</h1>
+            <div style="font-size:16.5px;line-height:1.9;color:#CBD5E1;border-top:1px solid #1E293B;padding-top:20px;">
+              <p>${b.desc}</p>
+              <p style="margin-top:16px;">
+                গাড়ির ইঞ্জিন ও বিভিন্ন যন্ত্রাংশের সঠিক যত্ন না নিলে বড় ধরনের দুর্ঘটনা বা অতিরিক্ত জ্বালানি অপচয় হতে পারে। DBR Complete Auto Centre-এ আধুনিক কম্পিউটার স্ক্যান ও দক্ষ মেকানিক দ্বারা গাড়ির প্রতিটি পার্টস পুঙ্খানুপুঙ্খভাবে চেক করা হয়।
+              </p>
+            </div>
+            <div style="margin-top:30px;padding-top:20px;border-top:1px solid #1E293B;display:flex;gap:14px;flex-wrap:wrap;">
+              <button class="btn" style="padding:12px 28px;" onclick="openBookingForm('')">
+                <i class="fa-regular fa-calendar-check"></i> সার্ভিস বুকিং করুন
+              </button>
+              <a href="tel:${p1}" class="btn-outline" style="padding:12px 24px;">
+                <i class="fa-solid fa-phone"></i> যোগাযোগ করুন
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+      break;
+    }
+
+    case 'blog_list': {
+      html = `
+        <div style="margin-bottom:30px;">
+          <h1 style="font-size:32px;margin:0 0 10px;font-weight:900;">গাড়ির যত্নের টিপস ও ব্লগ পোস্ট</h1>
+          <p style="color:#94A3B8;font-size:16px;margin:0;">নিয়মিত গাড়ি ভালো রাখার প্রয়োজনীয় পরামর্শ ও গাইডলাইন।</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;">
+          ${state.blog.map(b => `
+            <div class="blog-card" style="background:#12161F;border:1.5px solid #1E293B;border-radius:16px;overflow:hidden;cursor:pointer;" onclick="openPageView('blog', '${b.id}')">
+              <img src="${b.img}" style="width:100%;height:180px;object-fit:cover;" alt="${b.title_bn}"/>
+              <div style="padding:18px;">
+                <span style="color:#38BDF8;font-size:12px;font-weight:700;">${b.tag || 'টিপস'}</span>
+                <h3 style="font-size:17px;margin:8px 0;color:#F8FAFC;">${b.title_bn}</h3>
+                <p style="color:#94A3B8;font-size:13.5px;line-height:1.5;margin-bottom:14px;">${b.desc || ''}</p>
+                <span style="color:var(--orange);font-weight:700;font-size:13px;">সম্পূর্ণ পোস্ট পড়ুন →</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      break;
+    }
+
+    case 'work': {
+      let w = state.works.find(item => item.id == pageId || item.title_bn === pageId);
+      if(!w && state.works.length > 0) w = state.works[0];
+      if(!w) w = { title_bn: "ইঞ্জিন সার্ভিস", before_img: "workshop_building.jpg", after_img: "workshop_building.jpg", desc: "Before & After" };
+
+      html = `
+        <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:34px;box-shadow:0 20px 50px rgba(0,0,0,0.4);">
+          <h1 style="font-size:30px;margin:0 0 16px;font-weight:900;color:#F8FAFC;">কাজের অ্যালবাম: ${w.title_bn}</h1>
+          <p style="color:#94A3B8;font-size:16px;margin-bottom:24px;">আমাদের হাতে সফলভাবে মেরামত ও সার্ভিসিং হওয়া গাড়ির বাস্তব চিত্র।</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+            <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;overflow:hidden;text-align:center;">
+              <span style="display:block;background:#334155;color:#fff;padding:6px;font-weight:800;font-size:12px;">BEFORE (কাজের আগে)</span>
+              <img src="${w.before_img}" style="width:100%;height:260px;object-fit:cover;" alt="Before"/>
+            </div>
+            <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;overflow:hidden;text-align:center;">
+              <span style="display:block;background:var(--red);color:#fff;padding:6px;font-weight:800;font-size:12px;">AFTER (কাজের পরে)</span>
+              <img src="${w.after_img}" style="width:100%;height:260px;object-fit:cover;" alt="After"/>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <button class="btn" onclick="openBookingForm('${w.title_bn}')"><i class="fa-regular fa-calendar-check"></i> এই ধরনের কাজের জন্য বুকিং দিন</button>
+            <a href="tel:${p1}" class="btn-outline"><i class="fa-solid fa-phone"></i> কল করুন: ${p1}</a>
+          </div>
+        </div>
+      `;
+      break;
+    }
+
+    case 'works_list': {
+      html = `
+        <div style="margin-bottom:30px;">
+          <h1 style="font-size:32px;margin:0 0 10px;font-weight:900;">কাজের অ্যালবাম (Before & After Transformations)</h1>
+          <p style="color:#94A3B8;font-size:16px;margin:0;">আমাদের সফল মেরামতের কিছু বাস্তব চিত্র।</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
+          ${state.works.map(w => `
+            <div class="work-card" style="background:#12161F;border:1.5px solid #1E293B;border-radius:16px;overflow:hidden;cursor:pointer;padding:16px;" onclick="openPageView('work', '${w.id}')">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+                <img src="${w.before_img}" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" alt="Before"/>
+                <img src="${w.after_img}" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" alt="After"/>
+              </div>
+              <h3 style="font-size:17px;margin:0 0 6px;color:#F8FAFC;">${w.title_bn}</h3>
+              <span style="color:var(--orange);font-weight:700;font-size:13px;">বিস্তারিত দেখুন →</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      break;
+    }
+
+    case 'gallery_list': {
+      html = `
+        <div style="margin-bottom:30px;">
+          <h1 style="font-size:32px;margin:0 0 10px;font-weight:900;">ওয়ার্কশপ ফটো গ্যালারি</h1>
+          <p style="color:#94A3B8;font-size:16px;margin:0;">আমাদের আধুনিক যন্ত্রপাতি, কাজের পরিবেশ ও প্রতিদিনের কার্যক্রম।</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;">
+          ${state.gallery.map(g => `
+            <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:14px;overflow:hidden;cursor:pointer;" onclick="openImageModal('${g.title_bn}', '${g.img}')">
+              <img src="${g.img}" style="width:100%;height:180px;object-fit:cover;" alt="${g.title_bn}"/>
+              <div style="padding:12px;">
+                <span style="font-size:11.5px;color:var(--orange);">${g.tag || 'DBR'}</span>
+                <h4 style="margin:4px 0 0;font-size:14.5px;color:#F8FAFC;">${g.title_bn}</h4>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      break;
+    }
+
+    case 'booking': {
+      html = `
+        <div style="max-width:650px;margin:0 auto;background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:34px;box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+          <h1 style="font-size:28px;margin:0 0 8px;font-weight:900;color:#F8FAFC;">গাড়ির সার্ভিস বুকিং অ্যাপয়েন্টমেন্ট</h1>
+          <p style="color:#94A3B8;font-size:14.5px;margin-bottom:24px;">নিচের ফর্মটি পূরণ করে সাবমিট করুন, আমাদের টিম থেকে দ্রুত কল করে বুকিং নিশ্চিত করা হবে।</p>
+          <form id="spaDirectBookingForm">
+            <label class="dbr-field">আপনার পূর্ণ নাম:
+              <input name="name" required placeholder="যেমন: মো. করিম হাসান" maxlength="80"/>
+            </label>
+            <label class="dbr-field">মোবাইল নম্বর:
+              <input name="phone" type="tel" required placeholder="017xxxxxxxx" pattern="[+0-9 -]{10,17}"/>
+            </label>
+            <label class="dbr-field">প্রয়োজনীয় সার্ভিস:
+              <select name="service" style="width:100%;padding:12px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;">
+                ${state.services.map(srv => `<option value="${srv.title_bn}">${srv.title_bn} (${srv.title_en||''})</option>`).join('')}
+              </select>
+            </label>
+            <label class="dbr-field">পছন্দের তারিখ:
+              <input name="date" type="date" required/>
+            </label>
+            <label class="dbr-field">গাড়ির মডেল ও বিস্তারিত তথ্য:
+              <textarea name="details" rows="3" placeholder="যেমন: Toyota Premio 2018 - ইঞ্জিন অয়েল চেঞ্জ ও এসি চেক..."></textarea>
+            </label>
+            <button class="btn" type="submit" style="width:100%;justify-content:center;padding:14px;font-size:16px;margin-top:16px;">
+              ✓ বুকিং নিশ্চিত করুন
+            </button>
+          </form>
+        </div>
+      `;
+      break;
+    }
+
+    case 'contact': {
+      html = `
+        <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:34px;box-shadow:0 20px 50px rgba(0,0,0,0.4);">
+          <h1 style="font-size:32px;margin:0 0 10px;font-weight:900;color:#F8FAFC;">যোগাযোগ ও লোকেশন</h1>
+          <p style="color:#94A3B8;font-size:16px;margin-bottom:30px;">যেকোনো জিজ্ঞাসা বা গাড়ির সেবায় আমাদের ওয়ার্কশপে সরাসরি যোগাযোগ করুন।</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:30px;">
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:20px;border-radius:14px;">
+              <span style="font-size:24px;color:var(--orange);"><i class="fa-solid fa-phone"></i></span>
+              <h3 style="margin:10px 0 6px;font-size:16px;">হটলাইন নম্বর</h3>
+              <p style="margin:0;color:#CBD5E1;"><a href="tel:${s.phone1}" style="color:var(--orange);font-weight:700;">${s.phone1}</a></p>
+              ${s.phone2 ? `<p style="margin:4px 0 0;color:#CBD5E1;"><a href="tel:${s.phone2}" style="color:var(--orange);">${s.phone2}</a></p>` : ''}
+            </div>
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:20px;border-radius:14px;">
+              <span style="font-size:24px;color:#10B981;"><i class="fa-brands fa-whatsapp"></i></span>
+              <h3 style="margin:10px 0 6px;font-size:16px;">হোয়াটসঅ্যাপ</h3>
+              <p style="margin:0;color:#CBD5E1;"><a href="https://wa.me/${(s.whatsappPhone||'8801711287258').replace(/[^0-9]/g,'')}" target="_blank" style="color:#34D399;font-weight:700;">${s.whatsappPhone||'01711-287258'}</a></p>
+            </div>
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:20px;border-radius:14px;">
+              <span style="font-size:24px;color:#38BDF8;"><i class="fa-solid fa-location-dot"></i></span>
+              <h3 style="margin:10px 0 6px;font-size:16px;">ওয়ার্কশপের ঠিকানা</h3>
+              <p style="margin:0;color:#CBD5E1;font-size:14px;line-height:1.5;">${s.address || 'শহীদ জিয়া মেডিকেল রোড, শাকপালা, বগুড়া সদর'}</p>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <a href="${s.mapsUrl || 'https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura'}" target="_blank" class="btn" style="padding:14px 30px;font-size:15px;">
+              <i class="fa-solid fa-map-location-dot"></i> গুগল ম্যাপসে লোকেশন দেখুন
+            </a>
+          </div>
+        </div>
+      `;
+      break;
+    }
+
+    case 'about': {
+      html = `
+        <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:34px;box-shadow:0 20px 50px rgba(0,0,0,0.4);margin-bottom:30px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <span style="background:rgba(255,107,0,0.15);color:var(--orange);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;">আমাদের পরিচিতি</span>
+          </div>
+          <h1 style="font-size:32px;margin:0 0 12px;font-weight:900;color:#F8FAFC;">আমাদের সম্পর্কে ও দক্ষ টেকনিক্যাল টিম</h1>
+          <p style="color:#94A3B8;font-size:16px;line-height:1.7;margin-bottom:24px;">
+            ${s.brandName || 'DBR COMPLETE AUTO CENTRE'} - বগুড়ার শহীদ জিয়া মেডিকেল কলেজ ও হাসপাতাল সংলগ্ন রোডে অবস্থিত একটি পূর্ণাঙ্গ মাল্টি-ব্র্যান্ড অটোমোবাইল সার্ভিসিং, ডেন্টিং-পেইন্টিং ও ডায়াগনস্টিক ওয়ার্কশপ। সততা, সর্বাধুনিক প্রযুক্তি ও গ্রাহক সন্তুষ্টিই আমাদের মূল শক্তি।
+          </p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:30px;">
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:18px;border-radius:12px;text-align:center;">
+              <span style="font-size:28px;color:var(--orange);"><i class="fa-solid fa-microchip"></i></span>
+              <h4 style="margin:8px 0 4px;font-size:15px;color:#F8FAFC;">আধুনিক ডায়াগনস্টিক</h4>
+              <p style="margin:0;font-size:12.5px;color:#94A3B8;">জাপান ও ইউরোপিয়ান ওবিডি ২ স্ক্যানার</p>
+            </div>
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:18px;border-radius:12px;text-align:center;">
+              <span style="font-size:28px;color:#10B981;"><i class="fa-solid fa-certificate"></i></span>
+              <h4 style="margin:8px 0 4px;font-size:15px;color:#F8FAFC;">দক্ষ টেকনিশিয়ান</h4>
+              <p style="margin:0;font-size:12.5px;color:#94A3B8;">১০+ বছরের পেশাদার অভিজ্ঞতা</p>
+            </div>
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:18px;border-radius:12px;text-align:center;">
+              <span style="font-size:28px;color:#38BDF8;"><i class="fa-solid fa-shield-halved"></i></span>
+              <h4 style="margin:8px 0 4px;font-size:15px;color:#F8FAFC;">অরিজিনাল পার্টস</h4>
+              <p style="margin:0;font-size:12.5px;color:#94A3B8;">১০০% খাঁটি ও টেস্টেড উপাদান</p>
+            </div>
+            <div style="background:#0B0E14;border:1px solid #1E293B;padding:18px;border-radius:12px;text-align:center;">
+              <span style="font-size:28px;color:#F59E0B;"><i class="fa-solid fa-clock"></i></span>
+              <h4 style="margin:8px 0 4px;font-size:15px;color:#F8FAFC;">দ্রুত সেবা প্রদান</h4>
+              <p style="margin:0;font-size:12.5px;color:#94A3B8;">নির্দিষ্ট সময়ে ডেলিভারির নিশ্চয়তা</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:30px;">
+          <h2 style="font-size:26px;font-weight:900;margin:0 0 16px;color:#F8FAFC;">আমাদের পরিচালনা ও টেকনিক্যাল টিম</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+            ${(state.team||[]).map(m => `
+              <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,107,0,0.15);border:1.5px solid var(--orange);display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:20px;">
+                    <i class="fa-solid fa-user-gear"></i>
+                  </div>
+                  <div>
+                    <h3 style="margin:0;font-size:17px;color:#F8FAFC;">${m.title_bn}</h3>
+                    <span style="font-size:12.5px;color:#94A3B8;">${m.title_en || m.role}</span>
+                  </div>
+                </div>
+                <p style="margin:6px 0 10px;font-size:13.5px;color:#CBD5E1;line-height:1.5;">${m.desc}</p>
+                <a href="tel:${m.phone}" style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--orange);font-weight:700;text-decoration:none;margin-top:auto;">
+                  <i class="fa-solid fa-phone"></i> ${m.phone}
+                </a>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      break;
+    }
+
+    case 'reviews': {
+      html = `
+        <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:34px;box-shadow:0 20px 50px rgba(0,0,0,0.4);margin-bottom:30px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+            <div>
+              <h1 style="font-size:30px;margin:0 0 8px;font-weight:900;color:#F8FAFC;">সম্মানিত গ্রাহক রিভিউ ও অভিজ্ঞতা</h1>
+              <p style="color:#94A3B8;font-size:15px;margin:0;">আমাদের সেবায় গ্রাহকদের প্রত্যক্ষ মতামত ও রেটিং।</p>
+            </div>
+            <button class="btn" style="padding:10px 20px;font-size:14px;" onclick="document.getElementById('spa-review-form-box').scrollIntoView({behavior:'smooth'})">
+              <i class="fa-regular fa-comment-dots"></i> আপনার মতামত লিখুন
+            </button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+            ${(state.reviews||[]).map(r => `
+              <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;padding:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <strong style="color:#F8FAFC;font-size:15px;">${r.name || 'সম্মানিত গ্রাহক'}</strong>
+                  <div style="color:#F59E0B;font-size:14px;">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+                </div>
+                <p style="color:#CBD5E1;font-size:13.5px;line-height:1.6;margin:0 0 10px;">"${r.comment || ''}"</p>
+                <small style="color:#64748B;font-size:11.5px;">${r.created || 'যাচাইকৃত গ্রাহক'}</small>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div id="spa-review-form-box" style="max-width:650px;margin:0 auto;background:#12161F;border:1.5px solid #1E293B;border-radius:20px;padding:30px;">
+          <h2 style="font-size:22px;margin:0 0 6px;color:#F8FAFC;">আপনার মূল্যবান রিভিউ প্রদান করুন</h2>
+          <p style="color:#94A3B8;font-size:13.5px;margin-bottom:20px;">আমাদের সেবার মান উন্নত করতে আপনার মতামত অত্যন্ত মূল্যবান।</p>
+          <form id="spaDirectReviewForm">
+            <label class="dbr-field">আপনার নাম:
+              <input name="name" required placeholder="আপনার নাম লিখুন..." maxlength="60"/>
+            </label>
+            <label class="dbr-field">রেটিং নির্বাচন করুন:
+              <select name="rating" style="width:100%;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;">
+                <option value="5">★★★★★ ৫ স্টার (অসাধারণ সার্ভিস)</option>
+                <option value="4">★★★★☆ ৪ স্টার (খুব ভালো)</option>
+                <option value="3">★★★☆☆ ৩ স্টার (মোটামুটি)</option>
+                <option value="2">★★☆☆☆ ২ স্টার</option>
+                <option value="1">★☆☆☆☆ ১ স্টার</option>
+              </select>
+            </label>
+            <label class="dbr-field">আপনার মন্তব্য / অভিজ্ঞতা:
+              <textarea name="comment" rows="3" required placeholder="আমাদের সার্ভিস কেমন লেগেছে লিখুন..."></textarea>
+            </label>
+            <button class="btn" type="submit" style="width:100%;justify-content:center;padding:12px;margin-top:10px;">
+              ✓ রিভিউ প্রকাশ করুন
+            </button>
+          </form>
+        </div>
+      `;
+      break;
+    }
+
+    default:
+      closePageView();
+      return;
+  }
+
+  content.innerHTML = html;
+  container.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+
+  const spaf = document.getElementById('spaDirectBookingForm');
+  if(spaf){
+    spaf.elements.date.min = new Date().toISOString().split('T')[0];
+    spaf.onsubmit = function(e){
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(spaf));
+      const booking = { ...data, id: Date.now(), created: new Date().toLocaleString() };
+      state.bookings.unshift(booking);
+      writeStorage('dbr_bookings_v5', state.bookings);
+      if(window.db){
+        try{ window.db.collection('bookings').add(booking); }catch(err){}
+      }
+      closePageView();
+      showToast('ধন্যবাদ! আপনার বুকিং সফলভাবে সংরক্ষিত হয়েছে।');
+    };
+  }
+
+  const sparf = document.getElementById('spaDirectReviewForm');
+  if(sparf){
+    sparf.onsubmit = function(e){
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(sparf));
+      const newReview = {
+        name: data.name,
+        rating: parseInt(data.rating) || 5,
+        comment: data.comment,
+        created: new Date().toLocaleDateString('bn-BD'),
+        id: Date.now()
+      };
+      state.reviews.unshift(newReview);
+      writeStorage('dbr_reviews_v5', state.reviews);
+      if(window.db){
+        try{ window.db.collection('reviews').add(newReview); }catch(err){}
+      }
+      syncFrontViews();
+      openPageView('reviews');
+      showToast('ধন্যবাদ! আপনার রিভিউ সফলভাবে প্রকাশিত হয়েছে।');
+    };
+  }
+
+  try {
+    history.pushState({ pageType, pageId }, '', '#' + pageType + (pageId ? '/' + encodeURIComponent(pageId) : ''));
+  } catch(e){}
+}
+
+function closePageView(){
+  const container = document.getElementById('dbr-page-view-container');
+  if(container) container.style.display = 'none';
+  document.body.style.overflow = '';
+  if(window.location.hash && !window.location.hash.startsWith('#admin')){
+    try {
+      history.pushState(null, '', window.location.pathname);
+    } catch(e){}
+  }
+}
+
+// Global View Synchronizer: updates active template and standard views whenever admin edits anything
+function syncFrontViews(){
+  if(state.customTheme){
+    autoConfigureThemeWithAdmin(document.getElementById('site-root'));
+  }
+  applySettingsToDOM();
+  renderServices();
+  renderWorks();
+  renderGallery();
+  renderBlog();
+  renderTeam();
+  renderReviews();
+}
+
+// Global Smart Link & Action Delegator for ANY uploaded HTML template
+document.addEventListener('click', function(e){
+  const target = e.target.closest('a, button, [data-nav], .service-card, .work-card, .blog-card, .gallery-photo-card, [onclick]');
+  if(!target) return;
+
+  // If clicked inside admin CMS, login gateway, standard dialog modal, or SPA header/form, let it work normally
+  if(target.closest('#admin-cms-panel') || target.closest('#admin-gate-screen') || target.closest('#dbrOverlay') || target.closest('#dbr-page-view-container header') || target.closest('#dbr-page-view-container form')) return;
+
+  // 1. Service card click
+  const srvCard = target.closest('.service-card, [data-service-card]');
+  if(srvCard && !target.closest('button, a')){
+    e.preventDefault();
+    const title = srvCard.querySelector('h3, h4, .service-title, strong')?.textContent.trim() || '';
+    openPageView('service', title);
+    return;
+  }
+
+  // 2. Work card click
+  const wrkCard = target.closest('.work-card, [data-work-card]');
+  if(wrkCard && !target.closest('button, a')){
+    e.preventDefault();
+    const title = wrkCard.querySelector('h3, h4, .work-title, strong')?.textContent.trim() || '';
+    openPageView('work', title);
+    return;
+  }
+
+  // 3. Blog card click
+  const blgCard = target.closest('.blog-card, [data-blog-card]');
+  if(blgCard && !target.closest('button, a')){
+    e.preventDefault();
+    const title = blgCard.querySelector('h3, h4, .blog-title, strong')?.textContent.trim() || '';
+    openPageView('blog', title);
+    return;
+  }
+
+  // 4. Handle <a> links
+  if(target.tagName === 'A'){
+    const href = (target.getAttribute('href') || '').trim();
+    if(!href) return;
+
+    if(href === '#admin' || href.includes('admin.html')){
+      e.preventDefault();
+      openAdminGateway();
+      return;
+    }
+
+    if(href === '#services' || href.includes('services.html') || href === '/services'){
+      e.preventDefault();
+      openPageView('services_list');
+      return;
+    }
+
+    if(href === '#blog' || href.includes('blog.html') || href === '/blog'){
+      e.preventDefault();
+      openPageView('blog_list');
+      return;
+    }
+
+    if(href === '#works' || href.includes('works.html')){
+      e.preventDefault();
+      openPageView('works_list');
+      return;
+    }
+
+    if(href === '#gallery' || href.includes('gallery.html')){
+      e.preventDefault();
+      openPageView('gallery_list');
+      return;
+    }
+
+    if(href === '#contact' || href.includes('contact.html') || href === '/contact'){
+      e.preventDefault();
+      openPageView('contact');
+      return;
+    }
+
+    if(href === '#booking' || href.includes('booking.html') || href === '/booking'){
+      e.preventDefault();
+      openPageView('booking');
+      return;
+    }
+
+    if(href === '#about' || href.includes('about.html') || href === '#team' || href.includes('team.html')){
+      e.preventDefault();
+      openPageView('about');
+      return;
+    }
+
+    if(href === '#reviews' || href.includes('reviews.html')){
+      e.preventDefault();
+      openPageView('reviews');
+      return;
+    }
+
+    if(href === '#home' || href === '/' || href === 'index.html'){
+      e.preventDefault();
+      closePageView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // If anchor exists on current page, smooth scroll to it
+    if(href.startsWith('#') && href.length > 1){
+      const el = document.querySelector(href);
+      if(el){
+        e.preventDefault();
+        closePageView();
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
+  }
+
+  // 5. Smart button text intent recognition
+  const text = (target.textContent || '').trim().toLowerCase();
+  if(target.tagName === 'BUTTON' || target.classList.contains('btn') || target.classList.contains('btn-booking') || target.getAttribute('role') === 'button'){
+    if(target.onclick || target.getAttribute('onclick')) return;
+
+    if(text.includes('বুকিং') || text.includes('booking') || text.includes('অ্যাপয়েন্টমেন্ট') || text.includes('appointment')){
+      e.preventDefault();
+      openBookingForm('');
+      return;
+    }
+    if(text.includes('সার্ভিস') || text.includes('services')){
+      e.preventDefault();
+      openPageView('services_list');
+      return;
+    }
+    if(text.includes('গ্যালারি') || text.includes('gallery')){
+      e.preventDefault();
+      openPageView('gallery_list');
+      return;
+    }
+    if(text.includes('কাজ') || text.includes('works') || text.includes('portfolio')){
+      e.preventDefault();
+      openPageView('works_list');
+      return;
+    }
+    if(text.includes('ব্লগ') || text.includes('blog') || text.includes('টিপস')){
+      e.preventDefault();
+      openPageView('blog_list');
+      return;
+    }
+    if(text.includes('যোগাযোগ') || text.includes('contact') || text.includes('লোকেশন')){
+      e.preventDefault();
+      openPageView('contact');
+      return;
+    }
+    if(text.includes('আমাদের সম্পর্কে') || text.includes('টিম') || text.includes('about')){
+      e.preventDefault();
+      openPageView('about');
+      return;
+    }
+    if(text.includes('রিভিউ') || text.includes('মতামত') || text.includes('reviews')){
+      e.preventDefault();
+      openPageView('reviews');
+      return;
+    }
+  }
+});
+
+// Popstate for Browser Back/Forward navigation
+window.addEventListener('popstate', function(e){
+  const hash = window.location.hash;
+  if(hash.startsWith('#service/')){
+    openPageView('service', decodeURIComponent(hash.slice(9)));
+  } else if(hash.startsWith('#blog/')){
+    openPageView('blog', decodeURIComponent(hash.slice(6)));
+  } else if(hash.startsWith('#work/')){
+    openPageView('work', decodeURIComponent(hash.slice(6)));
+  } else if(hash === '#services'){
+    openPageView('services_list');
+  } else if(hash === '#blog'){
+    openPageView('blog_list');
+  } else if(hash === '#works'){
+    openPageView('works_list');
+  } else if(hash === '#gallery'){
+    openPageView('gallery_list');
+  } else if(hash === '#about' || hash === '#team'){
+    openPageView('about');
+  } else if(hash === '#reviews'){
+    openPageView('reviews');
+  } else if(hash === '#booking'){
+    openPageView('booking');
+  } else if(hash === '#contact'){
+    openPageView('contact');
+  } else if(hash === '#admin'){
+    openAdminGateway();
+  } else {
+    closePageView();
+  }
+});
 
 function bindDynamicEvents(){
   // User review submit
