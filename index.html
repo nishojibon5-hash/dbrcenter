@@ -1025,6 +1025,62 @@ section{padding:80px 0}
 }
 .admin-table th{color:#94A3B8;font-weight:700}
 
+/* Blogger-style Theme Manager Styles */
+.theme-code-editor{
+  font-family:'Consolas','Courier New',monospace;
+  background:#090D14;
+  color:#E2E8F0;
+  border:1px solid #334155;
+  border-radius:10px;
+  padding:14px;
+  width:100%;
+  min-height:360px;
+  resize:vertical;
+  font-size:13px;
+  line-height:1.6;
+}
+.theme-badge-active{
+  background:#064E3B;
+  color:#34D399;
+  border:1px solid #059669;
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12.5px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.theme-badge-default{
+  background:#1E293B;
+  color:#94A3B8;
+  border:1px solid #475569;
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12.5px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.widget-tag-pill{
+  display:inline-block;
+  background:#1E293B;
+  color:#38BDF8;
+  border:1px solid #0284C7;
+  padding:3px 8px;
+  border-radius:6px;
+  font-family:monospace;
+  font-size:12px;
+  margin:2px 4px 2px 0;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.widget-tag-pill:hover{
+  background:#0284C7;
+  color:#FFFFFF;
+}
+
 /* Responsive adjustments */
 @media(min-width:960px){
   .navlinks{display:flex}
@@ -1062,6 +1118,8 @@ section{padding:80px 0}
 </style>
 </head>
 <body>
+<!-- Dynamic Site Root Container for Blogger Theme Engine -->
+<div id="site-root">
 
 <!-- TOPBAR HEADER (MATCHES USER SCREENSHOT EXACTLY) -->
 <header class="topbar">
@@ -1392,6 +1450,7 @@ section{padding:80px 0}
     <span><a href="#admin" onclick="openAdminGateway();return false;" style="color:#64748B;">এডমিন লগইন</a></span>
   </div>
 </footer>
+</div><!-- /#site-root -->
 
 <!-- LIGHTBOX -->
 <div aria-label="কভার ছবির বড় ভিউ" id="coverLightbox">
@@ -1457,6 +1516,7 @@ section{padding:80px 0}
 
   <div style="padding:15px 24px;background:#0F141C;border-bottom:1px solid #1E2838;display:flex;gap:10px;overflow-x:auto;">
     <button class="admin-tab-btn active" onclick="switchAdminTab('settings')">হিরো ও সাইট সেটিংস</button>
+    <button class="admin-tab-btn" onclick="switchAdminTab('theme')"><i class="fa-solid fa-palette"></i> থিম ও লেআউট (Theme)</button>
     <button class="admin-tab-btn" onclick="switchAdminTab('services')">সেবাসমূহ</button>
     <button class="admin-tab-btn" onclick="switchAdminTab('works')">কাজের অ্যালবাম</button>
     <button class="admin-tab-btn" onclick="switchAdminTab('gallery')">ফটো গ্যালারি</button>
@@ -1739,6 +1799,100 @@ section{padding:80px 0}
         </div>
       </div>
     </div>
+
+    <!-- TAB: THEME & LAYOUT ENGINE (BLOGGER STYLE) -->
+    <div id="tab-sec-theme" class="admin-tab-content" style="display:none;">
+      <div class="admin-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:26px;color:var(--orange);"><i class="fa-solid fa-swatchbook"></i></span>
+            <div>
+              <h3 style="margin:0;font-size:18px;color:#F8FAFC;">গুগল ব্লগার-স্টাইল থিম ও লেআউট ম্যানেজার</h3>
+              <p style="margin:2px 0 0;color:#94A3B8;font-size:13px;">এডমিন থেকে কাস্টম HTML থিম আপলোড করুন, ব্যাকআপ নিন অথবা সরাসরি কোড এডিট করুন।</p>
+            </div>
+          </div>
+          <div id="theme-status-badge-container">
+            <span class="theme-badge-default" id="theme-active-status"><i class="fa-solid fa-circle-check"></i> অ্যাক্টিভ: ডিফল্ট DBR টেমপ্লেট</span>
+          </div>
+        </div>
+
+        <!-- Action Bar: Upload, Download Backup, Restore Default -->
+        <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:12px;padding:16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <input type="file" id="theme-file-input" accept=".html,.htm" style="display:none;" onchange="handleThemeFileUpload(this)"/>
+            <button type="button" class="btn" onclick="document.getElementById('theme-file-input').click()">
+              <i class="fa-solid fa-file-arrow-up"></i> থিম ফাইল (.html) আপলোড করুন
+            </button>
+            <button type="button" class="btn-outline" onclick="downloadCurrentThemeBackup()">
+              <i class="fa-solid fa-download"></i> ব্যাকআপ ডাউনলোড (Export)
+            </button>
+            <button type="button" class="btn-outline" style="border-color:#DC2626;color:#F87171;" onclick="restoreDefaultTheme()">
+              <i class="fa-solid fa-rotate-left"></i> ফ্যাক্টরি রিস্টোর (ডিফল্ট থিম)
+            </button>
+          </div>
+          <div>
+            <button type="button" class="btn-outline" style="border-color:#0284C7;color:#38BDF8;" onclick="loadStarterTemplateIntoEditor()">
+              <i class="fa-solid fa-code"></i> স্টার্টার টেমপ্লেট লোড করুন
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Code Editor -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+            <label style="font-weight:700;color:#CBD5E1;font-size:13px;">
+              <i class="fa-solid fa-code"></i> থিম সোর্স কোড (HTML / CSS / Widgets):
+            </label>
+            <span style="font-size:12px;color:#94A3B8;">কোড পরিবর্তন করে 'থিম সেভ ও লাইভ করুন' চাপলে পুরো সাইটে ইনস্ট্যান্ট কার্যকর হবে</span>
+          </div>
+          <textarea id="theme-code-editor" class="theme-code-editor" placeholder="এখানে আপনার কাস্টম HTML থিম কোড পেস্ট করুন অথবা ফাইল আপলোড করুন..."></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap;">
+          <button type="button" class="btn" style="padding:12px 24px;" onclick="saveCustomThemeFromEditor()">
+            <i class="fa-solid fa-floppy-disk"></i> থিম সেভ ও লাইভ করুন
+          </button>
+          <span id="theme-save-msg" style="font-size:13.5px;color:#34D399;font-weight:600;"></span>
+        </div>
+
+        <!-- Blogger Widget & Tokens Reference Guide -->
+        <div style="background:#0F141C;border:1px solid #1E2838;border-radius:12px;padding:18px;">
+          <h4 style="color:#F1F5F9;font-size:15px;margin-bottom:10px;">
+            <i class="fa-solid fa-circle-info" style="color:#38BDF8;"></i> থিম ইঞ্জিনের উইজেট ও টোকেন সহায়িকা (Widget & Token Guide)
+          </h4>
+          <p style="color:#94A3B8;font-size:13px;line-height:1.6;margin-bottom:12px;">
+            যেকোনো কাস্টম HTML ফাইলে নিচের উইজেট ট্যাগগুলো বসিয়ে দিলে আপনার ওয়ার্কশপের লাইভ ডেটা (সার্ভিস, ছবি, ব্লগ, রিভিউ) স্বয়ংক্রিয়ভাবে সেই স্থানে রেন্ডার হবে (ক্লিক করে কপি বা ইনসার্ট করতে পারেন):
+          </p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;font-size:12.5px;">
+            <div style="background:#161E2E;padding:12px 14px;border-radius:8px;border:1px solid #1E293B;">
+              <strong style="color:#38BDF8;">উপাদানসমূহ (Widgets):</strong>
+              <div style="margin-top:8px;line-height:1.9;">
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('topbar')">&lt;div data-dbr-widget="topbar"&gt;&lt;/div&gt;</span> হেডার মেনু ও লোগো</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('hero')">&lt;div data-dbr-widget="hero"&gt;&lt;/div&gt;</span> হিরো ব্যানার ও বাটন</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('services')">&lt;div data-dbr-widget="services"&gt;&lt;/div&gt;</span> ১২টি সার্ভিসের গ্রিড</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('works')">&lt;div data-dbr-widget="works"&gt;&lt;/div&gt;</span> কাজের অ্যালবাম (Before-After)</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('gallery')">&lt;div data-dbr-widget="gallery"&gt;&lt;/div&gt;</span> ফটো গ্যালারি</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('blog')">&lt;div data-dbr-widget="blog"&gt;&lt;/div&gt;</span> ব্লগ পোস্ট গ্রিড</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('team')">&lt;div data-dbr-widget="team"&gt;&lt;/div&gt;</span> টিম মেম্বারদের কার্ড</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('reviews')">&lt;div data-dbr-widget="reviews"&gt;&lt;/div&gt;</span> গ্রাহক রিভিউ ও রেটিং ফর্ম</div>
+                <div><span class="widget-tag-pill" onclick="insertWidgetTag('footer')">&lt;div data-dbr-widget="footer"&gt;&lt;/div&gt;</span> ফুটার ও সোশ্যাল লিঙ্ক</div>
+              </div>
+            </div>
+            <div style="background:#161E2E;padding:12px 14px;border-radius:8px;border:1px solid #1E293B;">
+              <strong style="color:#F59E0B;">লাইভ টোকেন ভেরিয়েবল (Tokens):</strong>
+              <div style="margin-top:8px;line-height:1.9;color:#CBD5E1;">
+                <div><code style="color:#FBBF24;">{{BRAND_NAME}}</code> : ওয়ার্কশপের নাম</div>
+                <div><code style="color:#FBBF24;">{{HERO_IMAGE}}</code> : হিরো কভার ছবির লিঙ্ক</div>
+                <div><code style="color:#FBBF24;">{{HERO_BADGE}}</code> : হিরো ব্যাজ টেক্সট</div>
+                <div><code style="color:#FBBF24;">{{PHONE1}}</code>, <code style="color:#FBBF24;">{{PHONE2}}</code> : হটলাইন নম্বর</div>
+                <div><code style="color:#FBBF24;">{{ADDRESS}}</code> : ওয়ার্কশপের ঠিকানা</div>
+                <div><code style="color:#FBBF24;">{{EMAIL}}</code> : ইমেইল ঠিকানা</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1827,7 +1981,8 @@ let state = {
   blog: [],
   team: [],
   reviews: [],
-  bookings: []
+  bookings: [],
+  customTheme: null
 };
 
 function readStorage(key, fallback){
@@ -1851,6 +2006,7 @@ function initState(){
   state.team = readStorage('dbr_team_v6', DEFAULT_TEAM);
   state.reviews = readStorage('dbr_reviews_v5', DEFAULT_REVIEWS);
   state.bookings = readStorage('dbr_bookings_v5', []);
+  state.customTheme = readStorage('dbr_custom_theme_v1', null);
 }
 
 function showToast(msg){
@@ -2316,6 +2472,21 @@ async function loadFirestoreData(){
       writeStorage('dbr_bookings_v5', state.bookings);
     }
 
+    // 9. Sync Custom Theme
+    try{
+      const themeDoc = await window.db.collection('settings').doc('theme').get();
+      if(themeDoc.exists && themeDoc.data() && themeDoc.data().html){
+        const cloudTheme = themeDoc.data().html;
+        if(cloudTheme && cloudTheme !== state.customTheme){
+          writeStorage('dbr_custom_theme_v1', cloudTheme);
+          applyThemeToSite(cloudTheme, false);
+          if(document.getElementById('theme-code-editor')){
+            document.getElementById('theme-code-editor').value = cloudTheme;
+          }
+        }
+      }
+    }catch(err){}
+
     renderAdminTables();
   }catch(e){
     console.log("Firestore sync notice:", e.message);
@@ -2348,6 +2519,9 @@ async function seedFirebaseAll(){
     }
     for(const r of state.reviews){
       await window.db.collection('reviews').doc('rev_' + r.id).set(r, {merge:true});
+    }
+    if(state.customTheme){
+      await window.db.collection('settings').doc('theme').set({ html: state.customTheme, updatedAt: new Date().toISOString() }, {merge:true});
     }
     status.innerHTML = `<span style="color:#10B981;font-weight:700;">✓ অভিনন্দন! সেটিংস, সার্ভিস, অ্যালবাম, গ্যালারি, রিভিউ সকল তথ্য ফায়ারবেস কালেকশনে সংরক্ষিত হয়েছে!</span>`;
     showToast("ফায়ারবেস সিঙ্ক সম্পন্ন হয়েছে!");
@@ -2467,8 +2641,15 @@ function closeAdminScreens(){
 function switchAdminTab(tab){
   document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
-  event.target.classList.add('active');
-  document.getElementById('tab-sec-' + tab).style.display = 'block';
+  if(window.event && window.event.target){
+    const btn = window.event.target.closest('.admin-tab-btn') || window.event.target;
+    btn.classList.add('active');
+  }
+  const sec = document.getElementById('tab-sec-' + tab);
+  if(sec) sec.style.display = 'block';
+  if(tab === 'theme'){
+    initThemeTabUI();
+  }
 }
 
 function populateSettingsForm(){
@@ -3222,16 +3403,365 @@ function clearAllBookings(){
   showToast("সকল বুকিং ক্লিয়ার করা হয়েছে।");
 }
 
-// Initial Page Load
-window.addEventListener('DOMContentLoaded', () => {
-  initState();
+// ========================================================
+// GOOGLE BLOGGER-STYLE THEME & LAYOUT ENGINE
+// ========================================================
+let DEFAULT_SITE_TEMPLATE = "";
+
+function captureDefaultTemplate(){
+  const sr = document.getElementById('site-root');
+  if(sr && !DEFAULT_SITE_TEMPLATE){
+    DEFAULT_SITE_TEMPLATE = sr.innerHTML;
+  }
+}
+
+function getWidgetHtml(type){
+  const temp = document.createElement('div');
+  temp.innerHTML = DEFAULT_SITE_TEMPLATE || (document.getElementById('site-root') ? document.getElementById('site-root').innerHTML : '');
+  
+  switch(type.toLowerCase()){
+    case 'topbar':
+    case 'header': {
+      const topbar = temp.querySelector('header.topbar');
+      const drawer = temp.querySelector('aside.mobile-nav-drawer');
+      const backdrop = temp.querySelector('#drawerBackdrop');
+      return (topbar ? topbar.outerHTML : '') + (backdrop ? backdrop.outerHTML : '') + (drawer ? drawer.outerHTML : '');
+    }
+    case 'hero': {
+      const hero = temp.querySelector('section.hero#home');
+      return hero ? hero.outerHTML : '';
+    }
+    case 'services': {
+      const s = temp.querySelector('section.services#services');
+      return s ? s.outerHTML : '';
+    }
+    case 'works': {
+      const w = temp.querySelector('section#gallery');
+      return w ? w.outerHTML : '';
+    }
+    case 'gallery': {
+      const g = temp.querySelector('section#photo-gallery');
+      return g ? g.outerHTML : '';
+    }
+    case 'blog': {
+      const b = temp.querySelector('section.blog#blog');
+      return b ? b.outerHTML : '';
+    }
+    case 'reviews': {
+      const r = temp.querySelector('section.reviews#reviews');
+      return r ? r.outerHTML : '';
+    }
+    case 'team': {
+      const t = temp.querySelector('section.about#about');
+      return t ? t.outerHTML : '';
+    }
+    case 'footer': {
+      const f = temp.querySelector('footer.footer');
+      return f ? f.outerHTML : '';
+    }
+    default:
+      return '';
+  }
+}
+
+function compileThemeTemplate(tpl){
+  if(!tpl) return "";
+  let compiled = tpl;
+  const s = state.settings || DEFAULT_SETTINGS;
+  
+  // Replace Template Tokens
+  compiled = compiled
+    .replace(/\{\{BRAND_NAME\}\}/g, s.brandName || "Complete Auto Centre")
+    .replace(/\{\{BRAND_SUBTITLE\}\}/g, s.brandSubtitle || "Design. Build. Repair")
+    .replace(/\{\{HERO_BADGE\}\}/g, s.heroBadge || "আপনার বিশ্বস্ত কার ওয়ার্কশপ")
+    .replace(/\{\{HERO_TITLE_WHITE\}\}/g, s.heroTitleWhite || "DBR")
+    .replace(/\{\{HERO_TITLE_RED\}\}/g, s.heroTitleRed || "COMPLETE AUTO CENTRE")
+    .replace(/\{\{HERO_IMAGE\}\}/g, s.coverImage || "workshop_building.jpg")
+    .replace(/\{\{PHONE1\}\}/g, s.phone1 || "01711-287258")
+    .replace(/\{\{PHONE2\}\}/g, s.phone2 || "01776-596315")
+    .replace(/\{\{ADDRESS\}\}/g, s.address || "শহীদ জিয়া মেডিকেল রোড, শাকপালা, বগুড়া সদর")
+    .replace(/\{\{EMAIL\}\}/g, s.email || "dbrcompelte@gmail.com");
+
+  // Parse HTML DOM to replace widgets (<div data-dbr-widget="..."> or data-widget or b:widget / b:section)
+  const doc = new DOMParser().parseFromString(compiled, 'text/html');
+  const widgets = doc.querySelectorAll('[data-dbr-widget], [data-widget], b\\:widget, b\\:section');
+  widgets.forEach(el => {
+    const wType = (el.getAttribute('data-dbr-widget') || el.getAttribute('data-widget') || el.getAttribute('type') || el.id || '').toLowerCase();
+    const wHtml = getWidgetHtml(wType);
+    if(wHtml){
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = wHtml;
+      el.replaceWith(...wrapper.childNodes);
+    }
+  });
+
+  return doc.body.innerHTML;
+}
+
+function applyThemeToSite(customHtml, save = true){
+  captureDefaultTemplate();
+  const sr = document.getElementById('site-root');
+  if(!sr) return;
+
+  if(customHtml && typeof customHtml === 'string' && customHtml.trim()){
+    try {
+      const compiled = compileThemeTemplate(customHtml);
+      sr.innerHTML = compiled;
+      state.customTheme = customHtml;
+      updateThemeStatusUI(true);
+      if(save){
+        writeStorage('dbr_custom_theme_v1', customHtml);
+        if(window.db){
+          try{ window.db.collection('settings').doc('theme').set({ html: customHtml, updatedAt: new Date().toISOString() }, {merge:true}); }catch(e){}
+        }
+      }
+    } catch(err) {
+      console.error("Theme compilation error:", err);
+      showToast("থিম রেন্ডারিংয়ে ত্রুটি! ডিফল্ট লেআউট লোড করা হচ্ছে।");
+      restoreDefaultTheme(false);
+      return;
+    }
+  } else {
+    // Restore default pristine template
+    if(DEFAULT_SITE_TEMPLATE){
+      sr.innerHTML = DEFAULT_SITE_TEMPLATE;
+    }
+    state.customTheme = null;
+    updateThemeStatusUI(false);
+    if(save){
+      writeStorage('dbr_custom_theme_v1', null);
+      if(window.db){
+        try{ window.db.collection('settings').doc('theme').delete(); }catch(e){}
+      }
+    }
+  }
+
+  // Re-bind dynamic content and events
   applySettingsToDOM();
   renderServices();
   renderWorks();
   renderGallery();
   renderBlog();
   renderTeam();
-  renderReviews(); // Displays latest 4-5 reviews
+  renderReviews();
+  bindDynamicEvents();
+  if(window.lucide) window.lucide.createIcons();
+}
+
+function updateThemeStatusUI(isCustom){
+  const el = document.getElementById('theme-active-status');
+  if(!el) return;
+  if(isCustom){
+    el.className = 'theme-badge-active';
+    el.innerHTML = '<i class="fa-solid fa-palette"></i> অ্যাক্টিভ: কাস্টম আপলোডকৃত থিম';
+  } else {
+    el.className = 'theme-badge-default';
+    el.innerHTML = '<i class="fa-solid fa-circle-check"></i> অ্যাক্টিভ: ডিফল্ট DBR টেমপ্লেট';
+  }
+}
+
+function initThemeTabUI(){
+  const editor = document.getElementById('theme-code-editor');
+  if(editor){
+    editor.value = state.customTheme || getStarterTemplate();
+  }
+  updateThemeStatusUI(!!state.customTheme);
+}
+
+function handleThemeFileUpload(input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const content = e.target.result;
+    document.getElementById('theme-code-editor').value = content;
+    applyThemeToSite(content, true);
+    showToast("✓ নতুন HTML থিম সফলভাবে আপলোড ও কার্যকর হয়েছে!");
+  };
+  reader.readAsText(file);
+}
+
+function downloadCurrentThemeBackup(){
+  const content = state.customTheme || getStarterTemplate();
+  const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dbr-theme-backup-' + new Date().toISOString().slice(0,10) + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast("✓ থিম ব্যাকআপ ফাইল ডাউনলোড সম্পন্ন হয়েছে!");
+}
+
+function restoreDefaultTheme(save = true){
+  if(save && !confirm("আপনি কি নিশ্চিত যে কাস্টম থিম বাতিল করে ডিফল্ট DBR ডিজাইনে ফিরে যেতে চান?")) return;
+  const ed = document.getElementById('theme-code-editor');
+  if(ed) ed.value = '';
+  applyThemeToSite(null, save);
+  showToast("✓ ফ্যাক্টরি রিস্টোর: ডিফল্ট DBR থিম লোড হয়েছে!");
+}
+
+function getStarterTemplate(){
+  return `<!-- ========================================================
+     DBR COMPLETE AUTO CENTRE - MODULAR STARTER THEME
+     গুগল ব্লগার-স্টাইল উইজেট টেমপ্লেট
+     ======================================================== -->
+<style>
+  /* আপনার থিমের কাস্টম CSS এখানে যোগ করুন */
+</style>
+
+<!-- হেডার ও মেনু -->
+<div data-dbr-widget="topbar"></div>
+
+<!-- হিরো সেকশন -->
+<div data-dbr-widget="hero"></div>
+
+<!-- ১২টি সার্ভিসের গ্রিড -->
+<div data-dbr-widget="services"></div>
+
+<!-- কাজের অ্যালবাম (Before & After) -->
+<div data-dbr-widget="works"></div>
+
+<!-- ফটো গ্যালারি -->
+<div data-dbr-widget="gallery"></div>
+
+<!-- গাড়ির যত্নের ব্লগ পোস্ট -->
+<div data-dbr-widget="blog"></div>
+
+<!-- গ্রাহক রিভিউ ও রেটিং ফর্ম -->
+<div data-dbr-widget="reviews"></div>
+
+<!-- আমাদের টিম -->
+<div data-dbr-widget="team"></div>
+
+<!-- ফুটার ও সোশ্যাল লিঙ্ক -->
+<div data-dbr-widget="footer"></div>
+`;
+}
+
+function loadStarterTemplateIntoEditor(){
+  document.getElementById('theme-code-editor').value = getStarterTemplate();
+  showToast("স্টার্টার টেমপ্লেট কোড এডিটরে লোড করা হয়েছে!");
+}
+
+function saveCustomThemeFromEditor(){
+  const code = document.getElementById('theme-code-editor').value.trim();
+  if(!code){
+    restoreDefaultTheme(true);
+    return;
+  }
+  applyThemeToSite(code, true);
+  const msg = document.getElementById('theme-save-msg');
+  if(msg){
+    msg.textContent = "✓ থিম সেভ ও লাইভ করা হয়েছে (" + new Date().toLocaleTimeString() + ")";
+    setTimeout(() => { msg.textContent = ""; }, 4000);
+  }
+  showToast("✓ কাস্টম থিম সফলভাবে সেভ ও লাইভ হয়েছে!");
+}
+
+function insertWidgetTag(tag){
+  const editor = document.getElementById('theme-code-editor');
+  if(!editor) return;
+  const tagStr = '<div data-dbr-widget="' + tag + '"></div>\\n';
+  const start = editor.selectionStart || 0;
+  const end = editor.selectionEnd || 0;
+  editor.value = editor.value.substring(0, start) + tagStr + editor.value.substring(end);
+  editor.focus();
+  editor.selectionStart = editor.selectionEnd = start + tagStr.length;
+}
+
+function bindDynamicEvents(){
+  // User review submit
+  const rf = document.getElementById('reviewForm');
+  if(rf && !rf.dataset.bound){
+    rf.dataset.bound = "1";
+    rf.addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = document.getElementById('reviewName').value.trim();
+      const rating = Number(document.getElementById('reviewRating').value);
+      const body = document.getElementById('reviewText').value.trim();
+      if(!name || !body) return;
+
+      const item = { id: Date.now(), name, rating, body, timestamp: new Date().toISOString() };
+      state.reviews.unshift(item);
+      writeStorage('dbr_reviews_v5', state.reviews);
+      if(window.db){
+        try{ window.db.collection('reviews').add(item); }catch(err){}
+      }
+      renderReviews();
+      this.reset();
+      showToast('ধন্যবাদ! আপনার রিভিউ সফলভাবে যুক্ত হয়েছে।');
+    });
+  }
+
+  // Jump button
+  const rj = document.getElementById('dbrReviewJump');
+  if(rj){
+    rj.onclick = () => {
+      const form = document.getElementById('reviewForm');
+      if(form){
+        form.scrollIntoView({behavior:'smooth'});
+        const rName = document.getElementById('reviewName');
+        if(rName) rName.focus();
+      }
+    };
+  }
+
+  // Cover Lightbox
+  const cOpen = document.getElementById('coverOpen');
+  const cBox = document.getElementById('coverLightbox');
+  const cLarge = document.getElementById('coverLarge');
+  const cClose = document.getElementById('coverClose');
+  if(cOpen && cBox && cLarge){
+    cOpen.onclick = function(e){
+      e.preventDefault();
+      const img = this.querySelector('img');
+      if(img) cLarge.src = img.src;
+      cBox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeCover = () => { cBox.classList.remove('open'); document.body.style.overflow = ''; };
+    if(cClose) cClose.onclick = closeCover;
+    cBox.onclick = e => { if(e.target === cBox || e.target === cLarge) closeCover(); };
+  }
+
+  // Drawer Mobile Menu Handling
+  const mBtn = document.getElementById('menuBtn');
+  const mDrawer = document.getElementById('mobileDrawer');
+  const dBackdrop = document.getElementById('drawerBackdrop');
+  const dClose = document.getElementById('drawerClose');
+  if(mBtn && mDrawer && dBackdrop){
+    mBtn.onclick = () => openDrawer();
+  }
+  if(dClose){
+    dClose.onclick = () => closeDrawer();
+  }
+  if(dBackdrop){
+    dBackdrop.onclick = () => closeDrawer();
+  }
+
+  // Language buttons
+  document.querySelectorAll('.dbr-lang-btn').forEach(btn => {
+    btn.onclick = () => applyLanguage(btn.dataset.lang);
+  });
+}
+
+// Initial Page Load
+window.addEventListener('DOMContentLoaded', () => {
+  captureDefaultTemplate();
+  initState();
+  if(state.customTheme){
+    applyThemeToSite(state.customTheme, false);
+  } else {
+    applySettingsToDOM();
+    renderServices();
+    renderWorks();
+    renderGallery();
+    renderBlog();
+    renderTeam();
+    renderReviews();
+    bindDynamicEvents();
+  }
   initFirebase();
   if(window.lucide) window.lucide.createIcons();
   
