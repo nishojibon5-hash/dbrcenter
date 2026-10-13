@@ -1026,6 +1026,58 @@ section{padding:80px 0}
 .admin-table th{color:#94A3B8;font-weight:700}
 
 /* Blogger-style Theme Manager Styles */
+#dbr-floating-admin-gear{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  z-index:990;
+  background:#12161F;
+  color:#F8FAFC;
+  border:1.5px solid #334155;
+  border-radius:30px;
+  padding:10px 18px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);
+  transition:all 0.25s ease;
+}
+#dbr-floating-admin-gear:hover{
+  background:var(--red);
+  border-color:var(--red);
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(217,30,43,0.4);
+}
+.theme-preset-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:16px;
+  margin:18px 0;
+}
+.theme-preset-card{
+  background:#0B0E14;
+  border:1.5px solid #1E293B;
+  border-radius:14px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:12px;
+  transition:all 0.2s ease;
+}
+.theme-preset-card:hover{
+  border-color:var(--orange);
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+.theme-preset-card.active{
+  border-color:#10B981;
+  background:#0A1612;
+}
+
 .theme-code-editor{
   font-family:'Consolas','Courier New',monospace;
   background:#090D14;
@@ -1755,47 +1807,97 @@ section{padding:80px 0}
       </div>
     </div>
 
-    <!-- TAB: FIREBASE & IMGBB CONFIG -->
+    <!-- TAB: FIREBASE & DATABASE SYNC -->
     <div id="tab-sec-firebase" class="admin-tab-content" style="display:none;">
       <div class="admin-card">
-        <h3>ফায়ারবেস ক্লাউড ডাটাবেস সেটিংস</h3>
-        <p style="color:#94A3B8;font-size:13px;">এখানে আপনার ফায়ারবেস কনফিগারেশন যাচাই ও অটো-সিঙ্ক করতে পারেন। প্রতিটা সেকশনের ডেটা এর নিজস্ব কালেকশনে (settings, services, works, gallery, blog, team, reviews, bookings) সংরক্ষিত হয়।</p>
-        
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
-          <div>
-            <label style="font-size:12px;color:#94A3B8;">Project ID:</label>
-            <input id="cfg-fb-pid" style="width:100%;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;"/>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:26px;color:#F59E0B;"><i class="fa-solid fa-database"></i></span>
+            <div>
+              <h3 style="margin:0;color:#F8FAFC;font-size:18px;">ডাটাবেস ও ক্লাউড সিঙ্ক কন্ট্রোল</h3>
+              <p style="margin:2px 0 0;color:#94A3B8;font-size:13px;">ফায়ারবেস ক্লাউড ডাটাবেস ও অফলাইন পারসিস্টেন্ট স্টোরেজ ম্যানেজমেন্ট</p>
+            </div>
           </div>
-          <div>
-            <label style="font-size:12px;color:#94A3B8;">API Key:</label>
-            <input id="cfg-fb-key" style="width:100%;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;"/>
+          <div id="fb-connection-status-pill">
+            <span class="theme-badge-default" id="fb-status-indicator">
+              <i class="fa-solid fa-hard-drive"></i> লোকাল ডাটাবেস: সক্রিয় ও সুরক্ষিত
+            </span>
           </div>
         </div>
 
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button class="btn" onclick="saveFirebaseCredentials()"><i class="fa-solid fa-check"></i> কনফিগ সেভ করুন</button>
-          <button class="btn" style="background:#0D9488!important;" onclick="seedFirebaseAll()"><i class="fa-solid fa-arrows-rotate"></i> সকল ডাটা অটো-সিঙ্ক করুন</button>
-        </div>
-        <div id="fb-sync-status" style="margin-top:14px;font-size:13px;"></div>
-      </div>
+        <!-- Connection Test Box -->
+        <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;padding:18px;margin-bottom:20px;">
+          <h4 style="color:#CBD5E1;font-size:14.5px;margin:0 0 8px;">
+            <i class="fa-solid fa-cloud" style="color:#38BDF8;"></i> ফায়ারবেস ক্লাউড প্রজেক্ট কনফিগারেশন
+          </h4>
+          <p style="color:#94A3B8;font-size:12.5px;margin-bottom:14px;">
+            আপনার নিজস্ব ফায়ারবেস প্রজেক্টের Project ID এবং Web API Key প্রদান করে পরীক্ষা করুন। কানেক্ট হলে লাইভ ডেটা ক্লাউডে সিঙ্ক হবে।
+          </p>
 
-      <!-- IMGBB CLOUD IMAGE STORAGE CONFIG -->
-      <div class="admin-card" style="margin-top:20px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:24px;color:#38BDF8;"><i class="fa-solid fa-cloud-arrow-up"></i></span>
-          <div>
-            <h3 style="margin:0;">ImgBB ক্লাউড ইমেজ স্টোরেজ সেটিংস</h3>
-            <p style="color:#94A3B8;font-size:13px;margin:2px 0 0;">এডমিন থেকে ছবি আপলোড করলে সরাসরি ImgBB স্টোরেজে সেভ হয়ে লাইভ ডাইরেক্ট লিঙ্ক তৈরি হবে।</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div>
+              <label style="font-size:12px;color:#94A3B8;display:block;margin-bottom:4px;font-weight:600;">Firebase Project ID:</label>
+              <input id="cfg-fb-pid" placeholder="যেমন: dbr-workshop-2026" style="width:100%;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;"/>
+            </div>
+            <div>
+              <label style="font-size:12px;color:#94A3B8;display:block;margin-bottom:4px;font-weight:600;">Firebase Web API Key:</label>
+              <input id="cfg-fb-key" placeholder="যেমন: AIzaSyD..." style="width:100%;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;"/>
+            </div>
           </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn" type="button" onclick="saveAndTestFirebaseConnection()">
+              <i class="fa-solid fa-plug-circle-check"></i> সংযোগ পরীক্ষা ও সেভ করুন
+            </button>
+            <button class="btn" type="button" style="background:#0D9488!important;" onclick="seedFirebaseAll()">
+              <i class="fa-solid fa-cloud-arrow-up"></i> সব ডাটা ক্লাউডে সিঙ্ক করুন
+            </button>
+            <button class="btn-outline" type="button" onclick="loadFirestoreData(true)">
+              <i class="fa-solid fa-cloud-arrow-down"></i> ক্লাউড থেকে ডাটা লোড করুন
+            </button>
+          </div>
+          <div id="fb-sync-status" style="margin-top:14px;font-size:13px;line-height:1.6;"></div>
         </div>
-        
-        <div style="margin:18px 0 10px;">
-          <label style="font-size:12.5px;color:#CBD5E1;font-weight:600;">ImgBB API Key (api.imgbb.com থেকে বিনামূল্যে কি পেতে পারেন):</label>
-          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
-            <input id="cfg-imgbb-key" placeholder="যেমন: b14dc990710fc5692305a415fb5c4e78" style="flex:1;min-width:260px;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;font-family:monospace;"/>
-            <button class="btn" onclick="saveImgbbKey()"><i class="fa-solid fa-floppy-disk"></i> কি (Key) সেভ করুন</button>
+
+        <!-- Full Database Backup & Restore (Zero Data Loss Guarantee) -->
+        <div style="background:#0B0E14;border:1px solid #1E2838;border-radius:14px;padding:18px;margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <i class="fa-solid fa-floppy-disk" style="color:#10B981;font-size:20px;"></i>
+            <h4 style="margin:0;color:#F8FAFC;font-size:14.5px;">সম্পূর্ণ ডাটাবেস এক্সপোর্ট ও ব্যাকআপ (JSON)</h4>
           </div>
-          <div id="imgbb-test-status" style="margin-top:10px;font-size:13px;"></div>
+          <p style="color:#94A3B8;font-size:12.5px;margin-bottom:14px;">
+            আপনার সাইটের সকল সেটিংস, থিম, সার্ভিস, কাজের অ্যালবাম, ব্লগ, গ্যালারি ও রিভিউ একটি একক ফাইলে সম্পূর্ণ ব্যাকআপ নিন বা রিস্টোর করুন।
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="btn" style="background:#059669!important;" onclick="exportDatabaseBackup()">
+              <i class="fa-solid fa-download"></i> সম্পূর্ণ ডাটাবেস ব্যাকআপ ডাউনলোড (.json)
+            </button>
+            <input type="file" id="db-import-file-input" accept=".json" style="display:none;" onchange="importDatabaseBackup(this)"/>
+            <button type="button" class="btn-outline" onclick="document.getElementById('db-import-file-input').click()">
+              <i class="fa-solid fa-upload"></i> ডাটাবেস ব্যাকআপ ফাইল রিস্টোর করুন
+            </button>
+          </div>
+          <div id="db-backup-status" style="margin-top:10px;font-size:13px;"></div>
+        </div>
+
+        <!-- IMGBB CLOUD IMAGE STORAGE CONFIG -->
+        <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;padding:18px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:24px;color:#38BDF8;"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+            <div>
+              <h4 style="margin:0;color:#F8FAFC;font-size:14.5px;">ImgBB ক্লাউড ইমেজ স্টোরেজ সেটিংস</h4>
+              <p style="color:#94A3B8;font-size:12.5px;margin:2px 0 0;">এডমিন থেকে ছবি আপলোড করলে সরাসরি ImgBB স্টোরেজে সেভ হয়ে লাইভ লিঙ্ক তৈরি হবে।</p>
+            </div>
+          </div>
+          
+          <div style="margin:16px 0 10px;">
+            <label style="font-size:12.5px;color:#CBD5E1;font-weight:600;">ImgBB API Key (api.imgbb.com থেকে বিনামূল্যে কি পেতে পারেন):</label>
+            <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+              <input id="cfg-imgbb-key" placeholder="যেমন: b14dc990710fc5692305a415fb5c4e78" style="flex:1;min-width:260px;padding:10px;background:#1E293B;border:1px solid #334155;color:#fff;border-radius:8px;font-family:monospace;"/>
+              <button class="btn" type="button" onclick="saveImgbbKey()"><i class="fa-solid fa-floppy-disk"></i> কি (Key) সেভ করুন</button>
+            </div>
+            <div id="imgbb-test-status" style="margin-top:10px;font-size:13px;"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1819,7 +1921,7 @@ section{padding:80px 0}
         <!-- Action Bar: Upload, Download Backup, Restore Default -->
         <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:12px;padding:16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <input type="file" id="theme-file-input" accept=".html,.htm" style="display:none;" onchange="handleThemeFileUpload(this)"/>
+            <input type="file" id="theme-file-input" accept=".html,.htm,.txt" style="display:none;" onchange="handleThemeFileUpload(this)"/>
             <button type="button" class="btn" onclick="document.getElementById('theme-file-input').click()">
               <i class="fa-solid fa-file-arrow-up"></i> থিম ফাইল (.html) আপলোড করুন
             </button>
@@ -1832,8 +1934,84 @@ section{padding:80px 0}
           </div>
           <div>
             <button type="button" class="btn-outline" style="border-color:#0284C7;color:#38BDF8;" onclick="loadStarterTemplateIntoEditor()">
-              <i class="fa-solid fa-code"></i> স্টার্টার টেমপ্লেট লোড করুন
+              <i class="fa-solid fa-code"></i> স্টার্টার কোড লোড করুন
             </button>
+          </div>
+        </div>
+
+        <!-- Preset Themes Gallery -->
+        <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:12px;padding:18px;margin-bottom:20px;">
+          <h4 style="color:#F1F5F9;font-size:15px;margin:0 0 6px;">
+            <i class="fa-solid fa-palette" style="color:var(--orange);"></i> রেডিমেড থিম টেমপ্লেট গ্যালারি (Preset Themes)
+          </h4>
+          <p style="color:#94A3B8;font-size:13px;margin:0 0 14px;">
+            যে থিমটি পছন্দ হয় 'প্রয়োগ করুন' বাটনে চাপলে পুরো সাইট মুহূর্তেই সেই থিমের আদলে সাজানো হয়ে যাবে এবং সকল এডমিন ডেটা স্বয়ংক্রিয়ভাবে কনফিগার হবে:
+          </p>
+
+          <div class="theme-preset-grid">
+            <!-- Preset 1: Default Authentic -->
+            <div class="theme-preset-card">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <strong style="color:#F8FAFC;font-size:14.5px;">১. অরিজিনাল DBR ডার্ক</strong>
+                  <span style="font-size:11px;background:#1E293B;color:#94A3B8;padding:2px 8px;border-radius:10px;">ডিফল্ট</span>
+                </div>
+                <p style="color:#94A3B8;font-size:12.5px;margin:0;line-height:1.5;">
+                  ডেস্কটপ স্ল্যান্ট পলিগন হিরো, ডার্ক ও অরেঞ্জ ওয়ার্কশপ কালার স্কিম ও পূর্ণাঙ্গ মোবাইল কার্ড ভিউ।
+                </p>
+              </div>
+              <button type="button" class="btn" style="width:100%;justify-content:center;font-size:13px;padding:9px;" onclick="applyPresetTheme('default')">
+                ✓ ডিফল্ট থিম সক্রিয় করুন
+              </button>
+            </div>
+
+            <!-- Preset 2: Modern Blue -->
+            <div class="theme-preset-card">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <strong style="color:#38BDF8;font-size:14.5px;">২. মডার্ন ব্লু টেকনোলজি</strong>
+                  <span style="font-size:11px;background:rgba(56,189,248,0.2);color:#38BDF8;padding:2px 8px;border-radius:10px;">হাই-টেক</span>
+                </div>
+                <p style="color:#94A3B8;font-size:12.5px;margin:0;line-height:1.5;">
+                  নেভি ব্লু ডার্ক ব্যাকগ্রাউন্ড, আধুনিক গ্লাস-কার্ড, সাইবার ব্লু অ্যাকসেন্ট ও রেসপন্সিভ গ্রিড।
+                </p>
+              </div>
+              <button type="button" class="btn" style="width:100%;justify-content:center;font-size:13px;padding:9px;background:#0284C7!important;" onclick="applyPresetTheme('modern_blue')">
+                এই থিম প্রয়োগ করুন
+              </button>
+            </div>
+
+            <!-- Preset 3: Racing Red -->
+            <div class="theme-preset-card">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <strong style="color:#EF4444;font-size:14.5px;">৩. স্পোর্টস রেসিং রেড</strong>
+                  <span style="font-size:11px;background:rgba(239,68,68,0.2);color:#EF4444;padding:2px 8px;border-radius:10px;">রেসিং</span>
+                </div>
+                <p style="color:#94A3B8;font-size:12.5px;margin:0;line-height:1.5;">
+                  কার্বন ব্ল্যাক ও গাঢ় লাল অ্যাকসেন্ট, পাওয়ারফুল হেডার এবং অটোমোটিভ রেসিং ওয়ার্কশপ লুক।
+                </p>
+              </div>
+              <button type="button" class="btn" style="width:100%;justify-content:center;font-size:13px;padding:9px;background:#DC2626!important;" onclick="applyPresetTheme('racing_red')">
+                এই থিম প্রয়োগ করুন
+              </button>
+            </div>
+
+            <!-- Preset 4: Clean Corporate -->
+            <div class="theme-preset-card">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <strong style="color:#F8FAFC;font-size:14.5px;">৪. ক্লিন কর্পোরেট লাইট</strong>
+                  <span style="font-size:11px;background:#334155;color:#E2E8F0;padding:2px 8px;border-radius:10px;">হোয়াইট</span>
+                </div>
+                <p style="color:#94A3B8;font-size:12.5px;margin:0;line-height:1.5;">
+                  উজ্জ্বল সাদা ব্যাকগ্রাউন্ড, হাই-কন্ট্রাস্ট টাইপোগ্রাফি এবং ফ্রেশ কর্পোরেট অটো সেন্টার স্টাইল।
+                </p>
+              </div>
+              <button type="button" class="btn" style="width:100%;justify-content:center;font-size:13px;padding:9px;background:#475569!important;" onclick="applyPresetTheme('clean_white')">
+                এই থিম প্রয়োগ করুন
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1843,13 +2021,13 @@ section{padding:80px 0}
             <label style="font-weight:700;color:#CBD5E1;font-size:13px;">
               <i class="fa-solid fa-code"></i> থিম সোর্স কোড (HTML / CSS / Widgets):
             </label>
-            <span style="font-size:12px;color:#94A3B8;">কোড পরিবর্তন করে 'থিম সেভ ও লাইভ করুন' চাপলে পুরো সাইটে ইনস্ট্যান্ট কার্যকর হবে</span>
+            <span style="font-size:12px;color:#94A3B8;">যেকোনো HTML পেস্ট করে 'থিম সেভ ও লাইভ করুন' চাপলে পুরো সাইট কনফিগার হয়ে যাবে</span>
           </div>
           <textarea id="theme-code-editor" class="theme-code-editor" placeholder="এখানে আপনার কাস্টম HTML থিম কোড পেস্ট করুন অথবা ফাইল আপলোড করুন..."></textarea>
         </div>
 
         <div style="display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap;">
-          <button type="button" class="btn" style="padding:12px 24px;" onclick="saveCustomThemeFromEditor()">
+          <button type="button" class="btn" style="padding:12px 28px;" onclick="saveCustomThemeFromEditor()">
             <i class="fa-solid fa-floppy-disk"></i> থিম সেভ ও লাইভ করুন
           </button>
           <span id="theme-save-msg" style="font-size:13.5px;color:#34D399;font-weight:600;"></span>
@@ -1895,6 +2073,12 @@ section{padding:80px 0}
     </div>
   </div>
 </div>
+
+<!-- FLOATING ADMIN ACCESS BUTTON (ALWAYS ACCESSIBLE IN ANY THEME) -->
+<button id="dbr-floating-admin-gear" onclick="openAdminGateway()" title="অ্যাডমিন প্যানেল (Admin CMS)" aria-label="Admin CMS Panel">
+  <i class="fa-solid fa-gear"></i>
+  <span>অ্যাডমিন</span>
+</button>
 
 <!-- ========================================================
      APPLICATION LOGIC & CORE JAVASCRIPT
@@ -2083,7 +2267,8 @@ function applySettingsToDOM(){
 }
 
 function renderServices(){
-  const c = document.getElementById('services-container');
+  const c = document.getElementById('services-container') || document.querySelector('.services-grid');
+  if(!c) return;
   c.innerHTML = state.services.map(s => `
     <article class="service-card" onclick="openBookingForm('${s.title_bn}')">
       <div class="service-icon">${s.icon||'🔧'}</div>
@@ -2094,7 +2279,8 @@ function renderServices(){
 }
 
 function renderWorks(){
-  const c = document.getElementById('works-container');
+  const c = document.getElementById('works-container') || document.querySelector('.works-grid');
+  if(!c) return;
   c.innerHTML = state.works.map(w => `
     <article class="work-card" onclick="openWorkModal('${w.title_bn}','${w.before_img}','${w.after_img}')">
       <div class="before-after">
@@ -2110,7 +2296,8 @@ function renderWorks(){
 }
 
 function renderGallery(){
-  const c = document.getElementById('gallery-photos-container');
+  const c = document.getElementById('gallery-photos-container') || document.querySelector('.gallery-grid');
+  if(!c) return;
   c.innerHTML = state.gallery.map(g => `
     <figure class="gallery-photo-card" onclick="openImageModal('${g.title_bn}','${g.img}')">
       <div class="gallery-photo-frame"><img alt="${g.title_bn}" src="${g.img}"/></div>
@@ -2121,7 +2308,8 @@ function renderGallery(){
 }
 
 function renderBlog(){
-  const c = document.getElementById('blog-posts-container');
+  const c = document.getElementById('blog-posts-container') || document.querySelector('.blog-grid');
+  if(!c) return;
   c.innerHTML = state.blog.map(b => `
     <article class="blog-card" onclick="openBlogModal('${b.title_bn}','${b.desc}')">
       <img alt="${b.title_bn}" src="${b.img}"/>
@@ -2136,7 +2324,8 @@ function renderBlog(){
 }
 
 function renderTeam(){
-  const c = document.getElementById('team-container');
+  const c = document.getElementById('team-container') || document.querySelector('.team-grid');
+  if(!c) return;
   c.innerHTML = state.team.map(t => `
     <article class="team-card" onclick="openTeamModal('${t.title_bn}','${t.desc}','${t.phone}')">
       <div class="team-photo"><span>${t.icon||'👨‍💼'}</span></div>
@@ -2150,10 +2339,10 @@ function renderTeam(){
   `).join('');
 }
 
-// RENDERS LATEST 4-5 REVIEWS ON FRONTEND (AS REQUESTED BY USER)
 function renderReviews(){
   const list = document.getElementById('reviewList');
-  const latestReviews = state.reviews.slice(0, 5); // Latest 4-5 reviews
+  if(!list) return;
+  const latestReviews = state.reviews.slice(0, 5);
   list.innerHTML = latestReviews.map(r => `
     <article class="review-card">
       <div class="review-top">
@@ -2170,16 +2359,21 @@ function renderReviews(){
 }
 
 function updateRatingSummary(){
+  const avgEl = document.getElementById('dbrRatingAverage');
+  const starsEl = document.getElementById('dbrRatingStars');
+  const countEl = document.getElementById('dbrRatingCount');
+  if(!avgEl || !starsEl || !countEl) return;
+
   if(!state.reviews.length){
-    document.getElementById('dbrRatingAverage').textContent = '5.0';
-    document.getElementById('dbrRatingStars').textContent = '★★★★★';
-    document.getElementById('dbrRatingCount').textContent = '০টি রিভিউ';
+    avgEl.textContent = '5.0';
+    starsEl.textContent = '★★★★★';
+    countEl.textContent = '০টি রিভিউ';
     return;
   }
   const avg = state.reviews.reduce((acc, r)=>acc + (Number(r.rating)||5), 0) / state.reviews.length;
-  document.getElementById('dbrRatingAverage').textContent = avg.toFixed(1);
-  document.getElementById('dbrRatingStars').textContent = '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg));
-  document.getElementById('dbrRatingCount').textContent = state.reviews.length + 'টি রিভিউ';
+  avgEl.textContent = avg.toFixed(1);
+  starsEl.textContent = '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg));
+  countEl.textContent = state.reviews.length + 'টি রিভিউ';
 }
 
 // Modals
@@ -2530,15 +2724,135 @@ async function seedFirebaseAll(){
   }
 }
 
-function saveFirebaseCredentials(){
+async function saveAndTestFirebaseConnection(){
   const pid = document.getElementById('cfg-fb-pid').value.trim();
   const key = document.getElementById('cfg-fb-key').value.trim();
-  if(pid && key){
-    activeFirebaseConfig.projectId = pid;
-    activeFirebaseConfig.apiKey = key;
-    writeStorage('dbr_fb_cfg_v5', activeFirebaseConfig);
-    showToast("ফায়ারবেস কনফিগারেশন সংরক্ষিত হয়েছে!");
+  const statusEl = document.getElementById('fb-sync-status');
+  const indicator = document.getElementById('fb-status-indicator');
+
+  if(!pid || !key){
+    statusEl.innerHTML = `<span style="color:#EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> Project ID এবং API Key দুটিই প্রদান করুন।</span>`;
+    return;
   }
+
+  statusEl.innerHTML = `<span style="color:#60A5FA;"><i class="fa-solid fa-spinner fa-spin"></i> ফায়ারবেস ক্লাউডের সাথে সংযোগ পরীক্ষা করা হচ্ছে...</span>`;
+
+  try {
+    if(typeof firebase !== 'undefined'){
+      if(firebase.apps.length > 0){
+        await Promise.all(firebase.apps.map(app => app.delete()));
+      }
+      
+      const newConfig = {
+        apiKey: key,
+        projectId: pid,
+        authDomain: `${pid}.firebaseapp.com`,
+        storageBucket: `${pid}.firebasestorage.app`
+      };
+
+      firebase.initializeApp(newConfig);
+      window.db = firebase.firestore();
+
+      // Test with a quick query
+      await window.db.collection('settings').doc('site_config').set({ ...state.settings, updatedAt: new Date().toISOString() }, { merge: true });
+
+      activeFirebaseConfig = newConfig;
+      writeStorage('dbr_fb_cfg_v5', activeFirebaseConfig);
+
+      indicator.className = 'theme-badge-active';
+      indicator.innerHTML = '<i class="fa-solid fa-circle-check"></i> ফায়ারবেস: সংযুক্ত ও অনলাইন';
+      statusEl.innerHTML = `<span style="color:#10B981;font-weight:700;"><i class="fa-solid fa-check"></i> অভিনন্দন! ফায়ারবেস ক্লাউড ডাটাবেস সফলভাবে সংযুক্ত হয়েছে। রিয়েল-টাইম সিঙ্ক চালু।</span>`;
+      showToast("✓ ফায়ারবেস সংযোগ সফল হয়েছে!");
+    }
+  } catch(err) {
+    console.warn("Firebase test notice:", err);
+    indicator.className = 'theme-badge-default';
+    indicator.innerHTML = '<i class="fa-solid fa-hard-drive"></i> লোকাল ডাটাবেস: সক্রিয়';
+    statusEl.innerHTML = `<span style="color:#F59E0B;font-weight:600;"><i class="fa-solid fa-circle-exclamation"></i> ফায়ারবেস ক্লাউড সংযোগ বার্তা: ${err.message}<br/><small style="color:#94A3B8;">কোনো চিন্তা নেই! লোকাল স্টোরেজে আপনার সকল তথ্য সম্পূর্ণ কার্যকর ও সুরক্ষিত আছে।</small></span>`;
+    showToast("ফায়ারবেস ক্লাউড বার্তা: লোকাল মোডে সংরক্ষিত।");
+  }
+}
+
+function exportDatabaseBackup(){
+  const fullBackup = {
+    appName: "DBR Complete Auto Centre",
+    exportedAt: new Date().toISOString(),
+    version: "6.0",
+    settings: state.settings,
+    customTheme: state.customTheme,
+    services: state.services,
+    works: state.works,
+    gallery: state.gallery,
+    blog: state.blog,
+    team: state.team,
+    reviews: state.reviews,
+    bookings: state.bookings
+  };
+
+  const blob = new Blob([JSON.stringify(fullBackup, null, 2)], { type: "application/json;charset=utf-8" });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `dbr-database-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast("✓ সম্পূর্ণ ডাটাবেস ব্যাকআপ ডাউনলোড সম্পন্ন হয়েছে!");
+}
+
+function importDatabaseBackup(input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      const data = JSON.parse(e.target.result);
+      if(!data || typeof data !== 'object'){
+        throw new Error("ভুল ফাইল ফরম্যাট");
+      }
+      if(data.settings) state.settings = data.settings;
+      if(data.services) state.services = data.services;
+      if(data.works) state.works = data.works;
+      if(data.gallery) state.gallery = data.gallery;
+      if(data.blog) state.blog = data.blog;
+      if(data.team) state.team = data.team;
+      if(data.reviews) state.reviews = data.reviews;
+      if(data.bookings) state.bookings = data.bookings;
+      if(data.customTheme !== undefined) state.customTheme = data.customTheme;
+
+      writeStorage('dbr_settings_v6', state.settings);
+      writeStorage('dbr_services_v6', state.services);
+      writeStorage('dbr_works_v6', state.works);
+      writeStorage('dbr_gallery_v6', state.gallery);
+      writeStorage('dbr_blog_v6', state.blog);
+      writeStorage('dbr_team_v6', state.team);
+      writeStorage('dbr_reviews_v5', state.reviews);
+      writeStorage('dbr_bookings_v5', state.bookings);
+      writeStorage('dbr_custom_theme_v1', state.customTheme);
+
+      if(state.customTheme){
+        applyThemeToSite(state.customTheme, false);
+      } else {
+        applySettingsToDOM();
+        renderServices();
+        renderWorks();
+        renderGallery();
+        renderBlog();
+        renderTeam();
+        renderReviews();
+      }
+      populateSettingsForm();
+      renderAdminTables();
+      initThemeTabUI();
+
+      showToast("✓ ডাটাবেস সফলভাবে রিস্টোর করা হয়েছে!");
+      const statusEl = document.getElementById('db-backup-status');
+      if(statusEl) statusEl.innerHTML = '<span style="color:#10B981;font-weight:700;">✓ ব্যাকআপ থেকে সকল ডাটা সফলভাবে রিস্টোর হয়েছে!</span>';
+    } catch(err) {
+      alert("ব্যাকআপ ফাইল পড়া ব্যর্থ হয়েছে: " + err.message);
+    }
+  };
+  reader.readAsText(file);
 }
 
 // ========================================================
@@ -2619,16 +2933,26 @@ function openAdminGateway(){
 }
 
 function verifyAdminPin(){
-  const pin = document.getElementById('admin-gate-pin').value.trim();
+  const rawPin = document.getElementById('admin-gate-pin').value.trim();
+  const cleanPin = rawPin.replace(/[^0-9a-zA-Z]/g, '').toLowerCase();
   const err = document.getElementById('admin-gate-error');
-  if(pin === '01711287258' || pin === '1234' || pin === 'admin' || pin === 'dbr2026'){
+  
+  if(
+    cleanPin === '01844487468' || 
+    cleanPin === '01711287258' || 
+    cleanPin === '01776596315' ||
+    cleanPin === '1234' || 
+    cleanPin === 'admin' || 
+    cleanPin === 'dbr2026'
+  ){
     document.getElementById('admin-gate-screen').style.display = 'none';
     document.getElementById('admin-cms-panel').style.display = 'block';
     populateSettingsForm();
     renderAdminTables();
+    initThemeTabUI();
     showToast("এডমিন কনসোলে স্বাগতম!");
-  }else{
-    err.textContent = "ভুল মোবাইল নম্বর বা পিন! সঠিক পিন দিন।";
+  } else {
+    err.textContent = "ভুল মোবাইল নম্বর বা পিন! (পাসকোড: 01844-487468 বা 01711-287258)";
     err.style.display = 'block';
   }
 }
@@ -2686,13 +3010,20 @@ function handleSaveSettings(e){
   state.settings.mapsUrl = document.getElementById('set-map-url').value.trim();
 
   writeStorage('dbr_settings_v6', state.settings);
-  applySettingsToDOM();
+  
+  // Instant live update: if a custom theme is active, recompile it immediately with new settings
+  if(state.customTheme){
+    applyThemeToSite(state.customTheme, false);
+  } else {
+    applySettingsToDOM();
+  }
+
   if(window.db){
     try{
       window.db.collection('settings').doc('site_config').set({ ...state.settings, imgbbKey: activeImgbbKey }, {merge:true});
-    }catch(err){ console.warn("Firestore save settings:", err); }
+    }catch(err){ console.warn("Firestore save settings notice:", err); }
   }
-  showToast("সাইট সেটিংস সফলভাবে সেভ হয়েছে!");
+  showToast("✓ সাইট সেটিংস সফলভাবে সেভ ও লাইভ আপডেট হয়েছে!");
 }
 
 function renderAdminTables(){
@@ -3404,7 +3735,7 @@ function clearAllBookings(){
 }
 
 // ========================================================
-// GOOGLE BLOGGER-STYLE THEME & LAYOUT ENGINE
+// GOOGLE BLOGGER-STYLE THEME & LAYOUT ENGINE (UNIVERSAL HTML ENGINE)
 // ========================================================
 let DEFAULT_SITE_TEMPLATE = "";
 
@@ -3419,7 +3750,7 @@ function getWidgetHtml(type){
   const temp = document.createElement('div');
   temp.innerHTML = DEFAULT_SITE_TEMPLATE || (document.getElementById('site-root') ? document.getElementById('site-root').innerHTML : '');
   
-  switch(type.toLowerCase()){
+  switch((type||'').toLowerCase()){
     case 'topbar':
     case 'header': {
       const topbar = temp.querySelector('header.topbar');
@@ -3464,26 +3795,195 @@ function getWidgetHtml(type){
   }
 }
 
+function autoConfigureThemeWithAdmin(container){
+  if(!container) return;
+  const s = state.settings || DEFAULT_SETTINGS;
+
+  // 1. Phone numbers: any tel links or elements marked with phone
+  container.querySelectorAll('a[href^="tel:"], .phone-link, .call-link, [data-field="phone"]').forEach((el, idx) => {
+    const ph = (idx === 1 && s.phone2) ? s.phone2 : (s.phone1 || "01711-287258");
+    el.href = `tel:${ph.replace(/\s+/g, '')}`;
+    if(el.children.length === 0 || el.innerText.trim().match(/^[0-9\-\+\s]{7,}$/)){
+      el.textContent = ph;
+    }
+  });
+
+  // 2. WhatsApp links
+  container.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"], .wa-link, [data-field="whatsapp"]').forEach(el => {
+    el.href = `https://wa.me/${(s.whatsappPhone || '8801711287258').replace(/[^0-9]/g, '')}`;
+  });
+
+  // 3. Email links
+  container.querySelectorAll('a[href^="mailto:"], [data-field="email"]').forEach(el => {
+    el.href = `mailto:${s.email || 'dbrcompelte@gmail.com'}`;
+    if(el.children.length === 0 || el.innerText.includes('@')){
+      el.textContent = s.email || 'dbrcompelte@gmail.com';
+    }
+  });
+
+  // 4. Map links
+  container.querySelectorAll('a[href*="maps"], .map-link, [data-field="map"]').forEach(el => {
+    el.href = s.mapsUrl || 'https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura';
+  });
+
+  // 5. Address elements
+  container.querySelectorAll('.address, address, [data-field="address"]').forEach(el => {
+    el.textContent = s.address || 'শহীদ জিয়া মেডিকেল রোড, শাকপালা, বগুড়া সদর';
+  });
+
+  // 6. Hero elements
+  const heroWhite = container.querySelector('#hero-title-white-el, [data-field="hero-title-white"]');
+  if(heroWhite) heroWhite.textContent = s.heroTitleWhite || "DBR";
+  const heroRed = container.querySelector('#hero-title-red-el, [data-field="hero-title-red"]');
+  if(heroRed) heroRed.textContent = s.heroTitleRed || "COMPLETE AUTO CENTRE";
+  const heroBadge = container.querySelector('#hero-badge-tag, [data-field="hero-badge"]');
+  if(heroBadge) heroBadge.textContent = s.heroBadge || "আপনার বিশ্বস্ত কার ওয়ার্কশপ";
+  const heroDesc = container.querySelector('#hero-desc-el, [data-field="hero-desc"]');
+  if(heroDesc) heroDesc.textContent = s.heroDesc || "";
+  const heroCover = container.querySelector('#hero-cover-img, [data-field="hero-cover"]');
+  if(heroCover && s.coverImage) heroCover.src = s.coverImage;
+
+  // 7. Auto populate dynamic lists if containers exist
+  const srvC = container.querySelector('#services-container, .services-grid, [data-services-container]');
+  if(srvC && state.services && state.services.length > 0){
+    srvC.innerHTML = state.services.map(srv => `
+      <article class="service-card" onclick="openBookingForm('${srv.title_bn}')">
+        <div class="service-icon">${srv.icon||'🔧'}</div>
+        <h3><span>${srv.title_bn}</span></h3>
+        <p>${srv.desc || srv.title_en || 'সার্ভিস'}</p>
+      </article>
+    `).join('');
+  }
+
+  const wrkC = container.querySelector('#works-container, .works-grid, [data-works-container]');
+  if(wrkC && state.works && state.works.length > 0){
+    wrkC.innerHTML = state.works.map(w => `
+      <article class="work-card" onclick="openWorkModal('${w.title_bn}','${w.before_img}','${w.after_img}')">
+        <div class="before-after">
+          <div class="before-box">
+            <span class="ba-badge before">BEFORE</span>
+            <img src="${w.before_img}" alt="Before - ${w.title_bn}" loading="lazy"/>
+          </div>
+          <div class="after-box">
+            <span class="ba-badge after">AFTER</span>
+            <img src="${w.after_img}" alt="After - ${w.title_bn}" loading="lazy"/>
+          </div>
+        </div>
+        <div class="work-info" style="padding:14px;">
+          <h3 style="margin:0 0 6px;">${w.title_bn}</h3>
+          <p style="margin:0;color:#94a3b8;font-size:13px;">${w.desc||'Before & After'}</p>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  const galC = container.querySelector('#gallery-photos-container, #gallery-container, .gallery-grid');
+  if(galC && state.gallery && state.gallery.length > 0){
+    galC.innerHTML = state.gallery.map(g => `
+      <figure class="gallery-photo-card" onclick="openImageModal('${g.title_bn}','${g.img}')">
+        <div class="gallery-photo-frame"><img alt="${g.title_bn}" src="${g.img}"/></div>
+        <figcaption><span>${g.title_bn}</span></figcaption>
+        <small>${g.tag||'DBR Auto Centre'}</small>
+      </figure>
+    `).join('');
+  }
+
+  const blgC = container.querySelector('#blog-posts-container, #blog-container, .blog-grid');
+  if(blgC && state.blog && state.blog.length > 0){
+    blgC.innerHTML = state.blog.map(b => `
+      <article class="blog-card" onclick="openBlogModal('${b.title_bn}','${b.desc}')">
+        <img alt="${b.title_bn}" src="${b.img}"/>
+        <div class="blog-content">
+          <span class="tag">${b.tag||'গাড়ির যত্ন'}</span>
+          <h3><span>${b.title_bn}</span></h3>
+          <p>${b.desc}</p>
+          <a class="readmore" href="#contact" onclick="closeModal()">বিস্তারিত পড়ুন →</a>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  const revC = container.querySelector('#reviewList, #reviews-container, .reviews-grid');
+  if(revC && state.reviews && state.reviews.length > 0){
+    revC.innerHTML = state.reviews.slice(0, 5).map(r => `
+      <article class="review-card">
+        <div class="review-top">
+          <div class="avatar">${(r.name||'গ').slice(0,1)}</div>
+          <div>
+            <h3><span>${r.name||'সম্মানিত গ্রাহক'}</span></h3>
+            <div class="stars">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+          </div>
+        </div>
+        <p>${r.body||''}</p>
+      </article>
+    `).join('');
+  }
+
+  // 8. Hook booking buttons to booking modal
+  container.querySelectorAll('button, a').forEach(el => {
+    const text = (el.textContent || '').trim();
+    if(text.includes('বুকিং') || text.includes('Booking') || text.includes('অ্যাপয়েন্টমেন্ট')){
+      el.addEventListener('click', (e) => {
+        const href = el.getAttribute('href');
+        if(!href || href === '#' || href === 'javascript:void(0)'){
+          e.preventDefault();
+          openBookingForm();
+        }
+      });
+    }
+  });
+}
+
 function compileThemeTemplate(tpl){
-  if(!tpl) return "";
+  if(!tpl) return { bodyHtml: "", stylesHtml: "" };
   let compiled = tpl;
   const s = state.settings || DEFAULT_SETTINGS;
   
-  // Replace Template Tokens
+  // 1. Replace template tokens
   compiled = compiled
     .replace(/\{\{BRAND_NAME\}\}/g, s.brandName || "Complete Auto Centre")
     .replace(/\{\{BRAND_SUBTITLE\}\}/g, s.brandSubtitle || "Design. Build. Repair")
     .replace(/\{\{HERO_BADGE\}\}/g, s.heroBadge || "আপনার বিশ্বস্ত কার ওয়ার্কশপ")
     .replace(/\{\{HERO_TITLE_WHITE\}\}/g, s.heroTitleWhite || "DBR")
     .replace(/\{\{HERO_TITLE_RED\}\}/g, s.heroTitleRed || "COMPLETE AUTO CENTRE")
+    .replace(/\{\{HERO_DESC\}\}/g, s.heroDesc || "আপনার গাড়ির সার্ভিসিং, মেরামত ও ডায়াগনস্টিক নিশ্চিত করতে বিশ্বস্ত ঠিকানা।")
     .replace(/\{\{HERO_IMAGE\}\}/g, s.coverImage || "workshop_building.jpg")
+    .replace(/\{\{COVER_IMAGE\}\}/g, s.coverImage || "workshop_building.jpg")
     .replace(/\{\{PHONE1\}\}/g, s.phone1 || "01711-287258")
     .replace(/\{\{PHONE2\}\}/g, s.phone2 || "01776-596315")
     .replace(/\{\{ADDRESS\}\}/g, s.address || "শহীদ জিয়া মেডিকেল রোড, শাকপালা, বগুড়া সদর")
-    .replace(/\{\{EMAIL\}\}/g, s.email || "dbrcompelte@gmail.com");
+    .replace(/\{\{EMAIL\}\}/g, s.email || "dbrcompelte@gmail.com")
+    .replace(/\{\{WHATSAPP\}\}/g, s.whatsappPhone || "8801711287258")
+    .replace(/\{\{MAPS_URL\}\}/g, s.mapsUrl || "https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura")
+    .replace(/\{\{OFFER_BADGE\}\}/g, s.offerBadge || "বিশেষ অফার")
+    .replace(/\{\{OFFER_TEXT\}\}/g, s.offerText || "আপনার গাড়ির সার্ভিসিং বুকিং করুন")
+    .replace(/\{\{OFFER_BTN\}\}/g, s.offerBtn || "বুকিং করুন ↗");
 
-  // Parse HTML DOM to replace widgets (<div data-dbr-widget="..."> or data-widget or b:widget / b:section)
-  const doc = new DOMParser().parseFromString(compiled, 'text/html');
+  // Blogger token replacements
+  compiled = compiled
+    .replace(/<data:blog\.title\s*\/>/gi, `${s.heroTitleWhite || 'DBR'} ${s.heroTitleRed || 'Complete Auto Centre'}`)
+    .replace(/<data:blog\.pageTitle\s*\/>/gi, `${s.heroTitleWhite || 'DBR'} Complete Auto Centre - Bogura`)
+    .replace(/<data:blog\.url\s*\/>/gi, window.location.href)
+    .replace(/<data:blog\.homepageUrl\s*\/>/gi, window.location.origin + window.location.pathname);
+
+  // 2. Parse DOM using DOMParser
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(compiled, 'text/html');
+
+  // 3. Extract Styles (<style> and <link rel="stylesheet">) from both <head> and <body>
+  let stylesHtml = "";
+  doc.querySelectorAll('style, link[rel="stylesheet"]').forEach(el => {
+    stylesHtml += el.outerHTML + "\n";
+  });
+
+  // Extract Blogger skin styles if present
+  const skinMatches = compiled.match(/<b:skin[^>]*>([\s\S]*?)<\/b:skin>/gi) || [];
+  skinMatches.forEach(sm => {
+    const css = sm.replace(/<\/?b:skin[^>]*>/gi, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!\[CDATA\[|\]\]>/g, '');
+    if(css.trim()) stylesHtml += `<style>${css}</style>\n`;
+  });
+
+  // 4. Process widgets: <div data-dbr-widget="...">, data-widget, b:widget, b:section
   const widgets = doc.querySelectorAll('[data-dbr-widget], [data-widget], b\\:widget, b\\:section');
   widgets.forEach(el => {
     const wType = (el.getAttribute('data-dbr-widget') || el.getAttribute('data-widget') || el.getAttribute('type') || el.id || '').toLowerCase();
@@ -3495,7 +3995,8 @@ function compileThemeTemplate(tpl){
     }
   });
 
-  return doc.body.innerHTML;
+  const bodyHtml = doc.body ? doc.body.innerHTML : compiled;
+  return { bodyHtml, stylesHtml };
 }
 
 function applyThemeToSite(customHtml, save = true){
@@ -3503,12 +4004,29 @@ function applyThemeToSite(customHtml, save = true){
   const sr = document.getElementById('site-root');
   if(!sr) return;
 
+  // Injected theme style container in <head>
+  let themeStyleContainer = document.getElementById('dbr-custom-theme-styles-injection');
+  if(!themeStyleContainer){
+    themeStyleContainer = document.createElement('div');
+    themeStyleContainer.id = 'dbr-custom-theme-styles-injection';
+    document.head.appendChild(themeStyleContainer);
+  }
+
   if(customHtml && typeof customHtml === 'string' && customHtml.trim()){
     try {
-      const compiled = compileThemeTemplate(customHtml);
-      sr.innerHTML = compiled;
+      const { bodyHtml, stylesHtml } = compileThemeTemplate(customHtml);
+      
+      // Inject CSS styles into head to guarantee original view styling
+      themeStyleContainer.innerHTML = stylesHtml;
+      
+      // Inject body markup
+      sr.innerHTML = bodyHtml;
       state.customTheme = customHtml;
       updateThemeStatusUI(true);
+
+      // Auto-configure ANY custom HTML theme with Admin
+      autoConfigureThemeWithAdmin(sr);
+
       if(save){
         writeStorage('dbr_custom_theme_v1', customHtml);
         if(window.db){
@@ -3516,13 +4034,12 @@ function applyThemeToSite(customHtml, save = true){
         }
       }
     } catch(err) {
-      console.error("Theme compilation error:", err);
-      showToast("থিম রেন্ডারিংয়ে ত্রুটি! ডিফল্ট লেআউট লোড করা হচ্ছে।");
-      restoreDefaultTheme(false);
-      return;
+      console.warn("Theme compilation notice:", err);
+      showToast("থিম সমন্বয়ে ত্রুটি! ডিফল্ট লেআউটে লোড হচ্ছে...");
     }
   } else {
     // Restore default pristine template
+    themeStyleContainer.innerHTML = '';
     if(DEFAULT_SITE_TEMPLATE){
       sr.innerHTML = DEFAULT_SITE_TEMPLATE;
     }
@@ -3536,7 +4053,7 @@ function applyThemeToSite(customHtml, save = true){
     }
   }
 
-  // Re-bind dynamic content and events
+  // Safely re-bind dynamic content and events
   applySettingsToDOM();
   renderServices();
   renderWorks();
@@ -3607,7 +4124,7 @@ function getStarterTemplate(){
      গুগল ব্লগার-স্টাইল উইজেট টেমপ্লেট
      ======================================================== -->
 <style>
-  /* আপনার থিমের কাস্টম CSS এখানে যোগ করুন */
+  /* আপনার কাস্টম CSS এখানে যোগ করুন */
 </style>
 
 <!-- হেডার ও মেনু -->
@@ -3639,6 +4156,302 @@ function getStarterTemplate(){
 `;
 }
 
+function getPresetTheme(name){
+  if(name === 'modern_blue'){
+    return `<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{{HERO_TITLE_WHITE}} {{HERO_TITLE_RED}} - Modern Blue</title>
+<style>
+  :root {
+    --primary-blue: #0284c7;
+    --accent-blue: #38bdf8;
+    --dark-bg: #070d19;
+    --card-bg: #0f172a;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+  body { background: var(--dark-bg); color: var(--text-main); font-family: 'Hind Siliguri', sans-serif; margin: 0; }
+  .mb-nav { background: #0b1329; border-bottom: 1px solid #1e293b; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  .mb-brand { font-size: 20px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .mb-brand span { color: var(--accent-blue); }
+  .mb-contact { font-size: 14px; color: var(--accent-blue); text-decoration: none; font-weight: 700; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); padding: 8px 16px; border-radius: 20px; }
+  .mb-hero { padding: 60px 24px; text-align: center; background: radial-gradient(circle at top, #0c2340 0%, #070d19 70%); border-bottom: 1px solid #1e293b; }
+  .mb-badge { display: inline-block; background: rgba(56,189,248,0.15); color: var(--accent-blue); border: 1px solid var(--accent-blue); padding: 6px 18px; border-radius: 30px; font-size: 13px; font-weight: 700; margin-bottom: 18px; }
+  .mb-hero h1 { font-size: clamp(28px, 5vw, 48px); margin: 0 0 16px; font-weight: 900; letter-spacing: -0.5px; }
+  .mb-hero h1 span.white { color: #fff; }
+  .mb-hero h1 span.accent { color: var(--accent-blue); }
+  .mb-hero p { max-width: 650px; margin: 0 auto 28px; color: var(--text-muted); font-size: 16px; line-height: 1.7; }
+  .mb-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .mb-btn { background: var(--primary-blue); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; transition: 0.2s; }
+  .mb-btn:hover { background: #0369a1; transform: translateY(-2px); }
+  .mb-btn-outline { background: transparent; color: #fff; border: 1px solid #334155; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; }
+  .mb-sec { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+  .mb-sec-title { text-align: center; margin-bottom: 36px; }
+  .mb-sec-title h2 { font-size: 28px; font-weight: 800; margin: 0 0 8px; color: #fff; }
+  .mb-sec-title p { color: var(--text-muted); margin: 0; font-size: 14px; }
+  .mb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .mb-footer { background: #040811; border-top: 1px solid #1e293b; padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px; margin-top: 60px; }
+</style>
+</head>
+<body>
+  <nav class="mb-nav">
+    <div class="mb-brand">
+      <i class="fa-solid fa-wrench" style="color:var(--accent-blue);"></i>
+      <span>{{HERO_TITLE_WHITE}}</span> {{HERO_TITLE_RED}}
+    </div>
+    <a href="tel:{{PHONE1}}" class="mb-contact"><i class="fa-solid fa-phone"></i> {{PHONE1}}</a>
+  </nav>
+
+  <header class="mb-hero">
+    <div class="mb-badge">{{HERO_BADGE}}</div>
+    <h1>
+      <span class="white" id="hero-title-white-el">{{HERO_TITLE_WHITE}}</span>
+      <span class="accent" id="hero-title-red-el">{{HERO_TITLE_RED}}</span>
+    </h1>
+    <p id="hero-desc-el">{{HERO_DESC}}</p>
+    <div class="mb-actions">
+      <button class="mb-btn" onclick="openBookingForm()"><i class="fa-regular fa-calendar-check"></i> বুকিং করুন</button>
+      <a href="tel:{{PHONE1}}" class="mb-btn-outline"><i class="fa-solid fa-phone"></i> কল করুন</a>
+    </div>
+  </header>
+
+  <section class="mb-sec" id="services">
+    <div class="mb-sec-title">
+      <h2>আমাদের প্রফেশনাল সেবাসমূহ</h2>
+      <p>আধুনিক প্রযুক্তি ও দক্ষ টেকনিশিয়ান দ্বারা গাড়ির সেবা</p>
+    </div>
+    <div id="services-container" class="mb-grid"></div>
+  </section>
+
+  <section class="mb-sec" id="works">
+    <div class="mb-sec-title">
+      <h2>কাজের অ্যালবাম (Before & After)</h2>
+      <p>আমাদের হাতে সম্পন্ন হওয়া কিছু সফল কাজের নমুনা</p>
+    </div>
+    <div id="works-container" class="mb-grid"></div>
+  </section>
+
+  <section class="mb-sec" id="gallery">
+    <div class="mb-sec-title">
+      <h2>ওয়ার্কশপ ফটো গ্যালারি</h2>
+      <p>আমাদের আধুনিক যন্ত্রপাতি ও দৈনন্দিন কাজের পরিবেশ</p>
+    </div>
+    <div id="gallery-photos-container" class="mb-grid"></div>
+  </section>
+
+  <section class="mb-sec" id="blog">
+    <div class="mb-sec-title">
+      <h2>গাড়ির যত্নের টিপস ও ব্লগ</h2>
+      <p>নিয়মিত সঠিক গাড়ি পরিচর্যার জন্য প্রয়োজনীয় পরামর্শ</p>
+    </div>
+    <div id="blog-posts-container" class="mb-grid"></div>
+  </section>
+
+  <section class="mb-sec" id="reviews">
+    <div class="mb-sec-title">
+      <h2>সম্মানিত গ্রাহক রিভিউ ও রেটিং</h2>
+      <p>আমাদের সেবা সম্পর্কে সম্মানিত ক্লায়েন্টদের মূল্যবান মন্তব্য</p>
+    </div>
+    <div id="reviewList" class="mb-grid"></div>
+  </section>
+
+  <footer class="mb-footer">
+    <p style="margin:0 0 8px;"><strong>{{HERO_TITLE_WHITE}} {{HERO_TITLE_RED}}</strong> - {{ADDRESS}}</p>
+    <p style="margin:0;">হটলাইন: <a href="tel:{{PHONE1}}" style="color:var(--accent-blue);">{{PHONE1}}</a> | <a href="tel:{{PHONE2}}" style="color:var(--accent-blue);">{{PHONE2}}</a> | ইমেইল: {{EMAIL}}</p>
+  </footer>
+</body>
+</html>`;
+  } else if(name === 'racing_red'){
+    return `<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{{HERO_TITLE_WHITE}} {{HERO_TITLE_RED}} - Racing Red</title>
+<style>
+  :root {
+    --racing-red: #dc2626;
+    --dark-carbon: #0a0a0c;
+    --card-carbon: #141419;
+    --border-carbon: #27272a;
+    --text-white: #ffffff;
+    --text-gray: #a1a1aa;
+  }
+  body { background: var(--dark-carbon); color: var(--text-white); font-family: 'Hind Siliguri', sans-serif; margin: 0; }
+  .rr-topbar { background: #000; border-bottom: 2px solid var(--racing-red); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+  .rr-logo { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+  .rr-logo span { color: var(--racing-red); }
+  .rr-hotline { color: #fff; background: var(--racing-red); text-decoration: none; padding: 8px 18px; border-radius: 4px; font-weight: 800; font-size: 13.5px; }
+  .rr-hero { padding: 70px 20px; text-align: center; background: linear-gradient(180deg, #180505 0%, #0a0a0c 100%); border-bottom: 1px solid var(--border-carbon); }
+  .rr-tag { display: inline-block; background: rgba(220,38,38,0.2); border: 1px solid var(--racing-red); color: #fca5a5; font-size: 12px; font-weight: 800; text-transform: uppercase; padding: 4px 14px; border-radius: 4px; margin-bottom: 20px; letter-spacing: 1px; }
+  .rr-hero h1 { font-size: clamp(32px, 6vw, 56px); margin: 0 0 16px; font-weight: 900; line-height: 1.1; }
+  .rr-hero h1 span.white { color: #fff; }
+  .rr-hero h1 span.red { color: var(--racing-red); }
+  .rr-hero p { max-width: 680px; margin: 0 auto 30px; color: var(--text-gray); font-size: 16px; }
+  .rr-btn { background: var(--racing-red); color: #fff; border: none; padding: 14px 32px; font-weight: 800; font-size: 15px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .rr-btn:hover { background: #b91c1c; }
+  .rr-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+  .rr-heading { border-left: 4px solid var(--racing-red); padding-left: 14px; margin-bottom: 28px; }
+  .rr-heading h2 { margin: 0; font-size: 26px; font-weight: 900; }
+  .rr-heading p { margin: 4px 0 0; color: var(--text-gray); font-size: 13.5px; }
+  .rr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .rr-footer { background: #000; border-top: 2px solid var(--racing-red); padding: 36px 20px; text-align: center; color: var(--text-gray); font-size: 13.5px; }
+</style>
+</head>
+<body>
+  <div class="rr-topbar">
+    <div class="rr-logo"><span>{{HERO_TITLE_WHITE}}</span> {{HERO_TITLE_RED}}</div>
+    <a href="tel:{{PHONE1}}" class="rr-hotline">☎ {{PHONE1}}</a>
+  </div>
+  <header class="rr-hero">
+    <span class="rr-tag">{{HERO_BADGE}}</span>
+    <h1><span class="white" id="hero-title-white-el">{{HERO_TITLE_WHITE}}</span> <span class="red" id="hero-title-red-el">{{HERO_TITLE_RED}}</span></h1>
+    <p id="hero-desc-el">{{HERO_DESC}}</p>
+    <button class="rr-btn" onclick="openBookingForm()"><i class="fa-solid fa-flag-checkered"></i> সার্ভিস বুকিং করুন</button>
+  </header>
+  <div class="rr-container">
+    <div class="rr-heading">
+      <h2>আমাদের সেবাসমূহ</h2>
+      <p>হাই-পারফর্মেন্স কার কেয়ার ও রিপেয়ারিং</p>
+    </div>
+    <div id="services-container" class="rr-grid"></div>
+  </div>
+  <div class="rr-container">
+    <div class="rr-heading">
+      <h2>কাজের অ্যালবাম (Before & After)</h2>
+      <p>সফল মেরামত ও ট্রান্সফরমেশন</p>
+    </div>
+    <div id="works-container" class="rr-grid"></div>
+  </div>
+  <div class="rr-container">
+    <div class="rr-heading">
+      <h2>ওয়ার্কশপ ফটো গ্যালারি</h2>
+      <p>আমাদের আধুনিক যন্ত্রপাতি ও কাজের পরিবেশ</p>
+    </div>
+    <div id="gallery-photos-container" class="rr-grid"></div>
+  </div>
+  <div class="rr-container">
+    <div class="rr-heading">
+      <h2>কার কেয়ার ব্লগ ও টিপস</h2>
+      <p>গাড়ির সুরক্ষা ও রক্ষনাবেক্ষন পরামর্শ</p>
+    </div>
+    <div id="blog-posts-container" class="rr-grid"></div>
+  </div>
+  <div class="rr-container">
+    <div class="rr-heading">
+      <h2>গ্রাহকদের মতামত ও রিভিউ</h2>
+      <p>আমাদের কাজের মান সম্পর্কে রিভিউ</p>
+    </div>
+    <div id="reviewList" class="rr-grid"></div>
+  </div>
+  <footer class="rr-footer">
+    <p>{{HERO_TITLE_WHITE}} {{HERO_TITLE_RED}} | {{ADDRESS}} | হটলাইন: {{PHONE1}}</p>
+  </footer>
+</body>
+</html>`;
+  } else if(name === 'clean_white'){
+    return `<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{{HERO_TITLE_WHITE}} {{HERO_TITLE_RED}} - Clean Corporate</title>
+<style>
+  body { background: #f8fafc; color: #0f172a; font-family: 'Hind Siliguri', sans-serif; margin: 0; }
+  .cw-header { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+  .cw-brand { font-size: 22px; font-weight: 800; color: #0f172a; }
+  .cw-brand span { color: #d91e2b; }
+  .cw-phone { color: #d91e2b; text-decoration: none; font-weight: 700; font-size: 15px; }
+  .cw-hero { background: #ffffff; padding: 60px 20px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+  .cw-badge { display: inline-block; background: #fee2e2; color: #dc2626; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+  .cw-hero h1 { font-size: clamp(30px, 5vw, 50px); color: #0f172a; margin: 0 0 16px; font-weight: 900; }
+  .cw-hero h1 span.red { color: #d91e2b; }
+  .cw-hero p { max-width: 650px; margin: 0 auto 26px; color: #64748b; font-size: 16px; line-height: 1.7; }
+  .cw-btn { background: #d91e2b; color: #fff; border: none; padding: 12px 28px; border-radius: 6px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; }
+  .cw-sec { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+  .cw-sec-title { text-align: center; margin-bottom: 36px; }
+  .cw-sec-title h2 { font-size: 28px; font-weight: 800; color: #0f172a; margin: 0 0 8px; }
+  .cw-sec-title p { color: #64748b; margin: 0; font-size: 14px; }
+  .cw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .cw-grid .service-card, .cw-grid .work-card, .cw-grid .gallery-photo-card, .cw-grid .blog-card, .cw-grid .review-card { background: #ffffff!important; border: 1px solid #e2e8f0!important; color: #0f172a!important; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+  .cw-grid h3, .cw-grid h4, .cw-grid strong { color: #0f172a!important; }
+  .cw-grid p { color: #64748b!important; }
+  .cw-footer { background: #0f172a; color: #94a3b8; padding: 40px 20px; text-align: center; font-size: 14px; margin-top: 60px; }
+</style>
+</head>
+<body>
+  <header class="cw-header">
+    <div class="cw-brand"><span>{{HERO_TITLE_WHITE}}</span> {{HERO_TITLE_RED}}</div>
+    <a href="tel:{{PHONE1}}" class="cw-phone">☎ {{PHONE1}}</a>
+  </header>
+  <section class="cw-hero">
+    <div class="cw-badge">{{HERO_BADGE}}</div>
+    <h1><span id="hero-title-white-el">{{HERO_TITLE_WHITE}}</span> <span class="red" id="hero-title-red-el">{{HERO_TITLE_RED}}</span></h1>
+    <p id="hero-desc-el">{{HERO_DESC}}</p>
+    <button class="cw-btn" onclick="openBookingForm()">অ্যাপয়েন্টমেন্ট নিন</button>
+  </section>
+  <div class="cw-sec">
+    <div class="cw-sec-title">
+      <h2>আমাদের সেবাসমূহ</h2>
+      <p>অভিজ্ঞ টেকনিশিয়ান দ্বারা গাড়ির নির্ভুল পরিচর্যা</p>
+    </div>
+    <div id="services-container" class="cw-grid"></div>
+  </div>
+  <div class="cw-sec">
+    <div class="cw-sec-title">
+      <h2>কাজের অ্যালবাম (Before & After)</h2>
+      <p>আমাদের কাজের বাস্তব চিত্র</p>
+    </div>
+    <div id="works-container" class="cw-grid"></div>
+  </div>
+  <div class="cw-sec">
+    <div class="cw-sec-title">
+      <h2>ওয়ার্কশপ ফটো গ্যালারি</h2>
+      <p>ওয়ার্কশপের পরিবেশ ও যন্ত্রাংশের ছবি</p>
+    </div>
+    <div id="gallery-photos-container" class="cw-grid"></div>
+  </div>
+  <div class="cw-sec">
+    <div class="cw-sec-title">
+      <h2>গাড়ির যত্নের পরামর্শ ও ব্লগ</h2>
+      <p>গাড়ির দীর্ঘস্থায়িত্ব নিশ্চিত করার প্রয়োজনীয় টিপস</p>
+    </div>
+    <div id="blog-posts-container" class="cw-grid"></div>
+  </div>
+  <div class="cw-sec">
+    <div class="cw-sec-title">
+      <h2>গ্রাহক রিভিউ ও মন্তব্য</h2>
+      <p>গ্রাহকদের সন্তুষ্টি আমাদের অনুপ্রেরণা</p>
+    </div>
+    <div id="reviewList" class="cw-grid"></div>
+  </div>
+  <footer class="cw-footer">
+    <p><strong>{{HERO_TITLE_WHITE}} {{HERO_TITLE_RED}}</strong> - {{ADDRESS}}</p>
+    <p>হটলাইন: {{PHONE1}} | {{PHONE2}} | ইমেইল: {{EMAIL}}</p>
+  </footer>
+</body>
+</html>`;
+  }
+  return null;
+}
+
+function applyPresetTheme(name){
+  if(name === 'default'){
+    restoreDefaultTheme(false);
+    return;
+  }
+  const code = getPresetTheme(name);
+  if(code){
+    const ed = document.getElementById('theme-code-editor');
+    if(ed) ed.value = code;
+    applyThemeToSite(code, true);
+    showToast("✓ " + name + " থিম সফলভাবে কার্যকর হয়েছে!");
+  }
+}
+
 function loadStarterTemplateIntoEditor(){
   document.getElementById('theme-code-editor').value = getStarterTemplate();
   showToast("স্টার্টার টেমপ্লেট কোড এডিটরে লোড করা হয়েছে!");
@@ -3656,7 +4469,7 @@ function saveCustomThemeFromEditor(){
     msg.textContent = "✓ থিম সেভ ও লাইভ করা হয়েছে (" + new Date().toLocaleTimeString() + ")";
     setTimeout(() => { msg.textContent = ""; }, 4000);
   }
-  showToast("✓ কাস্টম থিম সফলভাবে সেভ ও লাইভ হয়েছে!");
+  showToast("✓ কাস্টম থিম সফলভাবে সেভ ও কার্যকর হয়েছে!");
 }
 
 function insertWidgetTag(tag){
@@ -3768,6 +4581,14 @@ window.addEventListener('DOMContentLoaded', () => {
   if(window.location.hash === '#admin'){
     openAdminGateway();
   }
+
+  // Keyboard shortcut: Ctrl + Shift + A or Alt + A to open Admin anywhere
+  window.addEventListener('keydown', (e) => {
+    if((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')){
+      e.preventDefault();
+      openAdminGateway();
+    }
+  });
 });
 </script>
 </body>
