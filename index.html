@@ -345,13 +345,13 @@ button{font:inherit;cursor:pointer}
    100% Match to Buyer PC View Screenshot
    ======================================================== */
 @media (min-width: 1024px) {
-  /* 1. Hero সেকশন: উচ্চতা প্রায় ৫০০px, গাঢ় নীল ব্যাকগ্রাউন্ড (#0a1128) */
+  /* 1. Hero সেকশন: উচ্চতা প্রায় ৪৮০px, গাঢ় ব্যাকগ্রাউন্ড (#080d1a) */
   .hero {
     position: relative !important;
     overflow: hidden !important;
-    min-height: 500px !important;
-    height: 500px !important;
-    background: #0a1128 !important;
+    min-height: 480px !important;
+    height: 480px !important;
+    background: #080d1a !important;
     padding: 0 !important;
     display: flex !important;
     align-items: center !important;
@@ -363,11 +363,11 @@ button{font:inherit;cursor:pointer}
     margin: 0 auto !important;
     display: flex !important;
     align-items: center !important;
-    min-height: 500px !important;
+    min-height: 480px !important;
     height: 100% !important;
   }
 
-  /* 2, 3, 4, 5, 6. ছবি ডান দিকে (প্রায় ৫৫%), absolute position, ডান প্রান্ত ও উপর-নিচ ছড়ানো, তির্যক কাটা */
+  /* 2. হিরো ইমেজ: ডান পাশে absolute, ৫৫% প্রস্থ, বাম দিক তীরের মতো কাটা (arrowhead chevron clip-path) */
   .hero-image {
     position: absolute !important;
     right: 0 !important;
@@ -380,8 +380,10 @@ button{font:inherit;cursor:pointer}
     padding: 0 !important;
     border: none !important;
     border-radius: 0 !important;
-    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%) !important;
+    clip-path: polygon(12% 0, 0 50%, 12% 100%, 100% 100%, 100% 0) !important;
+    -webkit-clip-path: polygon(12% 0, 0 50%, 12% 100%, 100% 100%, 100% 0) !important;
     margin: 0 !important;
+    box-shadow: none !important;
   }
 
   .hero-image::before,
@@ -411,47 +413,74 @@ button{font:inherit;cursor:pointer}
     border-radius: 0 !important;
   }
 
-  /* 2, 8. টেক্সট বাঁ দিকে (প্রায় ৪৫% জায়গা) */
+  /* 3. টেক্সট বাঁ দিকে (প্রায় ৪৫% জায়গা) */
   .hero-details {
     position: relative !important;
     z-index: 2 !important;
-    width: 44% !important;
+    width: 45% !important;
     max-width: 520px !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  /* 8. ব্যাজ ("আপনার বিশ্বস্ত কার ওয়ার্কশপ"), DBR, COMPLETE AUTO CENTRE, DESIGN. BUILD. REPAIR. ক্রম */
+  /* 4. ব্যাজ ("আপনার বিশ্বস্ত কার ওয়ার্কশপ") */
   .hero-badge {
-    margin-bottom: 14px !important;
+    background: transparent !important;
+    border: none !important;
+    color: #f26522 !important;
+    padding: 0 !important;
+    margin-bottom: 12px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
     display: inline-flex !important;
+    align-items: center !important;
   }
 
+  .hero-badge .badge-dot {
+    display: none !important;
+  }
+
+  /* 5. টাইটেল: DBR (কমলা), COMPLETE AUTO CENTRE (সাদা), DESIGN. BUILD. REPAIR. */
   .hero-brand-title {
-    margin: 0 0 8px !important;
-    line-height: 1.08 !important;
-    font-size: clamp(34px, 3.8vw, 50px) !important;
+    margin: 0 0 6px !important;
+    line-height: 1.05 !important;
     display: flex !important;
     flex-direction: column !important;
   }
 
-  .hero-brand-title::after {
-    content: "DESIGN. BUILD. REPAIR.";
-    display: block;
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 2.2px;
-    color: #ff4855;
-    margin-top: 8px;
-    font-family: Arial, sans-serif;
+  .hero-title-white {
+    color: #f26522 !important;
+    font-size: clamp(38px, 4.4vw, 54px) !important;
+    font-weight: 900 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.5px !important;
+    font-family: Arial, sans-serif !important;
   }
 
+  .hero-title-red {
+    color: #ffffff !important;
+    font-size: clamp(26px, 3.2vw, 36px) !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.5px !important;
+    margin-top: 4px !important;
+    font-family: Arial, sans-serif !important;
+  }
+
+  .hero-brand-title::after {
+    content: "DESIGN. BUILD. REPAIR." !important;
+    display: block !important;
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 2.2px !important;
+    color: #f26522 !important;
+    margin-top: 10px !important;
+    font-family: Arial, sans-serif !important;
+  }
+
+  /* 6. ডেস্কটপে ডেসক্রিপশন প্যারাগ্রাফ লুকানো */
   .hero-desc {
-    font-size: 15.5px !important;
-    line-height: 1.75 !important;
-    color: #d5d7dd !important;
-    margin-bottom: 22px !important;
-    max-width: 480px !important;
+    display: none !important;
   }
 
   /* 7. বাটন তিনটা (সার্ভিস, কাজ, বুকিং) পাশাপাশি এক লাইনে */
@@ -460,7 +489,8 @@ button{font:inherit;cursor:pointer}
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 10px !important;
+    margin-top: 22px !important;
     margin-bottom: 0 !important;
   }
 
@@ -469,11 +499,25 @@ button{font:inherit;cursor:pointer}
   .hero-actions .btn-outline {
     width: auto !important;
     white-space: nowrap !important;
-    padding: 12px 20px !important;
-    font-size: 14px !important;
+    padding: 10px 18px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+    border: none !important;
+    color: #ffffff !important;
+    background: #d91e2b !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(217, 30, 43, 0.3) !important;
   }
 
-  /* 9. মোবাইলের চেক-পিল ও বিশেষ অফার কার্ড ডেস্কটপে লুকানো থাকবে */
+  .hero-actions a.btn-outline {
+    background: #aa1120 !important;
+    color: #ffffff !important;
+  }
+
+  /* 8. মোবাইলের চেক-পিল ও বিশেষ অফার কার্ড ডেস্কটপে লুকানো */
   .hero-points,
   .offer-strip,
   #hero-offer-card {
@@ -1118,8 +1162,8 @@ section{padding:80px 0}
       <div class="hero-details">
         <div class="hero-badge"><span class="badge-dot">●</span> <span id="hero-badge-tag">আপনার বিশ্বস্ত কার ওয়ার্কশপ</span></div>
         <h1 class="hero-brand-title">
-          <span class="hero-title-white" id="hero-title-white-el">DBR COMPLETE</span>
-          <span class="hero-title-red" id="hero-title-red-el">AUTO CENTRE</span>
+          <span class="hero-title-white" id="hero-title-white-el">DBR</span>
+          <span class="hero-title-red" id="hero-title-red-el">COMPLETE AUTO CENTRE</span>
         </h1>
         <p class="hero-desc" id="hero-desc-el">
           আপনার গাড়ির সার্ভিসিং, মেরামত ও ডায়াগনস্টিক—সবকিছু এক ঠিকানায়। দক্ষ টেকনিশিয়ান ও আধুনিক যন্ত্রপাতিতে যত্ন নিন নিশ্চিন্তে।
@@ -1127,7 +1171,7 @@ section{padding:80px 0}
         <div class="hero-actions">
           <a class="btn" href="#services"><span data-i18n-bn="আমাদের সার্ভিস দেখুন ↗" data-i18n-en="Explore Services ↗">আমাদের সার্ভিস দেখুন ↗</span></a>
           <a class="btn-outline" href="#gallery"><span data-i18n-bn="আমাদের কাজ দেখুন" data-i18n-en="See Our Work">আমাদের কাজ দেখুন</span></a>
-          <a class="btn" href="#contact" onclick="openBookingForm('');return false;" style="background:linear-gradient(135deg,#e11d48,#be123c)!important;"><span data-i18n-bn="☎ বুকিং করুন" data-i18n-en="☎ Book Now">☎ বুকিং করুন</span></a>
+          <a class="btn" href="#contact" onclick="openBookingForm('');return false;"><span data-i18n-bn="📅 বুকিং করুন" data-i18n-en="📅 Book Now">📅 বুকিং করুন</span></a>
         </div>
         <div class="hero-points">
           <span><span data-i18n-bn="দক্ষ টেকনিশিয়ান" data-i18n-en="Skilled Technicians">দক্ষ টেকনিশিয়ান</span></span>
@@ -1712,8 +1756,8 @@ const DEFAULT_SETTINGS = {
   offerBtn: "বুকিং করুন ↗",
   coverImage: "workshop_building.jpg",
   heroBadge: "আপনার বিশ্বস্ত কার ওয়ার্কশপ",
-  heroTitleWhite: "DBR COMPLETE",
-  heroTitleRed: "AUTO CENTRE",
+  heroTitleWhite: "DBR",
+  heroTitleRed: "COMPLETE AUTO CENTRE",
   heroDesc: "আপনার গাড়ির সার্ভিসিং, মেরামত ও ডায়াগনস্টিক—সবকিছু এক ঠিকানায়। দক্ষ টেকনিশিয়ান ও আধুনিক যন্ত্রপাতিতে যত্ন নিন নিশ্চিন্তে।",
   phone1: "01711-287258",
   phone2: "01776-596315",
@@ -1798,6 +1842,8 @@ function writeStorage(key, val){
 
 function initState(){
   state.settings = readStorage('dbr_settings_v6', DEFAULT_SETTINGS);
+  if(state.settings.heroTitleWhite === "DBR COMPLETE") state.settings.heroTitleWhite = "DBR";
+  if(state.settings.heroTitleRed === "AUTO CENTRE") state.settings.heroTitleRed = "COMPLETE AUTO CENTRE";
   state.services = readStorage('dbr_services_v6', DEFAULT_SERVICES);
   state.works = readStorage('dbr_works_v6', DEFAULT_WORKS);
   state.gallery = readStorage('dbr_gallery_v6', DEFAULT_GALLERY);
@@ -1852,9 +1898,9 @@ function applySettingsToDOM(){
   const hb = document.getElementById('hero-badge-tag');
   if(hb) hb.textContent = s.heroBadge || 'আপনার বিশ্বস্ত কার ওয়ার্কশপ';
   const tw = document.getElementById('hero-title-white-el');
-  if(tw) tw.textContent = s.heroTitleWhite || 'DBR COMPLETE';
+  if(tw) tw.textContent = s.heroTitleWhite || 'DBR';
   const tr = document.getElementById('hero-title-red-el');
-  if(tr) tr.innerHTML = s.heroTitleRed || 'AUTO CENTRE';
+  if(tr) tr.innerHTML = s.heroTitleRed || 'COMPLETE AUTO CENTRE';
   const hd = document.getElementById('hero-desc-el');
   if(hd) hd.textContent = s.heroDesc || 'আপনার গাড়ির সার্ভিসিং, মেরামত ও ডায়াগনস্টিক—সবকিছু এক ঠিকানায়। দক্ষ টেকনিশিয়ান ও আধুনিক যন্ত্রপাতিতে যত্ন নিন নিশ্চিন্তে।';
 
