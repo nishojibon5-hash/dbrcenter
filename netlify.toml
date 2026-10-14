@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "mkdir -p dist && cp -r index.html admin workshop_building.jpg hero_orange_car.jpg fonts robots.txt sitemap.xml google*.html dist/ 2>/dev/null || true"
+  command = "mkdir -p dist && cp -r index.html admin admin.html .htaccess 404.html workshop_building.jpg hero_orange_car.jpg fonts robots.txt sitemap.xml google*.html dist/ 2>/dev/null || true"
 
 [[redirects]]
   from = "/*"

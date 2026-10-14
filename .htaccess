@@ -1,0 +1,19 @@
+# DBR Car Workshop - Apache Rewrite Rules for Single Page Application & Admin Gateway
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Direct /admin and /admin/ to admin/index.html
+  RewriteRule ^admin/?$ admin/index.html [L,QSA]
+
+  # If requested resource is not an existing file or directory, serve index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ index.html [L,QSA]
+</IfModule>
+
+# Correct MIME types for modern web fonts and assets
+<IfModule mod_mime.c>
+  AddType font/ttf .ttf
+  AddType image/webp .webp
+</IfModule>

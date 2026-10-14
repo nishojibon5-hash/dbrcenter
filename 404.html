@@ -8,6 +8,9 @@
     // GitHub Pages SPA router redirect
     const path = window.location.pathname;
     if(path.toLowerCase().includes('/admin')){
+      try {
+        sessionStorage.setItem('dbr_auto_open_admin', '1');
+      } catch(e){}
       const repo = path.split('/')[1];
       if(repo && repo.toLowerCase() === 'dbrcenter'){
         window.location.replace('/' + repo + '/#admin');

@@ -1002,7 +1002,7 @@ section{padding:80px 0}
   display:none;
   position:fixed;
   inset:0;
-  z-index:999;
+  z-index:2147483647 !important;
   background:#090B0E;
   color:#F8FAFC;
   overflow-y:auto;
@@ -3068,7 +3068,7 @@ document.querySelectorAll('.gallery-photo-card,.work-card').forEach(card=>activa
     
     <div style="text-align:left;margin-bottom:16px;">
       <label style="font-size:12px;font-weight:700;color:#CBD5E1;">অ্যাডমিন মোবাইল বা পিন:</label>
-      <input type="password" id="admin-gate-pin" class="form-input" placeholder="01711287258 বা অ্যাডমিন পিন..." style="width:100%;padding:12px 14px;border-radius:10px;border:1px solid #334155;background:#1E293B;color:#fff;font-size:14px;margin-top:6px;"/>
+      <input type="password" id="admin-gate-pin" class="form-input" placeholder="01711287258 বা অ্যাডমিন পিন..." onkeydown="if(event.key==='Enter')verifyAdminPin()" style="width:100%;padding:12px 14px;border-radius:10px;border:1px solid #334155;background:#1E293B;color:#fff;font-size:14px;margin-top:6px;"/>
     </div>
     
     <div id="admin-gate-error" style="color:#EF4444;font-size:13px;display:none;margin-bottom:12px;"></div>
@@ -5229,40 +5229,83 @@ async function uploadFileToImgBBField(fileInput, targetInputId, statusId, previe
 // ADMIN GATEWAY & CMS LOGIC
 // ========================================================
 function openAdminGateway(){
-  document.getElementById('admin-gate-screen').style.display = 'block';
-  document.getElementById('admin-gate-pin').value = '';
-  document.getElementById('admin-gate-error').style.display = 'none';
-  document.getElementById('admin-gate-pin').focus();
+  try {
+    if(typeof initState === 'function') initState();
+    const gate = document.getElementById('admin-gate-screen');
+    if(!gate) return;
+    
+    // Close other full-screen layers if open
+    const pageView = document.getElementById('dbr-page-view-container');
+    if(pageView) pageView.style.display = 'none';
+    const overlay = document.getElementById('dbrOverlay');
+    if(overlay) { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); }
+    
+    gate.style.display = 'block';
+    gate.style.zIndex = '2147483647';
+    gate.style.position = 'fixed';
+    gate.style.inset = '0';
+    
+    const pin = document.getElementById('admin-gate-pin');
+    if(pin){
+      pin.value = '';
+      setTimeout(() => pin.focus(), 60);
+    }
+    const err = document.getElementById('admin-gate-error');
+    if(err) err.style.display = 'none';
+    document.body.style.overflow = 'hidden';
+  } catch(e){
+    console.error("openAdminGateway error:", e);
+  }
 }
 
 function verifyAdminPin(){
-  const rawPin = document.getElementById('admin-gate-pin').value.trim();
-  const cleanPin = rawPin.replace(/[^0-9a-zA-Z]/g, '').toLowerCase();
-  const err = document.getElementById('admin-gate-error');
-  
-  if(
-    cleanPin === '01844487468' || 
-    cleanPin === '01711287258' || 
-    cleanPin === '01776596315' ||
-    cleanPin === '1234' || 
-    cleanPin === 'admin' || 
-    cleanPin === 'dbr2026'
-  ){
-    document.getElementById('admin-gate-screen').style.display = 'none';
-    document.getElementById('admin-cms-panel').style.display = 'block';
-    populateSettingsForm();
-    renderAdminTables();
-    initThemeTabUI();
-    showToast("এডমিন কনসোলে স্বাগতম!");
-  } else {
-    err.textContent = "ভুল মোবাইল নম্বর বা পিন! (পাসকোড: 01844-487468 বা 01711-287258)";
-    err.style.display = 'block';
+  try {
+    const rawPin = (document.getElementById('admin-gate-pin')?.value || '').trim();
+    const cleanPin = rawPin.replace(/[^0-9a-zA-Z]/g, '').toLowerCase();
+    const err = document.getElementById('admin-gate-error');
+    
+    if(
+      cleanPin === '01844487468' || 
+      cleanPin === '01711287258' || 
+      cleanPin === '01776596315' ||
+      cleanPin === '1234' || 
+      cleanPin === 'admin' || 
+      cleanPin === 'dbr2026'
+    ){
+      const gate = document.getElementById('admin-gate-screen');
+      if(gate) gate.style.display = 'none';
+      const panel = document.getElementById('admin-cms-panel');
+      if(panel){
+        panel.style.display = 'block';
+        panel.style.zIndex = '2147483647';
+        panel.style.position = 'fixed';
+        panel.style.inset = '0';
+      }
+      if(typeof initState === 'function') initState();
+      populateSettingsForm();
+      renderAdminTables();
+      initThemeTabUI();
+      showToast("এডমিন কনসোলে স্বাগতম!");
+    } else {
+      if(err){
+        err.textContent = "ভুল মোবাইল নম্বর বা পিন! (পাসকোড: 01844-487468 বা 01711-287258)";
+        err.style.display = 'block';
+      }
+    }
+  } catch(e){
+    console.error("verifyAdminPin error:", e);
   }
 }
 
 function closeAdminScreens(){
-  document.getElementById('admin-gate-screen').style.display = 'none';
-  document.getElementById('admin-cms-panel').style.display = 'none';
+  const gate = document.getElementById('admin-gate-screen');
+  if(gate) gate.style.display = 'none';
+  const panel = document.getElementById('admin-cms-panel');
+  if(panel) panel.style.display = 'none';
+  document.body.style.overflow = '';
+  try {
+    sessionStorage.removeItem('dbr_auto_open_admin');
+  } catch(e){}
   const path = (window.location.pathname || '');
   if(window.location.hash.startsWith('#admin') || path.endsWith('/admin') || path.endsWith('/admin/')){
     try {
@@ -7964,7 +8007,7 @@ window.addEventListener('popstate', function(e){
     openPageView('booking');
   } else if(hash === '#contact'){
     openPageView('contact');
-  } else if(hash === '#admin'){
+  } else if(hash === '#admin' || isCurrentRouteAdmin()){
     openAdminGateway();
   } else {
     closePageView();
@@ -8045,8 +8088,52 @@ function bindDynamicEvents(){
   });
 }
 
-// Initial Page Load - Zero Flicker Guarantee
-window.addEventListener('DOMContentLoaded', () => {
+// Admin routing helper: checks URL pathname, hash, search, and session
+function isCurrentRouteAdmin(){
+  let sessionAdmin = false;
+  try {
+    if(sessionStorage.getItem('dbr_auto_open_admin') === '1'){
+      sessionAdmin = true;
+    }
+  } catch(e){}
+  const path = (window.location.pathname || '').toLowerCase();
+  const hash = (window.location.hash || '').toLowerCase();
+  const search = (window.location.search || '').toLowerCase();
+  return (
+    sessionAdmin ||
+    hash === '#admin' || 
+    hash.startsWith('#admin') || 
+    path.endsWith('/admin') || 
+    path.endsWith('/admin/') || 
+    path.includes('/admin') || 
+    search.includes('admin')
+  );
+}
+
+function checkAdminRoute(){
+  if(isCurrentRouteAdmin()){
+    openAdminGateway();
+    return true;
+  }
+  return false;
+}
+
+// Global listeners for hash and keyboard
+window.addEventListener('hashchange', checkAdminRoute);
+window.addEventListener('popstate', checkAdminRoute);
+
+// Keyboard shortcut: Ctrl + Shift + A or Alt + A to open Admin anywhere
+window.addEventListener('keydown', (e) => {
+  if((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')){
+    e.preventDefault();
+    openAdminGateway();
+  }
+});
+
+// Run immediate admin route check right now
+checkAdminRoute();
+
+function initializeDbrApp(){
   captureDefaultTemplate();
   initState();
   initReviewUser();
@@ -8085,35 +8172,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if(window.lucide) window.lucide.createIcons();
   }
 
-  // Admin routing check: works for example.com/admin, example.com/admin/, ?admin, or #admin
-  function checkAdminRoute(){
-    const path = (window.location.pathname || '').toLowerCase();
-    const hash = (window.location.hash || '').toLowerCase();
-    const search = (window.location.search || '').toLowerCase();
-    if(
-      hash === '#admin' || 
-      hash.startsWith('#admin') || 
-      path.endsWith('/admin') || 
-      path.endsWith('/admin/') || 
-      path.includes('/admin') || 
-      search.includes('admin')
-    ){
-      openAdminGateway();
-      return true;
-    }
-    return false;
-  }
+  // Ensure admin check is run again after DOM setup
   const isAdmin = checkAdminRoute();
-  window.addEventListener('hashchange', checkAdminRoute);
-  window.addEventListener('popstate', checkAdminRoute);
-
-  // Keyboard shortcut: Ctrl + Shift + A or Alt + A to open Admin anywhere
-  window.addEventListener('keydown', (e) => {
-    if((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')){
-      e.preventDefault();
-      openAdminGateway();
-    }
-  });
 
   // Handle SPA Hash routes on initial load if not in admin
   if(!isAdmin && window.location.hash){
@@ -8144,7 +8204,14 @@ window.addEventListener('DOMContentLoaded', () => {
       openPageView('contact');
     }
   }
-});
+}
+
+// Initial Page Load - Zero Flicker Guarantee with robust readyState fallback
+if(document.readyState === 'loading'){
+  window.addEventListener('DOMContentLoaded', initializeDbrApp);
+} else {
+  initializeDbrApp();
+}
 </script>
 </body>
 </html>

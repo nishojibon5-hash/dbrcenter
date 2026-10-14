@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=../#admin">
-  <title>DBR Admin Gateway</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  <title>DBR Admin Gateway | Complete Auto Centre</title>
+  <meta name="robots" content="noindex, nofollow"/>
   <script>
-    window.location.replace('../#admin');
+    // Ensure admin auto-open flag is stored in session and local storage
+    try {
+      sessionStorage.setItem('dbr_auto_open_admin', '1');
+      localStorage.setItem('dbr_last_admin_intent', Date.now().toString());
+    } catch(e){}
+
+    // Fast seamless routing to the main app with #admin hash
+    (function(){
+      var path = window.location.pathname || '';
+      var search = window.location.search || '';
+      var parts = path.split('/').filter(Boolean);
+      var base = '';
+      if(parts.length > 0 && parts[parts.length - 1].toLowerCase() === 'admin'){
+        parts.pop();
+        if(parts.length > 0){
+          base = '/' + parts.join('/');
+        }
+      }
+      var target = (base || '') + '/#admin' + (search ? (search.startsWith('?') ? '&' + search.slice(1) : search) : '');
+      window.location.replace(target);
+    })();
   </script>
 </head>
-<body style="background:#090B0E;color:#F8FAFC;font-family:sans-serif;display:grid;place-items:center;height:100vh;margin:0;">
-  <div style="text-align:center;">
-    <h2 style="margin-bottom:8px;">DBR এডমিন গেটওয়ে লোড হচ্ছে...</h2>
-    <p style="color:#94A3B8;">অনুগ্রহ করে অপেক্ষা করুন অথবা <a href="../#admin" style="color:#E11D48;text-decoration:none;font-weight:bold;">এখানে ক্লিক করুন</a></p>
+<body style="background:#090B0E;color:#F8FAFC;font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+  <div style="text-align:center;padding:24px;">
+    <div style="font-size:42px;margin-bottom:12px;">🛡️</div>
+    <h2 style="margin:0 0 8px;font-size:20px;font-weight:700;">DBR এডমিন গেটওয়ে</h2>
+    <p style="color:#94A3B8;font-size:14px;margin:0 0 16px;">সুরক্ষিত কনসোলে নিয়ে যাওয়া হচ্ছে...</p>
+    <a href="/#admin" style="display:inline-block;padding:10px 20px;background:#D91E2B;color:#FFF;text-decoration:none;border-radius:8px;font-weight:600;font-size:13.5px;">সরাসরি প্রবেশ করুন →</a>
   </div>
 </body>
 </html>
