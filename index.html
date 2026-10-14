@@ -6253,7 +6253,6 @@ function captureDefaultTemplate(){
     DEFAULT_SITE_TEMPLATE = ORIGINAL_SYSTEM_DEFAULT_TEMPLATE;
   }
 }
-}
 
 function getWidgetHtml(type){
   const temp = document.createElement('div');
@@ -7385,6 +7384,10 @@ function openPageView(pageType, pageId = null){
             </div>
           `).join('')}
         </div>
+      `;
+      break;
+    }
+
     case 'bookings_list': {
       const bList = Array.isArray(state.bookings) ? state.bookings : [];
       html = `
@@ -7804,7 +7807,7 @@ document.addEventListener('click', function(e){
     const href = (target.getAttribute('href') || '').trim();
     if(!href) return;
 
-    if(href === '#admin' || href.includes('admin.html')){
+    if(href === '#admin' || href.includes('admin.html') || href === '/admin' || href === 'admin' || href.endsWith('/admin')){
       e.preventDefault();
       openAdminGateway();
       return;
@@ -8081,7 +8084,66 @@ window.addEventListener('DOMContentLoaded', () => {
     bindDynamicEvents();
     if(window.lucide) window.lucide.createIcons();
   }
-});
+
+  // Admin routing check: works for example.com/admin, example.com/admin/, ?admin, or #admin
+  function checkAdminRoute(){
+    const path = (window.location.pathname || '').toLowerCase();
+    const hash = (window.location.hash || '').toLowerCase();
+    const search = (window.location.search || '').toLowerCase();
+    if(
+      hash === '#admin' || 
+      hash.startsWith('#admin') || 
+      path.endsWith('/admin') || 
+      path.endsWith('/admin/') || 
+      path.includes('/admin') || 
+      search.includes('admin')
+    ){
+      openAdminGateway();
+      return true;
+    }
+    return false;
+  }
+  const isAdmin = checkAdminRoute();
+  window.addEventListener('hashchange', checkAdminRoute);
+  window.addEventListener('popstate', checkAdminRoute);
+
+  // Keyboard shortcut: Ctrl + Shift + A or Alt + A to open Admin anywhere
+  window.addEventListener('keydown', (e) => {
+    if((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')){
+      e.preventDefault();
+      openAdminGateway();
+    }
+  });
+
+  // Handle SPA Hash routes on initial load if not in admin
+  if(!isAdmin && window.location.hash){
+    const hash = window.location.hash;
+    if(hash.startsWith('#service/')){
+      openPageView('service', decodeURIComponent(hash.slice(9)));
+    } else if(hash.startsWith('#blog/')){
+      openPageView('blog', decodeURIComponent(hash.slice(6)));
+    } else if(hash.startsWith('#work/')){
+      openPageView('work', decodeURIComponent(hash.slice(6)));
+    } else if(hash === '#services' || hash === '#services_list'){
+      openPageView('services_list');
+    } else if(hash === '#blog' || hash === '#blog_list'){
+      openPageView('blog_list');
+    } else if(hash === '#works' || hash === '#works_list'){
+      openPageView('works_list');
+    } else if(hash === '#gallery' || hash === '#photo-gallery' || hash === '#gallery_list'){
+      openPageView('gallery_list');
+    } else if(hash === '#about' || hash === '#team' || hash === '#team_list'){
+      openPageView('team_list');
+    } else if(hash === '#reviews' || hash === '#reviews_list'){
+      openPageView('reviews');
+    } else if(hash === '#bookings' || hash === '#bookings_list' || hash === '#booking_list'){
+      openPageView('bookings_list');
+    } else if(hash === '#booking'){
+      openPageView('booking');
+    } else if(hash === '#contact'){
+      openPageView('contact');
+    }
+  }
 });
 </script>
 </body>
