@@ -1,6 +1,6 @@
 {
   "name": "DBR Car Workshop",
-  "description": "DBR Car Workshop - Automobile repair, denting, painting, diagnostic, and servicing platform with mobile & desktop modes and CMS admin panel",
+  "description": "DBR Car Workshop - Automobile repair, denting, painting, diagnostic, and servicing platform with mobile \u0026 desktop modes and CMS admin panel",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
