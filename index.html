@@ -1199,6 +1199,27 @@ section{padding:80px 0}
   .hero-actions{flex-direction:column}
   .hero-actions a{width:100%;text-align:center}
 }
+
+/* Dedicated Works Grid & Responsive Rules */
+.works-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:900px){.works-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.works-grid{grid-template-columns:1fr}}
+
+/* Team Card Enhanced Profiles */
+.team-photo-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.team-card:hover .team-photo-img{transform:scale(1.08)}
+.team-exp-badge{display:inline-flex;align-items:center;gap:5px;background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;margin:6px 0}
+.team-spec{color:#4B5563;font-size:13px;line-height:1.5;margin:4px 0 12px;min-height:38px}
+.team-actions{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.team-btn-call{background:#d91e2b;color:#fff!important;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(217,30,43,0.25);text-decoration:none}
+.team-btn-profile{background:#1E293B;color:#38BDF8!important;border:1px solid #0284C7;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.team-btn-profile:hover{background:#0F172A;color:#7DD3FC!important}
+
+/* Google Maps Contribution Elements */
+.btn-gmap-contrib{display:inline-flex;align-items:center;gap:6px;background:#1E293B;color:#38BDF8!important;border:1px solid #334155;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s ease}
+.btn-gmap-contrib:hover{background:#0F172A;border-color:#38BDF8;color:#7DD3FC!important;box-shadow:0 4px 14px rgba(56,189,248,0.2)}
+.g-verified-pill{display:inline-flex;align-items:center;gap:5px;background:#EBF5FF;color:#1D4ED8;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -1225,7 +1246,7 @@ section{padding:80px 0}
     <nav class="navlinks" id="desktopNavlinks">
       <a href="#home"><span data-i18n-bn="হোম" data-i18n-en="Home">হোম</span></a>
       <a href="#services"><span data-i18n-bn="আমাদের সার্ভিস" data-i18n-en="Our Services">আমাদের সার্ভিস</span></a>
-      <a href="#gallery"><span data-i18n-bn="কাজের অ্যালবাম" data-i18n-en="Work Album">কাজের অ্যালবাম</span></a>
+      <a href="#works"><span data-i18n-bn="কাজের অ্যালবাম" data-i18n-en="Work Album">কাজের অ্যালবাম</span></a>
       <a href="#photo-gallery"><span data-i18n-bn="আমাদের গ্যালারি" data-i18n-en="Our Gallery">আমাদের গ্যালারি</span></a>
       <a href="#blog"><span data-i18n-bn="ব্লগ পোস্ট" data-i18n-en="Blog Posts">ব্লগ পোস্ট</span></a>
       <a href="#reviews"><span data-i18n-bn="কাস্টমার রিভিউ" data-i18n-en="Customer Reviews">কাস্টমার রিভিউ</span></a>
@@ -1266,7 +1287,7 @@ section{padding:80px 0}
   <div class="drawer-links">
     <a href="#home">হোম</a>
     <a href="#services">আমাদের সার্ভিস</a>
-    <a href="#gallery">কাজের অ্যালবাম</a>
+    <a href="#works">কাজের অ্যালবাম</a>
     <a href="#photo-gallery">আমাদের গ্যালারি</a>
     <a href="#blog">ব্লগ পোস্ট</a>
     <a href="#reviews">কাস্টমার রিভিউ</a>
@@ -1348,7 +1369,7 @@ section{padding:80px 0}
   </section>
 
   <!-- WORK ALBUM (BEFORE / AFTER) -->
-  <section class="gallery" id="gallery">
+  <section class="gallery" id="works">
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -1362,7 +1383,7 @@ section{padding:80px 0}
         </div>
         <a class="btn" href="#contact" onclick="openBookingForm('');return false;"><span data-i18n-bn="বুকিং করুন ↗" data-i18n-en="Book Now ↗">বুকিং করুন ↗</span></a>
       </div>
-      <div class="gallery-grid" id="works-container">
+      <div class="works-grid" id="works-container">
         <!-- Rendered dynamically -->
       </div>
     </div>
@@ -1429,7 +1450,10 @@ section{padding:80px 0}
           <div><strong class="dbr-rating-number" id="dbrRatingAverage">5.0</strong> <span class="dbr-rating-stars" id="dbrRatingStars">★★★★★</span></div>
           <div class="dbr-rating-count" id="dbrRatingCount">৩টি রিভিউ</div>
         </div>
-        <button class="btn" data-i18n-bn="✍️ রিভিউ দিন" data-i18n-en="✍️ Write a Review" id="dbrReviewJump" type="button">✍️ রিভিউ দিন</button>
+        <button class="btn" data-i18n-bn="✍️ রিভিউ দিন" data-i18n-en="✍️ Write a Review" id="dbrReviewJump" type="button" onclick="handleWriteReviewClick()">✍️ রিভিউ দিন</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura" target="_blank" rel="noopener noreferrer" class="btn-gmap-contrib" style="padding:10px 18px;font-size:13px;border-radius:12px;background:#1E293B;color:#38BDF8;border:1.5px solid #0284C7;">
+          <i class="fa-solid fa-map-location-dot"></i> গুগল ম্যাপে কন্ট্রিবিউট করুন ↗
+        </a>
       </div>
 
       <!-- Displays latest 4-5 reviews dynamically -->
@@ -1835,7 +1859,7 @@ section{padding:80px 0}
         <div style="overflow-x:auto;">
           <table class="admin-table">
             <thead>
-              <tr><th>নাম</th><th>পদবী</th><th>মোবাইল নম্বর</th><th>অ্যাকশন</th></tr>
+              <tr><th>ছবি</th><th>নাম</th><th>পদবী</th><th>মোবাইল নম্বর</th><th>অভিজ্ঞতা ও দক্ষতা</th><th>অ্যাকশন</th></tr>
             </thead>
             <tbody id="adm-team-table"></tbody>
           </table>
@@ -2245,9 +2269,9 @@ const DEFAULT_BLOG = [
 ];
 
 const DEFAULT_TEAM = [
-  {id:1, role:"MANAGEMENT", title_bn:"ম্যানেজার", title_en:"Manager", desc:"সার্ভিস বুকিং ও গ্রাহক সহায়তা", phone:"01711-287258", icon:"👨‍💼"},
-  {id:2, role:"TECHNICAL TEAM", title_bn:"হেড টেকনিশিয়ান", title_en:"Head Technician", desc:"গাড়ির সমস্যা নির্ণয় ও সার্ভিসিং", phone:"01776-596315", icon:"🧑‍🔧"},
-  {id:3, role:"ACCOUNTS", title_bn:"অ্যাকাউন্টেন্ট", title_en:"Accountant", desc:"বিল, পেমেন্ট ও হিসাব সংক্রান্ত সহায়তা", phone:"01844-487468", icon:"👨‍💻"}
+  {id:1, role:"MANAGEMENT", title_bn:"মো. রফিকুল ইসলাম", title_en:"Manager", desc:"সার্ভিস বুকিং ও গ্রাহক সহায়তা", phone:"01711-287258", icon:"👨‍💼", photo:"https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80", experience:"১০+ বছর", specialty:"ওয়ার্কশপ ম্যানেজমেন্ট ও কোয়ালিটি কন্ট্রোল", bio:"১০ বছরেরও বেশি সময় ধরে অটোমোবাইল সার্ভিস সেন্টার পরিচালনা ও গ্রাহক সন্তুষ্টিতে বিশ্বস্ত ভূমিকা পালন করছেন।"},
+  {id:2, role:"HEAD TECHNICIAN", title_bn:"মো. সাইফুল ইসলাম", title_en:"Head Technician", desc:"গাড়ির সমস্যা নির্ণয় ও কম্পিউটার স্ক্যানিং", phone:"01776-596315", icon:"🧑‍🔧", photo:"https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80", experience:"৮ বছর", specialty:"ইঞ্জিন ওভারহোলিং, ইএফআই ও হাইব্রিড সিস্টেম", bio:"আধুনিক ইএফআই ও হাইব্রিড ব্যাটারি সার্ভিসিং বিশেষজ্ঞ। নির্ভুল কম্পিউটার স্ক্যানিং ও জটিল মেকানিক্যাল ফল্ট নিখুঁতভাবে সমাধানে পারদর্শী।"},
+  {id:3, role:"ACCOUNTS & SUPPORT", title_bn:"মো. তানভীর আহমেদ", title_en:"Accountant", desc:"বিল, পেমেন্ট ও হিসাব সংক্রান্ত সহায়তা", phone:"01844-487468", icon:"👨‍💻", photo:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80", experience:"৫ বছর", specialty:"বিলিং, স্পেয়ার পার্টস ও হিসাবরক্ষণ", bio:"ওয়ার্কশপের পার্টস সরবরাহ চেইন, স্বচ্ছ হিসাব ও কাস্টমার বিলিং ব্যবস্থাপনায় নিয়োজিত।"}
 ];
 
 const DEFAULT_REVIEWS = [
@@ -2380,32 +2404,45 @@ function renderServices(){
 }
 
 function renderWorks(){
-  const c = document.getElementById('works-container') || document.querySelector('.works-grid');
-  if(!c) return;
-  c.innerHTML = state.works.map(w => `
-    <article class="work-card" onclick="openWorkModal('${w.title_bn}','${w.before_img}','${w.after_img}')">
+  // Update all works containers across homepage and custom views
+  const containers = document.querySelectorAll('#works-container, .works-grid, [data-works-container], [data-dbr-widget="works"]');
+  if(!containers || containers.length === 0) return;
+  const worksHtml = (state.works || []).map((w, idx) => {
+    const safeTitle = (w.title_bn || 'কাজ').replace(/'/g, "\\'");
+    const beforeImg = w.before_img || 'workshop_building.jpg';
+    const afterImg = w.after_img || 'workshop_building.jpg';
+    return `
+    <article class="work-card" onclick="openWorkModal('${safeTitle}','${beforeImg}','${afterImg}')">
       <div class="before-after">
-        <img alt="${w.title_bn}" src="${w.before_img}"/>
-        <img alt="${w.title_bn}" src="${w.after_img}"/>
+        <img alt="${w.title_bn}" src="${beforeImg}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null;this.src='workshop_building.jpg';"/>
+        <img alt="${w.title_bn}" src="${afterImg}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null;this.src='workshop_building.jpg';"/>
         <span><span>আগে</span></span>
         <span><span>পরে</span></span>
       </div>
       <h3><span>${w.title_bn}</span></h3>
       <p>${w.desc||'Before & After'}</p>
     </article>
-  `).join('');
+    `;
+  }).join('');
+  containers.forEach(c => { c.innerHTML = worksHtml; });
 }
 
 function renderGallery(){
-  const c = document.getElementById('gallery-photos-container') || document.querySelector('.gallery-grid');
-  if(!c) return;
-  c.innerHTML = state.gallery.map(g => `
-    <figure class="gallery-photo-card" onclick="openImageModal('${g.title_bn}','${g.img}')">
-      <div class="gallery-photo-frame"><img alt="${g.title_bn}" src="${g.img}"/></div>
+  // Only target photo gallery containers - NEVER accidentally target .gallery-grid (works container)
+  const containers = document.querySelectorAll('#gallery-photos-container, .gallery-photo-grid, [data-gallery-container], [data-dbr-widget="gallery"]');
+  if(!containers || containers.length === 0) return;
+  const galHtml = (state.gallery || []).map(g => {
+    const safeTitle = (g.title_bn || 'ফটো').replace(/'/g, "\\'");
+    const imgUrl = g.img || 'workshop_building.jpg';
+    return `
+    <figure class="gallery-photo-card" onclick="openImageModal('${safeTitle}','${imgUrl}')">
+      <div class="gallery-photo-frame"><img alt="${g.title_bn}" src="${imgUrl}" referrerpolicy="no-referrer" loading="lazy" onerror="this.onerror=null;this.src='workshop_building.jpg';"/></div>
       <figcaption><span>${g.title_bn}</span></figcaption>
       <small>${g.tag||'DBR Auto Centre'}</small>
     </figure>
-  `).join('');
+    `;
+  }).join('');
+  containers.forEach(c => { c.innerHTML = galHtml; });
 }
 
 function getBlogSnippet(text, maxLen = 95){
@@ -2435,37 +2472,107 @@ function renderBlog(){
 }
 
 function renderTeam(){
-  const c = document.getElementById('team-container') || document.querySelector('.team-grid');
-  if(!c) return;
-  c.innerHTML = state.team.map(t => `
-    <article class="team-card" onclick="openTeamModal('${t.title_bn}','${t.desc}','${t.phone}')">
-      <div class="team-photo"><span>${t.icon||'👨‍💼'}</span></div>
+  const containers = document.querySelectorAll('#team-container, .team-grid, [data-team-container], [data-dbr-widget="team"]');
+  if(!containers || containers.length === 0) return;
+  const teamHtml = (state.team || []).map((t, idx) => {
+    const photoUrl = t.photo || t.img || '';
+    const safeTitle = (t.title_bn || 'মেম্বার').replace(/'/g, "\\'");
+    return `
+    <article class="team-card" onclick="openMemberProfileModal(${idx})">
+      <div class="team-photo">
+        ${photoUrl ? `
+          <img src="${photoUrl}" alt="${t.title_bn}" class="team-photo-img" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentElement.innerHTML='<span>${t.icon||'🧑‍🔧'}</span>';"/>
+        ` : `<span>${t.icon||'🧑‍🔧'}</span>`}
+      </div>
       <div class="team-info">
-        <span class="team-role">${t.role||'TEAM'}</span>
+        <span class="team-role">${t.role||'TEAM MEMBER'}</span>
         <h3><span>${t.title_bn}</span></h3>
-        <p>${t.desc}</p>
-        <a href="tel:${t.phone}">☎ ${t.phone}</a>
+        ${t.experience ? `<div class="team-exp-badge"><i class="fa-solid fa-award"></i> ${t.experience}</div>` : ''}
+        <p class="team-spec">${t.specialty || t.desc || 'দক্ষ অটোমোবাইল টেকনিশিয়ান'}</p>
+        <div class="team-actions">
+          <a href="tel:${t.phone}" class="team-btn-call" onclick="event.stopPropagation();"><i class="fa-solid fa-phone"></i> কল করুন</a>
+          <button type="button" class="team-btn-profile" onclick="event.stopPropagation();openMemberProfileModal(${idx});"><i class="fa-solid fa-id-card"></i> প্রোফাইল ↗</button>
+        </div>
       </div>
     </article>
-  `).join('');
+    `;
+  }).join('');
+  containers.forEach(c => { c.innerHTML = teamHtml; });
+}
+
+function openMemberProfileModal(idx){
+  const t = (state.team && state.team[idx]) ? state.team[idx] : null;
+  if(!t) return;
+  const photoUrl = t.photo || t.img || '';
+  const cleanPhone = (t.phone || '').replace(/[^0-9]/g, '');
+  openModal(t.title_bn + ' - মেম্বার প্রোফাইল', `
+    <div style="text-align:center;padding:10px 0 16px;">
+      <div style="width:130px;height:130px;margin:0 auto 14px;border-radius:50%;overflow:hidden;border:3px solid var(--orange);box-shadow:0 8px 24px rgba(255,122,0,0.3);background:#1E293B;display:grid;place-items:center;">
+        ${photoUrl ? `
+          <img src="${photoUrl}" alt="${t.title_bn}" style="width:100%;height:100%;object-fit:cover;" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentElement.innerHTML='<span style=\'font-size:60px;\'>${t.icon||'🧑‍🔧'}</span>';"/>
+        ` : `<span style="font-size:60px;">${t.icon||'🧑‍🔧'}</span>`}
+      </div>
+      <span class="team-role" style="display:inline-block;margin-bottom:4px;font-size:12px;background:#FEE2E2;color:#991B1B;padding:3px 12px;border-radius:20px;">${t.role || 'এক্সপার্ট টেকনিশিয়ান'}</span>
+      <h2 style="font-size:24px;margin:6px 0 4px;color:#F8FAFC;">${t.title_bn}</h2>
+      ${t.experience ? `<div style="color:#F59E0B;font-weight:700;font-size:13.5px;margin-bottom:8px;"><i class="fa-solid fa-award"></i> অভিজ্ঞতা: ${t.experience}</div>` : ''}
+      <div style="background:#12161F;border:1px solid #1E293B;border-radius:14px;padding:14px;text-align:left;margin:14px 0;">
+        <h4 style="color:#38BDF8;font-size:13px;margin:0 0 6px;"><i class="fa-solid fa-wrench"></i> বিশেষ দক্ষতা ও ক্ষেত্র:</h4>
+        <p style="color:#CBD5E1;font-size:13.5px;margin:0 0 10px;">${t.specialty || t.desc || 'পূর্ণাঙ্গ অটোমোবাইল সার্ভিসিং ও টেকনিক্যাল কাজ'}</p>
+        ${t.bio ? `
+          <h4 style="color:#38BDF8;font-size:13px;margin:10px 0 6px;"><i class="fa-solid fa-user-check"></i> পরিচিতি ও অভিজ্ঞতা:</h4>
+          <p style="color:#94A3B8;font-size:13px;line-height:1.6;margin:0;">${t.bio}</p>
+        ` : ''}
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+        <a href="tel:${t.phone}" class="btn" style="flex:1;min-width:140px;justify-content:center;padding:11px 18px;">
+          <i class="fa-solid fa-phone"></i> কল করুন (${t.phone})
+        </a>
+        <a href="https://wa.me/88${cleanPhone}" target="_blank" rel="noopener noreferrer" class="btn-outline" style="border-color:#22C55E;color:#4ADE80;display:inline-flex;align-items:center;gap:6px;padding:11px 18px;">
+          <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ
+        </a>
+      </div>
+      <button type="button" class="btn-outline" style="width:100%;margin-top:10px;justify-content:center;" onclick="openBookingForm('${t.title_bn} (${t.role})')">
+        <i class="fa-regular fa-calendar-check"></i> এই টেকনিশিয়ানের সাথে সার্ভিস বুক করুন
+      </button>
+    </div>
+  `);
 }
 
 function renderReviews(){
   const list = document.getElementById('reviewList');
   if(!list) return;
-  const latestReviews = state.reviews.slice(0, 5);
-  list.innerHTML = latestReviews.map(r => `
-    <article class="review-card">
-      <div class="review-top">
-        ${r.photo ? `<img src="${r.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--orange);"/>` : `<div class="avatar">${(r.name||'গ').slice(0,1)}</div>`}
-        <div>
-          <h3><span>${r.name||'সম্মানিত গ্রাহক'}</span></h3>
-          <div class="stars">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+  const latestReviews = (state.reviews || []).slice(0, 6);
+  list.innerHTML = latestReviews.map(r => {
+    const photoUrl = r.photo || '';
+    const googleIdDisplay = r.googleId ? `(Google ID: ${String(r.googleId).slice(-6)})` : '';
+    return `
+    <article class="review-card" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div class="review-top">
+          ${photoUrl ? `
+            <img src="${photoUrl}" referrerpolicy="no-referrer" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2.5px solid var(--orange);" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(r.name||'গ')}&background=ff7a00&color=fff';"/>
+          ` : `<div class="avatar">${(r.name||'গ').slice(0,1)}</div>`}
+          <div>
+            <h3 style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <span>${r.name||'সম্মানিত গ্রাহক'}</span>
+            </h3>
+            <div style="display:flex;align-items:center;gap:6px;margin:2px 0;">
+              <span class="g-verified-pill"><i class="fa-brands fa-google"></i> ভেরিফাইড ${googleIdDisplay}</span>
+            </div>
+            <div class="stars">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+          </div>
         </div>
+        <p style="margin:14px 0 16px;color:#4B5563;font-size:14px;line-height:1.6;">${r.body||r.comment||''}</p>
       </div>
-      <p>${r.body||r.comment||''}</p>
+      <div style="margin-top:auto;padding-top:10px;border-top:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span style="font-size:12px;color:#6B7280;"><i class="fa-solid fa-location-dot" style="color:#EF4444;"></i> বগুড়া ওয়ার্কশপ</span>
+        <a href="https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura" target="_blank" rel="noopener noreferrer" class="btn-gmap-contrib">
+          <i class="fa-solid fa-map-location-dot"></i> গুগল ম্যাপ কন্ট্রিবিউট ↗
+        </a>
+      </div>
     </article>
-  `).join('');
+    `;
+  }).join('');
   updateRatingSummary();
 }
 
@@ -2641,11 +2748,13 @@ function handleGoogleOneTapResponse(response){
     const name = payload.name || payload.given_name || (payload.email ? payload.email.split('@')[0] : 'সম্মানিত গ্রাহক');
     const email = payload.email || '';
     const photo = payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ff7a00&color=fff`;
-    const uid = payload.sub || ('google_' + Date.now());
-    currentReviewUser = { name, email, photo, uid };
+    const googleId = payload.sub || ('google_' + Date.now());
+    currentReviewUser = { name, email, photo, uid: googleId, googleId: googleId };
     try { localStorage.setItem('dbr_review_user_v1', JSON.stringify(currentReviewUser)); }catch(e){}
     renderReviewFormAuthState();
     showToast(`স্বাগতম ${name}! গুগল ওয়ান ট্যাপ সাইন-ইন সম্পন্ন হয়েছে।`);
+    const txt = document.getElementById('reviewText') || document.getElementById('spaCommentInput');
+    if(txt) txt.focus();
   }
 }
 
@@ -2671,16 +2780,33 @@ function initGoogleOneTap(){
       auto_select: false,
       cancel_on_tap_outside: true
     });
-    // Auto-prompt One Tap if not logged in
-    if(!currentReviewUser){
-      google.accounts.id.prompt((notification) => {
-        if(notification.isNotDisplayed()){
-          console.log("Google One Tap suppressed/not displayed:", notification.getNotDisplayedReason());
-        }
+    // Render Google Sign-in button into any placeholder if exists
+    const slot = document.getElementById('g_id_signin_slot');
+    if(slot){
+      google.accounts.id.renderButton(slot, {
+        theme: 'filled_blue',
+        size: 'large',
+        text: 'signin_with',
+        shape: 'pill'
       });
     }
   } catch(e) {
     console.warn("initGoogleOneTap error", e);
+  }
+}
+
+function handleWriteReviewClick(){
+  if(!currentReviewUser){
+    showToast("গুগল দিয়ে লগইন যাচাই করা হচ্ছে...");
+    loginWithGoogleForReview();
+  }
+  const wrapper = document.getElementById('reviewFormWrapper') || document.getElementById('reviewForm');
+  if(wrapper){
+    wrapper.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      const txt = document.getElementById('reviewText');
+      if(txt) txt.focus();
+    }, 400);
   }
 }
 
@@ -2816,10 +2942,12 @@ function renderReviewFormAuthState(){
       gateEl.innerHTML = `
         <div style="display:flex;align-items:center;justify-content:space-between;background:#0B0E14;border:1px solid #1E293B;padding:12px 16px;border-radius:12px;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div style="display:flex;align-items:center;gap:12px;">
-            <img src="${currentReviewUser.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentReviewUser.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--orange);"/>
+            <img src="${currentReviewUser.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentReviewUser.name)}" referrerpolicy="no-referrer" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--orange);"/>
             <div>
               <strong style="color:#F8FAFC;font-size:14px;display:block;">${currentReviewUser.name}</strong>
-              <span style="color:#94A3B8;font-size:12px;">${currentReviewUser.email}</span>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:#38BDF8;">
+                <span class="g-verified-pill"><i class="fa-brands fa-google"></i> গুগল আইডি: ${currentReviewUser.googleId || currentReviewUser.uid}</span>
+              </div>
             </div>
           </div>
           <button type="button" class="btn-outline" style="padding:4px 12px;font-size:12px;border-color:#EF4444;color:#F87171;" onclick="logoutReviewUser()">
@@ -2869,10 +2997,12 @@ function renderReviewFormAuthState(){
         <p style="color:#94A3B8;font-size:13.5px;margin-bottom:20px;">আমাদের সেবার মান উন্নত করতে আপনার মতামত অত্যন্ত মূল্যবান।</p>
         <div style="display:flex;align-items:center;justify-content:space-between;background:#0B0E14;border:1px solid #1E293B;padding:12px 16px;border-radius:12px;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div style="display:flex;align-items:center;gap:12px;">
-            <img src="${currentReviewUser.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentReviewUser.name)}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--orange);"/>
+            <img src="${currentReviewUser.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentReviewUser.name)}" referrerpolicy="no-referrer" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--orange);"/>
             <div>
               <strong style="color:#F8FAFC;font-size:14px;display:block;">${currentReviewUser.name}</strong>
-              <span style="color:#94A3B8;font-size:12px;">${currentReviewUser.email}</span>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:#38BDF8;">
+                <span class="g-verified-pill"><i class="fa-brands fa-google"></i> গুগল আইডি: ${currentReviewUser.googleId || currentReviewUser.uid}</span>
+              </div>
             </div>
           </div>
           <button type="button" class="btn-outline" style="padding:4px 12px;font-size:12px;border-color:#EF4444;color:#F87171;" onclick="logoutReviewUser()">
@@ -2915,19 +3045,41 @@ function handleReviewSubmit(e){
     name: currentReviewUser.name,
     email: currentReviewUser.email,
     photo: currentReviewUser.photo,
+    googleId: currentReviewUser.googleId || currentReviewUser.uid,
     rating: rating,
     body: body,
-    timestamp: new Date().toISOString()
+    comment: body,
+    timestamp: new Date().toISOString(),
+    gmapsContributed: true
   };
   state.reviews.unshift(item);
   writeStorage('dbr_reviews_v5', state.reviews);
   if(window.db){
-    try{ window.db.collection('reviews').doc('rev_' + item.id).set(item); }catch(err){}
+    try{ window.db.collection('reviews').doc('rev_' + item.id).set(item, {merge:true}); }catch(err){}
   }
   syncFrontViews();
   renderAdminTables();
   document.getElementById('reviewText').value = '';
   showToast('✓ ধন্যবাদ! আপনার রিভিউ সফলভাবে প্রকাশিত হয়েছে।');
+  
+  // Show Google Maps Contribute Confirmation Dialog
+  openModal('🎉 রিভিউ প্রকাশিত হয়েছে!', `
+    <div style="text-align:center;padding:14px 6px;">
+      <div style="font-size:46px;margin-bottom:10px;">🌟</div>
+      <h3 style="color:#F8FAFC;font-size:20px;margin:0 0 8px;">ধন্যবাদ ${currentReviewUser.name}!</h3>
+      <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 20px;">
+        আপনার রিভিউ সফলভাবে DBR সেন্টারে যুক্ত হয়েছে। একই সাথে গুগল ম্যাপেও আপনার অভিজ্ঞতা কন্ট্রিবিউট/শেয়ার করুন যাতে অন্যরা সহজে সঠিক সেবা খুঁজে পেতে পারে।
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura" target="_blank" rel="noopener noreferrer" class="btn" style="width:100%;justify-content:center;padding:12px 20px;background:#1E293B;color:#38BDF8;border:1.5px solid #0284C7;">
+          <i class="fa-solid fa-map-location-dot"></i> গুগল ম্যাপে কন্ট্রিবিউট করুন ↗
+        </a>
+        <button type="button" class="btn-outline" style="width:100%;justify-content:center;" onclick="closeModal()">
+          ঠিক আছে, বন্ধ করুন
+        </button>
+      </div>
+    </div>
+  `);
 }
 
 function handleSpaReviewSubmit(e){
@@ -3127,9 +3279,74 @@ function initFirebase(){
       window.db = firebase.firestore();
       console.log("Firebase initialized successfully");
       loadFirestoreData();
+      listenToFirestoreUpdates();
     }
   }catch(e){
     console.warn("Firebase init notice:", e);
+  }
+}
+
+function listenToFirestoreUpdates(){
+  if(!window.db) return;
+  try {
+    // 1. Real-time Works (Before/After Album)
+    window.db.collection('works').onSnapshot(snap => {
+      if(!snap.empty){
+        const items = [];
+        snap.forEach(doc => items.push({ ...doc.data(), docId: doc.id }));
+        state.works = smartMergeEntities(state.works, items, 'id', 'title_bn');
+        writeStorage('dbr_works_v6', state.works);
+        renderWorks();
+        const cnt = document.getElementById('adm-works-count');
+        if(cnt) cnt.textContent = state.works.length;
+      }
+    }, err => console.warn("Works listener notice:", err));
+
+    // 2. Real-time Photo Gallery
+    window.db.collection('gallery').onSnapshot(snap => {
+      if(!snap.empty){
+        const items = [];
+        snap.forEach(doc => items.push({ ...doc.data(), docId: doc.id }));
+        state.gallery = smartMergeEntities(state.gallery, items, 'id', 'title_bn');
+        writeStorage('dbr_gallery_v6', state.gallery);
+        renderGallery();
+        const cnt = document.getElementById('adm-gallery-count');
+        if(cnt) cnt.textContent = state.gallery.length;
+      }
+    }, err => console.warn("Gallery listener notice:", err));
+
+    // 3. Real-time Team Members
+    window.db.collection('team').onSnapshot(snap => {
+      if(!snap.empty){
+        const items = [];
+        snap.forEach(doc => items.push({ ...doc.data(), docId: doc.id }));
+        state.team = smartMergeEntities(state.team, items, 'id', 'title_bn');
+        writeStorage('dbr_team_v6', state.team);
+        renderTeam();
+        const cnt = document.getElementById('adm-team-count');
+        if(cnt) cnt.textContent = state.team.length;
+      }
+    }, err => console.warn("Team listener notice:", err));
+
+    // 4. Real-time Reviews
+    window.db.collection('reviews').onSnapshot(snap => {
+      if(!snap.empty){
+        const items = [];
+        snap.forEach(doc => items.push({ id: doc.id, ...doc.data(), docId: doc.id }));
+        items.sort((a,b) => {
+          const timeA = new Date(a.created || a.timestamp || a.id || 0).getTime();
+          const timeB = new Date(b.created || b.timestamp || b.id || 0).getTime();
+          return timeB - timeA;
+        });
+        state.reviews = smartMergeEntities(state.reviews, items, 'id', 'name');
+        writeStorage('dbr_reviews_v5', state.reviews);
+        renderReviews();
+        const cnt = document.getElementById('adm-reviews-count');
+        if(cnt) cnt.textContent = state.reviews.length;
+      }
+    }, err => console.warn("Reviews listener notice:", err));
+  } catch(e) {
+    console.warn("Real-time listener setup notice:", e);
   }
 }
 
@@ -3685,17 +3902,27 @@ function renderAdminTables(){
   `).join('');
 
   // Team
-  document.getElementById('adm-team-table').innerHTML = state.team.map((t,i) => `
+  document.getElementById('adm-team-table').innerHTML = state.team.map((t,i) => {
+    const photoUrl = t.photo || t.img || '';
+    return `
     <tr>
+      <td>
+        ${photoUrl ? `
+          <img src="${photoUrl}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid #F59E0B;" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(t.title_bn)}&background=ff7a00&color=fff';"/>
+        ` : `<span style="font-size:24px;">${t.icon||'🧑‍🔧'}</span>`}
+      </td>
       <td><b>${t.title_bn}</b></td>
-      <td>${t.role}</td>
+      <td><span style="background:#1E293B;color:#38BDF8;padding:2px 8px;border-radius:6px;font-size:12px;">${t.role}</span></td>
       <td>${t.phone}</td>
+      <td style="font-size:12px;color:#94A3B8;">${t.experience ? `<b>${t.experience}</b> • ` : ''}${t.specialty || t.desc || ''}</td>
       <td style="white-space:nowrap;">
-        <button onclick="openEditTeamModal(${i})" style="background:#2563EB;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;margin-right:6px;"><i class="fa-solid fa-pen-to-square"></i> এডিট</button>
-        <button onclick="deleteTeam(${i})" style="background:#EF4444;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;"><i class="fa-solid fa-trash"></i> মুছুন</button>
+        <button onclick="openMemberProfileModal(${i})" style="background:#0284C7;color:#fff;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;margin-right:4px;" title="প্রোফাইল প্রিভিউ"><i class="fa-solid fa-eye"></i></button>
+        <button onclick="openEditTeamModal(${i})" style="background:#2563EB;color:#fff;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;margin-right:4px;" title="এডিট"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button onclick="deleteTeam(${i})" style="background:#EF4444;color:#fff;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;" title="মুছুন"><i class="fa-solid fa-trash"></i></button>
       </td>
     </tr>
-  `).join('');
+    `;
+  }).join('');
 
   // Team counter
   const tmCntEl = document.getElementById('adm-team-count');
@@ -5627,8 +5854,8 @@ function openPageView(pageType, pageId = null){
           ${state.works.map(w => `
             <div class="work-card" style="background:#12161F;border:1.5px solid #1E293B;border-radius:16px;overflow:hidden;cursor:pointer;padding:16px;" onclick="openPageView('work', '${w.id}')">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-                <img src="${w.before_img}" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" alt="Before"/>
-                <img src="${w.after_img}" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" alt="After"/>
+                <img src="${w.before_img}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='workshop_building.jpg';" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" alt="Before"/>
+                <img src="${w.after_img}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='workshop_building.jpg';" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" alt="After"/>
               </div>
               <h3 style="font-size:17px;margin:0 0 6px;color:#F8FAFC;">${w.title_bn}</h3>
               <span style="color:var(--orange);font-weight:700;font-size:13px;">বিস্তারিত দেখুন →</span>
@@ -5765,23 +5992,34 @@ function openPageView(pageType, pageId = null){
         <div style="margin-bottom:30px;">
           <h2 style="font-size:26px;font-weight:900;margin:0 0 16px;color:#F8FAFC;">আমাদের পরিচালনা ও টেকনিক্যাল টিম</h2>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
-            ${(state.team||[]).map(m => `
-              <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;align-items:center;gap:12px;">
-                  <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,107,0,0.15);border:1.5px solid var(--orange);display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:20px;">
-                    <i class="fa-solid fa-user-gear"></i>
+            ${(state.team||[]).map((m, idx) => {
+              const photo = m.photo || m.img || '';
+              return `
+              <div style="background:#12161F;border:1.5px solid #1E293B;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer;" onclick="openMemberProfileModal(${idx})">
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <div style="width:58px;height:58px;border-radius:50%;overflow:hidden;border:2px solid var(--orange);background:#1E293B;display:grid;place-items:center;flex-shrink:0;">
+                    ${photo ? `
+                      <img src="${photo}" alt="${m.title_bn}" style="width:100%;height:100%;object-fit:cover;" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentElement.innerHTML='<span style=\'font-size:26px;\'>${m.icon||'🧑‍🔧'}</span>';"/>
+                    ` : `<span style="font-size:26px;">${m.icon||'🧑‍🔧'}</span>`}
                   </div>
                   <div>
-                    <h3 style="margin:0;font-size:17px;color:#F8FAFC;">${m.title_bn}</h3>
-                    <span style="font-size:12.5px;color:#94A3B8;">${m.title_en || m.role}</span>
+                    <span style="font-size:11.5px;color:#F59E0B;font-weight:700;letter-spacing:0.5px;">${m.role}</span>
+                    <h3 style="margin:2px 0 4px;font-size:18px;color:#F8FAFC;">${m.title_bn}</h3>
+                    ${m.experience ? `<span style="font-size:12px;color:#38BDF8;"><i class="fa-solid fa-award"></i> ${m.experience}</span>` : ''}
                   </div>
                 </div>
-                <p style="margin:6px 0 10px;font-size:13.5px;color:#CBD5E1;line-height:1.5;">${m.desc}</p>
-                <a href="tel:${m.phone}" style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--orange);font-weight:700;text-decoration:none;margin-top:auto;">
-                  <i class="fa-solid fa-phone"></i> ${m.phone}
-                </a>
+                <p style="margin:4px 0 8px;font-size:13.5px;color:#CBD5E1;line-height:1.5;">${m.specialty || m.desc || ''}</p>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:auto;flex-wrap:wrap;">
+                  <a href="tel:${m.phone}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;background:#d91e2b;color:#fff;padding:6px 12px;border-radius:8px;font-weight:700;text-decoration:none;" onclick="event.stopPropagation();">
+                    <i class="fa-solid fa-phone"></i> কল করুন
+                  </a>
+                  <button type="button" style="background:#1E293B;color:#38BDF8;border:1px solid #0284C7;padding:6px 12px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;" onclick="event.stopPropagation();openMemberProfileModal(${idx});">
+                    <i class="fa-solid fa-id-card"></i> প্রোফাইল ↗
+                  </button>
+                </div>
               </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
       `;
@@ -5796,22 +6034,46 @@ function openPageView(pageType, pageId = null){
               <h1 style="font-size:30px;margin:0 0 8px;font-weight:900;color:#F8FAFC;">সম্মানিত গ্রাহক রিভিউ ও অভিজ্ঞতা</h1>
               <p style="color:#94A3B8;font-size:15px;margin:0;">আমাদের সেবায় গ্রাহকদের প্রত্যক্ষ মতামত ও রেটিং।</p>
             </div>
-            <button class="btn" style="padding:10px 20px;font-size:14px;" onclick="document.getElementById('spa-review-form-box').scrollIntoView({behavior:'smooth'})">
-              <i class="fa-regular fa-comment-dots"></i> আপনার মতামত লিখুন
-            </button>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <button class="btn" style="padding:10px 18px;font-size:14px;" onclick="handleWriteReviewClick()">
+                <i class="fa-regular fa-comment-dots"></i> আপনার মতামত লিখুন
+              </button>
+              <a href="https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura" target="_blank" rel="noopener noreferrer" class="btn-gmap-contrib" style="padding:10px 16px;border-radius:10px;">
+                <i class="fa-solid fa-map-location-dot"></i> গুগল ম্যাপ কন্ট্রিবিউট ↗
+              </a>
+            </div>
           </div>
 
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
-            ${(state.reviews||[]).map(r => `
-              <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <strong style="color:#F8FAFC;font-size:15px;">${r.name || 'সম্মানিত গ্রাহক'}</strong>
-                  <div style="color:#F59E0B;font-size:14px;">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+            ${(state.reviews||[]).map(r => {
+              const photo = r.photo || '';
+              const gId = r.googleId ? `(Google ID: ${String(r.googleId).slice(-6)})` : '';
+              return `
+              <div style="background:#0B0E14;border:1px solid #1E293B;border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      ${photo ? `
+                        <img src="${photo}" referrerpolicy="no-referrer" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid var(--orange);" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(r.name||'গ')}&background=ff7a00&color=fff';"/>
+                      ` : `<div style="width:38px;height:38px;border-radius:50%;background:#1E293B;color:#F59E0B;display:grid;place-items:center;font-weight:700;">${(r.name||'গ').slice(0,1)}</div>`}
+                      <div>
+                        <strong style="color:#F8FAFC;font-size:14.5px;display:block;">${r.name || 'সম্মানিত গ্রাহক'}</strong>
+                        <span class="g-verified-pill" style="font-size:10px;"><i class="fa-brands fa-google"></i> ভেরিফাইড ${gId}</span>
+                      </div>
+                    </div>
+                    <div style="color:#F59E0B;font-size:14px;white-space:nowrap;">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+                  </div>
+                  <p style="color:#CBD5E1;font-size:13.5px;line-height:1.6;margin:0 0 10px;">"${r.body || r.comment || ''}"</p>
                 </div>
-                <p style="color:#CBD5E1;font-size:13.5px;line-height:1.6;margin:0 0 10px;">"${r.comment || ''}"</p>
-                <small style="color:#64748B;font-size:11.5px;">${r.created || 'যাচাইকৃত গ্রাহক'}</small>
+                <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #1E293B;padding-top:8px;margin-top:10px;font-size:11.5px;">
+                  <small style="color:#64748B;">${r.timestamp ? new Date(r.timestamp).toLocaleDateString('bn-BD') : 'যাচাইকৃত রিভিউ'}</small>
+                  <a href="https://www.google.com/maps/search/?api=1&query=DBR+Complete+Auto+Centre+Bogura" target="_blank" rel="noopener noreferrer" style="color:#38BDF8;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                    <i class="fa-solid fa-map-location-dot"></i> গুগল ম্যাপ
+                  </a>
+                </div>
               </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
 
@@ -6097,9 +6359,9 @@ window.addEventListener('popstate', function(e){
     openPageView('services_list');
   } else if(hash === '#blog'){
     openPageView('blog_list');
-  } else if(hash === '#works'){
+  } else if(hash === '#works' || hash === '#works_list'){
     openPageView('works_list');
-  } else if(hash === '#gallery'){
+  } else if(hash === '#gallery' || hash === '#photo-gallery'){
     openPageView('gallery_list');
   } else if(hash === '#about' || hash === '#team'){
     openPageView('about');
